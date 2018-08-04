@@ -1,0 +1,60 @@
+package ${packageName};
+
+import java.util.*;
+import org.apache.ibatis.annotations.Param;
+${importList}
+
+${classNote}
+@Repository
+public interface ${className} {
+
+    /**
+     * 根据主键获取对象
+     */
+    ${entityName} load${entityName}ByKey(${loadByKeyParams1});
+
+    /**
+     * 插入对象
+     */
+    Integer insert${entityName}(${entityName} ${entityObj});
+
+    /**
+     * 批量插入对象
+     */
+    void insert${entityName}List(List<${entityName}> list);
+
+    /**
+     * 更新对象
+     */
+    Integer update${entityName}(${entityName} ${entityObj});
+
+    /**
+     * 批量更新
+     */
+    void update${entityName}List(List<${entityName}> list);
+
+    /**
+     * 根据key删除对象
+     */
+    Integer delete${entityName}ByKey(${loadByKeyParams1});
+
+    /**
+     * 批量删除对象
+     */
+    void delete${entityName}List(List<${entityName}> list);
+
+    /**
+     * 查询总数
+     */
+    Long get${entityName}Count(${entityName} ${entityObj});
+
+    /**
+     * 列表
+     */
+    List<${entityName}> get${entityName}List(${entityName} ${entityObj});
+
+    /**
+     * 动态sql
+     */
+     Map<String,String> execActiveSql(${entityName} ${entityObj});
+}

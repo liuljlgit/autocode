@@ -1,0 +1,147 @@
+package ${packageName};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.*;
+import org.springframework.util.CollectionUtils;
+${importList}
+
+${classNote}
+@Service("${serviceName}")
+public class ${className} implements ${inftServiceName}{
+
+    @Autowired
+    private ${inftDaoName} ${implDaoName};
+
+    /**
+     * 根据主键获取对象
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception {
+        if(${KeyNotNull}){
+            throw new Exception("请输入要获取的数据的ID");
+        }
+        return ${implDaoName}.load${entityName}ByKey(${loadByKeyParams2});
+    }
+
+    /**
+     * 插入新对象
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("插入对象不能为空");
+        }
+        return ${implDaoName}.insert${entityName}(${entityObj});
+    }
+
+    /**
+     * 批量插入对象
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("插入对象不能为空");
+        }
+        ${implDaoName}.insert${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 更新对象
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("更新对象不能为空");
+        }
+        return ${implDaoName}.update${entityName}(${entityObj});
+    }
+
+    /**
+     * 批量更新
+     */
+    public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("更新对象不能为空");
+        }
+        ${implDaoName}.update${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 根据key删除对象
+     */
+    public Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception {
+        if(${KeyNotNull}){
+            throw new Exception("请输入要删除的数据的ID");
+        }
+        return ${implDaoName}.delete${entityName}ByKey(${loadByKeyParams2});
+    }
+
+    /**
+     * 批量删除对象
+     */
+    public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("请输入要删除的数据的ID列表");
+        }
+        ${implDaoName}.delete${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 查询总数
+     */
+    public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${implDaoName}.get${entityName}Count(${entityObj});
+    }
+
+    /**
+     * 列表
+     */
+    public List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${implDaoName}.get${entityName}List(${entityObj});
+    }
+
+    /**
+     * 执行动态sql
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Map<String,String> execActiveSql(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${implDaoName}.execActiveSql(${entityObj});
+    }
+
+    /**
+     * 保存记录
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public void save${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+           throw new Exception("请求参数不能为空");
+        }
+        if(${ObjKeyNotNull}){
+            insert${entityName}(${entityObj});
+        }else{
+            update${entityName}(${entityObj});
+        }
+    }
+}

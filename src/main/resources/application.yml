@@ -1,0 +1,27 @@
+#端口配置
+server:
+  port: 8082
+
+#配置日志
+logging:
+  #配置日志文件路径
+  level:
+    org.springfromework.web: info
+    org.hibernate: error
+    com.lijun: info
+  #采用相对路径方式将日志文件输出到【log\myspringboot.log】
+  file: log\myspringboot.log
+
+#数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.134:3306/test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: root
+
+mybatis:
+  type-aliases-package: com.lijun.**.entity
+  mapper-locations: classpath:mybatis/test/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+

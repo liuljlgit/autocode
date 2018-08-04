@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${inftDaoFullPath}">
+    <resultMap id="BaseResultMap" type="${entityFileFullPath}">
+${resultMapResultList}
+    </resultMap>
+
+    <sql id="where_sql">
+${whereSqlList}
+    </sql>
+
+    <sql id="Base_Column_List">
+        ${tableColumList}
+     </sql>
+
+    <!--根据主键获取对象-->
+    <select id="load${entityName}ByKey" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablenames}
+        <where>
+            ${idList}
+        </where>
+    </select>
+
+    <!--插入对象-->
+    <insert id="insert${entityName}">
+        insert into ${tablenames}(${tableColumList})
+        values(${entityPropList})
+    </insert>
+
+    <!--批量插入对象-->
+    <insert id="insert${entityName}List">
+        insert into ${tablenames}(${tableColumList})
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (${batchEntityPropList})
+        </foreach>
+    </insert>
+
+    <!--更新对象-->
+    <update id="update${entityName}">
+        update ${tablenames} ${setList}
+        <where>
+            ${idList}
+        </where>
+    </update>
+
+    <!--批量更新对象-->
+    <update id="update${entityName}List">
+        <foreach collection="list" separator=";" item="obj">
+            update ${tablenames} ${batchSetList}
+            <where>
+                ${batchIdList}
+            </where>
+        </foreach>
+    </update>
+
+    <!--查询总数-->
+    <select id="get${entityName}Count" resultType="java.lang.Long">
+        select count(*) from ${tablenames}
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </select>
+
+    <!--查询和分页查询,区别在于page和pageSize是否为空-->
+    <select id="get${entityName}List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablenames}
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </select>
+
+    <!--根据主键删除对象-->
+    <delete id="delete${entityName}ByKey">
+        delete from ${tablenames}
+        <where>
+            ${idList}
+        </where>
+    </delete>
+
+    <!-- 批量删除对象 -->
+    <delete id="delete${entityName}List">
+        delete from ${tablenames}
+        <where>
+            <foreach collection="list" separator="or" item="obj" open="(" close=")">
+                1=1 ${batchIdList}
+            </foreach>
+        </where>
+    </delete>
+
+    <!--动态sql,进行单表统计。返回Map或者String逗号分隔或者Json,考虑能否实现,下面中的${item}请不要替换,groupByList使用逗号分隔-->
+    <select id="execActiveSql" resultType="java.util.HashMap">
+        SELECT
+        <choose>
+            <when test="selectClause!=null and selectClause!=''">
+                ${selectClause}
+            </when>
+            <otherwise>
+                *
+            </otherwise>
+        </choose>
+        from ${tablenames}
+        <where>
+            <include refid="where_sql" />
+        </where>
+        <if test="groupByClause!=null and groupByClause!=''">
+            group by ${groupByClause}
+        </if>
+        <if test="havingClause!=null and havingClause!=''">
+             having ${havingClause}
+        </if>
+        <if test="orderbyClause!=null and orderbyClause!=''">
+             order by ${orderbyClause}
+        </if>
+    </select>
+</mapper>

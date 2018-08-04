@@ -1,0 +1,63 @@
+package ${packageName};
+
+import java.util.*;
+${importList}
+
+${classNote}
+public interface ${className} {
+
+    /**
+     * 根据主键获取对象
+     */
+    ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception;
+
+    /**
+     * 插入对象
+     */
+    Integer insert${entityName}(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 批量插入对象
+     */
+    void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 更新对象
+     */
+    Integer update${entityName}(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 批量更新
+     */
+    void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 根据key删除对象
+     */
+    Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception;
+
+    /**
+     * 批量删除对象
+     */
+    void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 查询总数
+     */
+    Long get${entityName}Count(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 列表
+     */
+    List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 动态sql
+     */
+     Map<String,String> execActiveSql(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 保存记录
+     */
+     void save${entityName}(${entityName} ${entityObj}) throws Exception;
+}
