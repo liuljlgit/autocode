@@ -9,8 +9,6 @@ logging:
     org.springfromework.web: info
     org.hibernate: error
     com.lijun: info
-  #采用相对路径方式将日志文件输出到【log\myspringboot.log】
-  file: log\myspringboot.log
 
 #数据库配置
 spring:
