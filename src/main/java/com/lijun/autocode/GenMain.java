@@ -60,7 +60,7 @@ public class GenMain {
             GenProperties.entityName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename));
             GenProperties.objName = HumpUtils.convertToJava(tablename);
             GenProperties.entityFullPath = GenProperties.entityPackageOutPath.concat(".").concat(GenProperties.entityName);
-            GenProperties.ctrlName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename)).concat("Controller");
+            GenProperties.ctrlName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename)).concat("Ctrl");
             GenProperties.ctrlFullPath = GenProperties.controllerPackageOutPath.concat(".").concat(GenProperties.ctrlName);
             GenProperties.inftDaoFileName = "I"+HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename)).concat("Dao");
             GenProperties.inftDaoFullPath = GenProperties.daoPackageOutPath.concat(".inft.").concat(GenProperties.inftDaoFileName);
