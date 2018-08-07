@@ -2,11 +2,9 @@ package com.lijun.autocode;
 
 import com.lijun.autocode.GenProp.GenCommon;
 import com.lijun.autocode.GenProp.GenProperties;
+import com.lijun.autocode.entity.TableColumInfo;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 自动生成resp
@@ -28,6 +26,7 @@ public class GenResp {
             respReplaceMap.put("${packageName}",GenProperties.respPackageOutPath);
             respReplaceMap.put("${entityName}",GenProperties.entityName);
             respReplaceMap.put("${entityObj}",GenProperties.objName);
+            respReplaceMap.put("${returnProp}",createReturnProp());
             //导入列表请在最后设置
             respReplaceMap.put("${importList}", GenCommon.changeImportSetToString(importList));
             //创建接口文件
@@ -35,5 +34,15 @@ public class GenResp {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String createReturnProp(){
+        List<String> propList = new ArrayList<>();
+        List<TableColumInfo> tableColumInfoList = GenProperties.tableColumInfoList;
+        for(int i=0;i<tableColumInfoList.size();i++){
+            String propName = GenProperties.entityName+".PROP_"+tableColumInfoList.get(i).getTableColumName().toUpperCase();
+            propList.add(propName);
+        }
+        return String.join(",\n\t",propList);
     }
 }
