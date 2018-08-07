@@ -22,6 +22,7 @@ public class GenCtrl {
         Set<String> importList = new HashSet<>();
         importList.add(GenProperties.inftServiceFullPath+";");
         importList.add(GenProperties.entityFullPath+";");
+        importList.add(GenProperties.respPackageOutPath+"."+GenProperties.entityName+"Resp;");
 
         //接口Dao替换内容
         Map<String,String> replaceMap = new HashMap<>();
