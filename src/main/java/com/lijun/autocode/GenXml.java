@@ -1,5 +1,8 @@
 package com.lijun.autocode;
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
+import com.lijun.autocode.entity.TableColumInfo;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.util.HashMap;
@@ -11,15 +14,15 @@ import java.util.stream.Collectors;
  * 自动生成xml文件
  * @author lijun
  */
-public class GenMybatisXml {
+public class GenXml {
     /**
      * 构造函数
      */
-    public GenMybatisXml(){
+    public GenXml(){
         try{
             //替换内容
             Map<String,String> replaceMap = new HashMap<>();
-            replaceMap.put("${inftDaoFullPath}",GenProperties.inftDaoFullPath);
+            replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
             replaceMap.put("${entityFileFullPath}",GenProperties.entityFullPath);
             replaceMap.put("${resultMapResultList}",createResultList());
             replaceMap.put("${whereSqlList}",createWhereSqlList());

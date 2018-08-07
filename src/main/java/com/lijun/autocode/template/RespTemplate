@@ -1,0 +1,22 @@
+package ${packageName};
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
+import java.util.Date;
+${importList}
+@JSONType(includes = {
+
+})
+public class ${entityName}Resp extends ${entityName}{
+
+	public ${entityName}Resp(${entityName} ${entityObj}){
+		CommonUtil.copyPropertiesIgnoreNull(${entityObj},this);
+	}
+
+    /*@Override
+    @JSONField(format = DateUtil.DEFAUL_FORMAT)
+    public Date getDateTime() {
+        return super.getDateTime();
+    }*/
+
+}

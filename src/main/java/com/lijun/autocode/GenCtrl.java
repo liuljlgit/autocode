@@ -1,6 +1,8 @@
 package com.lijun.autocode;
 
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.util.*;
@@ -10,12 +12,12 @@ import java.util.stream.Collectors;
  * 自动生成controller
  * @author lijun
  */
-public class GenEntityCtrl {
+public class GenCtrl {
 
     /**
      * 构造函数
      */
-    public GenEntityCtrl() {
+    public GenCtrl() {
         //导入列表
         Set<String> importList = new HashSet<>();
         importList.add(GenProperties.inftServiceFullPath+";");
@@ -24,7 +26,7 @@ public class GenEntityCtrl {
         //接口Dao替换内容
         Map<String,String> replaceMap = new HashMap<>();
         replaceMap.put("${packageName}",GenProperties.controllerPackageOutPath);
-        replaceMap.put("${classNote}",GenCommon.createFileNote(GenProperties.ctrlName));
+        replaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.ctrlName));
         replaceMap.put("${className}",GenProperties.ctrlName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
         replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));

@@ -1,5 +1,8 @@
 package com.lijun.autocode;
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
+import com.lijun.autocode.entity.TableColumInfo;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.util.HashMap;
@@ -8,9 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GenEntityMysql {
+public class GenEntity {
 
-    public GenEntityMysql() {
+    public GenEntity() {
         try{
             /*获取导入列表*/
             Set<String> entityFullTypeSet = GenProperties.tableColumInfoList.stream().map(e->e.getEntityFullType()).collect(Collectors.toSet());
@@ -66,7 +69,7 @@ public class GenEntityMysql {
             Map<String,String> replaceMap = new HashMap<>();
             replaceMap.put("${packageName}",GenProperties.entityPackageOutPath);
             replaceMap.put("${className}",GenProperties.entityName);
-            replaceMap.put("${classNote}",GenCommon.createFileNote(GenProperties.entityName));
+            replaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.entityName));
             replaceMap.put("${importList}",GenCommon.changeImportSetToString(entityFullTypeSet));
             replaceMap.put("${entityColumList}",entityColumList.toString());
             replaceMap.put("${entityGetSetList}",entityGetSetList.toString());

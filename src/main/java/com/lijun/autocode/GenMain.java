@@ -1,5 +1,8 @@
 package com.lijun.autocode;
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
+import com.lijun.autocode.entity.TableColumInfo;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.sql.Connection;
@@ -19,11 +22,12 @@ public class GenMain {
         String tablenames = GenProperties.tablenames;
         Arrays.stream(tablenames.split(",")).forEach(e->{
             initGenProperties(e);         //初始化配置
-            new GenEntityMysql();        //生成实体类
-            new GenMybatisXml();         //生成XML
-            new GenEntityDao();          //生成DAO
-            new GenEntityService();      //生成SERVICE
-            new GenEntityCtrl();         //生成Controller
+            new GenEntity();        //生成实体类
+            new GenXml();         //生成XML
+            new GenDao();          //生成DAO
+            new GenService();      //生成SERVICE
+            new GenCtrl();         //生成Controller
+            new GenResp();         //生成resp对象文件
         });
     }
 
@@ -66,7 +70,7 @@ public class GenMain {
             GenProperties.inftServiceFullPath = GenProperties.servicePackageOutPath.concat(".inft.").concat(GenProperties.inftServiceFileName);
             GenProperties.implServiceFileName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename)).concat("Service");
             GenProperties.implServiceFullPath = GenProperties.servicePackageOutPath.concat(".impl.").concat(GenProperties.implServiceFileName);
-            GenProperties.xmlFileName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename));
+            GenProperties.xmlFileName = HumpUtils.toUpperCaseFirstOne(HumpUtils.convertToJava(tablename)).concat("Mapper");
         }catch(Exception e){
             e.printStackTrace();
         }

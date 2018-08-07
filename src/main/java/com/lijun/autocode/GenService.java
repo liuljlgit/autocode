@@ -1,5 +1,7 @@
 package com.lijun.autocode;
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.util.*;
@@ -9,12 +11,12 @@ import java.util.stream.Collectors;
  * 自动生成service
  * @author lijun
  */
-public class GenEntityService {
+public class GenService {
 
     /**
      * 构造函数
      */
-    public GenEntityService() {
+    public GenService() {
         try{
             //导入列表
             Set<String> inftImportList = new HashSet<>();
@@ -27,7 +29,7 @@ public class GenEntityService {
             //接口Dao替换内容
             Map<String,String> inftReplaceMap = new HashMap<>();
             inftReplaceMap.put("${packageName}",GenProperties.servicePackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${classNote}",GenCommon.createFileNote(GenProperties.inftServiceFileName));
+            inftReplaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.inftServiceFileName));
             inftReplaceMap.put("${className}",GenProperties.inftServiceFileName);
             inftReplaceMap.put("${entityName}",GenProperties.entityName);
             inftReplaceMap.put("${entityObj}",GenProperties.objName);

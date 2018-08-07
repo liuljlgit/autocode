@@ -1,4 +1,6 @@
-package com.lijun.autocode;
+package com.lijun.autocode.GenProp;
+
+import com.lijun.autocode.entity.TableColumInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static final String URL = "jdbc:mysql://192.168.1.134:3306/test";
+    public static final String URL = "jdbc:mysql://192.168.1.139:3306/test";
     public static final String NAME = "root";
     public static final String PASS = "root";
     public static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -53,9 +55,20 @@ public class GenProperties {
     public static String controllerPackageOutPath = "com.lijun.test.controller";
 
     /**
+     * resp对象路径配置
+     */
+    public static String respPackageOutPath = "com.lijun.test.webentity";
+
+    /**
+     * CommonUtil包路径
+     */
+    public static String commonUtilPath = "com.lijun.autocode.util.CommonUtil;";
+
+    /**
      * 所有模板文件路径
      */
     public static String templateFilePath = "com.lijun.autocode.template";
+
 
     /**
      * 当前表名

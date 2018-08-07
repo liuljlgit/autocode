@@ -1,5 +1,8 @@
 package com.lijun.autocode;
 
+import com.lijun.autocode.GenProp.GenCommon;
+import com.lijun.autocode.GenProp.GenProperties;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,12 +10,12 @@ import java.util.stream.Collectors;
  * 自动生成dao
  * @author lijun
  */
-public class GenEntityDao {
+public class GenDao {
 
     /**
      * 构造函数
      */
-    public GenEntityDao() {
+    public GenDao() {
         try{
             //导入列表
             Set<String> inftImportList = new HashSet<>();
@@ -21,7 +24,7 @@ public class GenEntityDao {
             //接口Dao替换内容
             Map<String,String> inftReplaceMap = new HashMap<>();
             inftReplaceMap.put("${packageName}",GenProperties.daoPackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${classNote}",GenCommon.createFileNote(GenProperties.inftDaoFileName));
+            inftReplaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.inftDaoFileName));
             inftReplaceMap.put("${className}",GenProperties.inftDaoFileName);
             inftReplaceMap.put("${entityName}",GenProperties.entityName);
             inftReplaceMap.put("${entityObj}",GenProperties.objName);

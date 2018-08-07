@@ -1,4 +1,4 @@
-package com.lijun.autocode;
+package com.lijun.autocode.GenProp;
 
 import java.io.*;
 import java.util.*;
@@ -53,7 +53,7 @@ public class GenCommon {
         StringBuffer sb = new StringBuffer();
         sb.append("/**\r\n");
         sb.append("* "+note+" \r\n");
-        sb.append("* "+new Date()+" "+GenProperties.authorName+"\r\n");
+        sb.append("* "+new Date()+" "+ GenProperties.authorName+"\r\n");
         sb.append("*/");
         return sb.toString();
     }
