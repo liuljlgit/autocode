@@ -33,6 +33,6 @@ public class CommonUtil {
         }
 
         String[] result = new String[emptyNames.size()];
-        return (String[])emptyNames.toArray(result);
+        return emptyNames.toArray(result);
     }
 }

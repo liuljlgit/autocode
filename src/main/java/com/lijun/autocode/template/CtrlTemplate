@@ -19,7 +19,7 @@ public class ${className} {
    * @throws Exception
    */
    @GetMapping(value = "/${entityObj}/${urlIdList}")
-   public ${entityName} get${entityName}(${PathVariableIdList}) throws Exception {
+   public String get${entityName}(${PathVariableIdList}) throws Exception {
       if(${IdNotNull}){
          throw new Exception("请输入要获取的数据的ID") ;
       }
@@ -28,7 +28,9 @@ public class ${className} {
       if(Objects.isNull(${entityObj})){
           throw new Exception("没有符合条件的记录！") ;
       }
-      return ${entityObj};
+      JSONObject resp = new JSONObject();
+      resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
+      return JSONObject.toJSONString(resp);
    }
 
   /**

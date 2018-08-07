@@ -1,11 +1,9 @@
 package ${packageName};
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
-import java.util.Date;
 ${importList}
 @JSONType(includes = {
-
+    ${returnProp}
 })
 public class ${entityName}Resp extends ${entityName}{
 
