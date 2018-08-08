@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import org.springframework.util.CollectionUtils;
+import org.springframework.cache.annotation.*;
 ${importList}
 
 ${classNote}
@@ -19,7 +20,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    @Cacheable(value="${entityName}", key="id")
+    @Cacheable(value="${entityName}", key="keyGenerator1")
     public ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception {
         if(${KeyNotNull}){
             throw new Exception("请输入要获取的数据的ID");
@@ -33,6 +34,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
             throw new Exception("插入对象不能为空");
@@ -46,6 +48,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
             throw new Exception("插入对象不能为空");
@@ -59,6 +62,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
             throw new Exception("更新对象不能为空");
@@ -69,6 +73,8 @@ public class ${className} implements ${inftServiceName}{
     /**
      * 批量更新
      */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
             throw new Exception("更新对象不能为空");
@@ -79,6 +85,9 @@ public class ${className} implements ${inftServiceName}{
     /**
      * 根据key删除对象
      */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value="DailyAmount", key="keyGenerator1")
     public Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception {
         if(${KeyNotNull}){
             throw new Exception("请输入要删除的数据的ID");
@@ -89,6 +98,8 @@ public class ${className} implements ${inftServiceName}{
     /**
      * 批量删除对象
      */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
             throw new Exception("请输入要删除的数据的ID列表");
@@ -99,6 +110,7 @@ public class ${className} implements ${inftServiceName}{
     /**
      * 查询总数
      */
+    @Override
     public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
@@ -109,6 +121,7 @@ public class ${className} implements ${inftServiceName}{
     /**
      * 列表
      */
+    @Override
     public List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
@@ -135,6 +148,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
            throw new Exception("请求参数不能为空");
