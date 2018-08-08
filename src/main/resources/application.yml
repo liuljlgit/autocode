@@ -4,7 +4,6 @@ server:
 
 #配置日志
 logging:
-  #配置日志文件路径
   level:
     org.springfromework.web: info
     org.hibernate: error
@@ -12,12 +11,14 @@ logging:
 
 #数据库配置
 spring:
+  #数据源配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.139:3306/test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://192.168.1.140:3306/test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
     password: root
 
+#mybatis配置
 mybatis:
   type-aliases-package: com.lijun.**.entity
   mapper-locations: classpath:mybatis/test/*.xml
