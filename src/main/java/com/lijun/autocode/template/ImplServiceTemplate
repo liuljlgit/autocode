@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.cache.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 ${importList}
 
 ${classNote}
@@ -13,6 +14,8 @@ public class ${className} implements ${inftServiceName}{
 
     @Autowired
     private ${inftDaoName} ${implDaoName};
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 根据主键获取对象
