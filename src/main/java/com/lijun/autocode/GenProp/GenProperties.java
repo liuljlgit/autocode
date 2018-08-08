@@ -14,7 +14,7 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static final String URL = "jdbc:mysql://192.168.1.139:3306/test";
+    public static final String URL = "jdbc:mysql://192.168.1.140:3306/test";
     public static final String NAME = "root";
     public static final String PASS = "root";
     public static final String DRIVER = "com.mysql.jdbc.Driver";
