@@ -6,6 +6,7 @@ import java.util.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.cache.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.redis.core.RedisTemplate;
 ${importList}
 
 ${classNote}

@@ -64,7 +64,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 键值生成器1
      * @return
      */
-    @Bean(name="keyGenerator1")
+    @Bean(name="keyGenerator")
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
             StringBuffer sb = new StringBuffer();
