@@ -67,6 +67,7 @@ public class GenCommon {
      */
     public static void replaceLastLine(File file,String sb) throws IOException {
         RandomAccessFile raf = null;
+        sb = new String(sb.getBytes("UTF-8"));
         try {
             raf = new RandomAccessFile(file, "rw");
             long len = raf.length();
