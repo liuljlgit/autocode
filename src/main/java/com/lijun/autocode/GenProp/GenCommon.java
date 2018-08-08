@@ -46,6 +46,62 @@ public class GenCommon {
     }
 
     /**
+     * 向文件中追加代码
+     * @param packagePath
+     * @param sb
+     */
+    public static void appendCode(String packagePath,String sb) throws Exception {
+        File directory = new File("");
+        File dirFile = new File(directory.getAbsolutePath()+packagePath);
+        if(!dirFile.exists()){
+            throw new Exception("文件路径不存在！");
+        }
+        replaceLastLine(dirFile,sb);
+    }
+
+    /**
+     * 向文件中追加内容
+     * @param file
+     * @param sb
+     * @throws IOException
+     */
+    public static void replaceLastLine(File file,String sb) throws IOException {
+        RandomAccessFile raf = null;
+        try {
+            raf = new RandomAccessFile(file, "rw");
+            long len = raf.length();
+            if (len == 0L) {
+                return ;
+            } else {
+                long pos = len - 1;
+                while (pos > 0) {
+                    pos--;
+                    raf.seek(pos);
+                    if (raf.readByte() == '\n') {
+                        break;
+                    }
+                }
+                if (pos == 0) {
+                    raf.seek(0);
+                }
+                byte[] bytes = new byte[(int) (len - pos)];
+                raf.writeBytes(sb);
+                raf.read(bytes);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (raf != null) {
+                try {
+                    raf.close();
+                } catch (Exception ea) {
+                    ea.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
      * 生成类的注释
      * @return
      */
