@@ -19,6 +19,7 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
+    @Cacheable(value="${entityName}", key="id")
     public ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception {
         if(${KeyNotNull}){
             throw new Exception("请输入要获取的数据的ID");
