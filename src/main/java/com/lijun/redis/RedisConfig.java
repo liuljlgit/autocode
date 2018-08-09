@@ -1,35 +1,27 @@
 package com.lijun.redis;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @author liulijun
  * redis配置类
- *  此类的主要配置功能为:序列化、cacheManager、键值生成策略
+ *  此类的主要配置功能为:序列化、cacheManager、redisTemplate、键值生成策略
  */
 @Configuration
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfig extends CachingConfigurerSupport {
 
-    /**
-     * 自定义序列化
-     * @param redisConnectionFactory
-     * @return
-     */
-    @Bean
+    /*@Bean
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
@@ -44,36 +36,55 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         template.setConnectionFactory(redisConnectionFactory);
         return template;
-    }
+    }*/
 
-    /**
-     * 重写StringRedisTemplate序列化方式
-     * @param redisConnectionFactory
-     * @return
-     */
-    @Bean
+    /*@Bean
     @ConditionalOnMissingBean(StringRedisTemplate.class)
     public StringRedisTemplate stringRedisTemplate(
             RedisConnectionFactory redisConnectionFactory) {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
         return template;
+    }*/
+
+    /**
+     * 不使用事务
+     * @param connectionFactory
+     * @return
+     */
+    @Bean(name="redisTemplate")
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate template = new RedisTemplate();
+        template.setConnectionFactory(connectionFactory);
+        //使用Pojo进行序列化操作,或者使用FastJsonRedisSerializer也行
+        PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer()) ;
+        template.setValueSerializer(pojoSerializable);
+        template.setHashValueSerializer(pojoSerializable);
+        template.setEnableTransactionSupport(false);
+        template.afterPropertiesSet();
+        return template;
     }
 
     /**
-     * 键值生成器1
+     * 使用事务
+     * @param connectionFactory
      * @return
      */
-    @Bean(name="keyGenerator")
-    public KeyGenerator keyGenerator() {
-        return (target, method, params) -> {
-            StringBuffer sb = new StringBuffer();
-            //sb.append(target.getClass().getName());
-            //sb.append(method.getName());
-            for(Object obj:params){
-                sb.append(obj.toString());
-            }
-            return sb.toString();
-        };
+    @Bean(name="transRedisTemplate")
+    public RedisTemplate transRedisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate template = new RedisTemplate();
+        template.setConnectionFactory(connectionFactory);
+        //使用Pojo进行序列化操作,或者使用FastJsonRedisSerializer也行
+        PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer()) ;
+        template.setValueSerializer(pojoSerializable);
+        template.setHashValueSerializer(pojoSerializable);
+        template.setEnableTransactionSupport(true);
+        template.afterPropertiesSet();
+        return template;
     }
+
 }
