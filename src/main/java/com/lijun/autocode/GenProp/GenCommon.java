@@ -1,7 +1,6 @@
 package com.lijun.autocode.GenProp;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,11 +67,6 @@ public class GenCommon {
      */
     public static void replaceLastLine(File file,String sb) throws IOException {
         RandomAccessFile raf = null;
-        /*if(sb.equals()){
-
-        }*/
-        System.out.println(Charset.defaultCharset());
-        sb = new String(sb.getBytes("UTF-8"),"GB2312");
         try {
             raf = new RandomAccessFile(file, "rw");
             long len = raf.length();
@@ -91,7 +85,7 @@ public class GenCommon {
                     raf.seek(0);
                 }
                 byte[] bytes = new byte[(int) (len - pos)];
-                raf.writeBytes(sb);
+                raf.writeUTF(sb);
                 raf.read(bytes);
             }
         } catch (FileNotFoundException e) {

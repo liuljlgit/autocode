@@ -8,13 +8,8 @@ import com.lijun.autocode.GenProp.GenCommon;
  */
 public class GenMainAppend {
     public static String methodName = "testMyAppendMethod";
-
-    public static String IServicePath =
-            "    /**\n" +
-            "     * 保存记录\n" +
-            "     * @param dailyAmount\n" +
-            "     */\n" +
-            "     void "+methodName+"(DailyAmount dailyAmount) throws Exception;\n\n}";
+    public static String params = "DailyAmount dailyAmount";
+    public static String IServicePath = "\tvoid "+methodName+"("+params+") throws Exception;\n\n}";
 
     public static void main(String[] args) throws Exception {
         //GenCommon.appendCode("/src/main/java/com/lijun/test/controller/DailyAmountCtrl.java",null);
