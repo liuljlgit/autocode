@@ -68,6 +68,9 @@ ${whereSqlList}
         <where>
             <include refid="where_sql" />
         </where>
+        <if test="orderbyClause!=null and orderbyClause!=''">
+            order by ${orderbyClause}
+        </if>
     </select>
 
     <!--根据主键删除对象-->
