@@ -15,7 +15,6 @@ import java.util.*;
 
 public abstract class BaseRedis<K, V> {
     private Logger logger = LoggerFactory.getLogger(BaseRedis.class);
-    protected static final Integer LOAD_PAGE_SIZE = 1000;
     @Autowired
     protected RedisTemplate<K, V> redisTemplate;
     @Autowired
