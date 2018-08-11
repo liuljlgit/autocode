@@ -4,7 +4,9 @@ import com.lijun.autocode.util.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -528,10 +530,285 @@ public abstract class BaseRedis<K, V> {
         return result;
     }
 
+    protected Object hkeys(String key) {
+        Object result = this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            Set setValue = connection.hKeys(byteKey);
+            Iterator iter = setValue.iterator();
+            ArrayList listObj = new ArrayList();
+
+            while(iter.hasNext()) {
+                Object obj = serializer.deserialize((byte[])((byte[])iter.next()));
+                listObj.add(obj);
+            }
+
+            return listObj;
+        });
+        return result;
+    }
+
+    protected Set<String> hkeysSerial(String key) {
+        Set<String> result = (Set)this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            Set<byte[]> setValue = connection.hKeys(byteKey);
+            Iterator<byte[]> iter = setValue.iterator();
+            HashSet keys = new HashSet();
+
+            while(iter.hasNext()) {
+                String obj = (String)serializer.deserialize((byte[])iter.next());
+                keys.add(obj);
+            }
+
+            return keys;
+        });
+        return result;
+    }
+
+    protected boolean hdel(String key, String field) {
+        return this.hdel(key, field, false);
+    }
+
+    protected boolean hdel(String key, String field, boolean suppressTran) {
+        boolean result = (Boolean)this.getRedisTemplate(suppressTran).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            byte[] byteField = serializer.serialize(field);
+            connection.hDel(byteKey, new byte[][]{byteField});
+            return true;
+        });
+        return result;
+    }
+
+    protected boolean expire(String key, Long seconds) {
+        return this.expire(key, seconds, false);
+    }
+
+    protected boolean expire(String key, Long seconds, boolean suppressTran) {
+        boolean result = (Boolean)this.getRedisTemplate(suppressTran).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            connection.expire(byteKey, seconds);
+            return true;
+        });
+        return result;
+    }
+
+    public void delete(List<K> keys) {
+        this.delete(keys, false);
+    }
+
+    public void delete(List<K> keys, boolean suppressTran) {
+        this.getRedisTemplate(suppressTran).delete(keys);
+    }
+
+    protected void deleteHashSetByPage(K hsetKey) {
+        List<K> listKeys = new ArrayList(1);
+        listKeys.add(hsetKey);
+        this.delete(listKeys);
+    }
+
+    public void delete(K key, boolean suppressTran) {
+        this.getRedisTemplate(suppressTran).delete(key);
+    }
+
+    protected Boolean setNx(String key, Serializable value, long seconds, boolean suppressTran) {
+        boolean result = (Boolean)this.getRedisTemplate(suppressTran).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            byte[] byteValue = CommonUtil.transObj2ByteArray(value);
+            Boolean result1 = connection.setNX(byteKey, byteValue);
+            if (seconds > 0L && null == result1 && !suppressTran || result1 && suppressTran) {
+                connection.expire(byteKey, seconds);
+            }
+
+            return result1;
+        });
+        return result;
+    }
+
+    public Long dbSize() {
+        Long result = (Long)this.transRedisTemplate.execute((RedisCallback<Object>) connection -> {
+            return connection.dbSize();
+        });
+        return result;
+    }
+
+    public void clean(K pattern) {
+        Set<K> keySet = this.redisTemplate.keys(pattern);
+        if (keySet != null && keySet.size() > 0) {
+            List<K> keyList = new ArrayList(keySet);
+            this.delete(keyList);
+        }
+
+    }
+
+    protected List<Object> pipelineGet(List<String> keys) {
+        return this.getRedisTemplate(true).executePipelined((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            Iterator var4 = keys.iterator();
+
+            while(var4.hasNext()) {
+                String key = (String)var4.next();
+                byte[] byteKey = serializer.serialize(key);
+                connection.get(byteKey);
+            }
+
+            return null;
+        }, this.getRedisTemplate(true).getStringSerializer());
+    }
+
+    protected <T extends Serializable> List<T> pipelineGet(Collection<String> keys, Class<T> clazz) {
+        List<?> tmps = this.getRedisTemplate(true).executePipelined((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            Iterator var4 = keys.iterator();
+
+            while(var4.hasNext()) {
+                String key = (String)var4.next();
+                byte[] byteKey = serializer.serialize(key);
+                connection.get(byteKey);
+            }
+
+            return null;
+        }, this.getPojoSerializer(clazz));
+        List<T> result = new ArrayList(tmps.size());
+        Iterator var5 = tmps.iterator();
+
+        while(var5.hasNext()) {
+            Object obj = var5.next();
+            result.add(clazz.cast(obj));
+        }
+
+        return result;
+    }
+
+    protected boolean lpushWithTrim(String key, long length, Serializable value, Long seconds) {
+        boolean result = (Boolean)this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            byte[] byteValue = CommonUtil.transObj2ByteArray(value);
+            if (length > 0L) {
+                connection.multi();
+                connection.lPush(byteKey, new byte[][]{byteValue});
+                connection.lTrim(byteKey, 0L, length - 1L);
+                connection.exec();
+            } else {
+                connection.lPush(byteKey, new byte[][]{byteValue});
+            }
+
+            if (seconds.equals(0L)) {
+                connection.persist(byteKey);
+            } else {
+                connection.expire(byteKey, seconds);
+            }
+
+            return true;
+        });
+        return result;
+    }
+
+    protected boolean lpush(String key, Serializable value, Long seconds) {
+        boolean result = (Boolean)this.transRedisTemplate.execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            byte[] byteValue = CommonUtil.transObj2ByteArray(value);
+            connection.lPush(byteKey, new byte[][]{byteValue});
+            if (seconds.equals(0L)) {
+                connection.persist(byteKey);
+            } else {
+                connection.expire(byteKey, seconds);
+            }
+
+            return true;
+        });
+        return result;
+    }
+
+    protected boolean ltrim(String key, long begin, long end) {
+        boolean result = (Boolean)this.transRedisTemplate.execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            connection.multi();
+            connection.lTrim(byteKey, begin, end);
+            connection.exec();
+            return true;
+        });
+        return result;
+    }
+
+    protected <T extends Serializable> List<T> lrange(String key, long begin, long end, Class<T> clazz) {
+        List<T> result = (List)this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            List<byte[]> listByteValues = connection.lRange(byteKey, begin, end);
+            List<T> listValue = new ArrayList(listByteValues.size());
+            Iterator var12 = listByteValues.iterator();
+
+            while(var12.hasNext()) {
+                byte[] value = (byte[])var12.next();
+                listValue.add(CommonUtil.transByteArray2Obj(value, clazz));
+            }
+
+            return listValue;
+        });
+        return result;
+    }
+
+    protected List<String> pget(List<String> keys) {
+        List<String> result = (List)this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            connection.openPipeline();
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            Iterator var4 = keys.iterator();
+
+            while(var4.hasNext()) {
+                String key = (String)var4.next();
+                byte[] byteKey = serializer.serialize(key);
+                connection.get(byteKey);
+            }
+
+            List<?> pipeResult = connection.closePipeline();
+            List<String> strObjs = new ArrayList();
+            Iterator var12 = pipeResult.iterator();
+
+            while(var12.hasNext()) {
+                Object tmp = var12.next();
+                byte[] bytes = (byte[])((byte[])tmp);
+                String tmpObj = (String)serializer.deserialize(bytes);
+                strObjs.add(tmpObj);
+            }
+
+            return strObjs;
+        });
+        return result;
+    }
+
+    protected boolean sIsMember(String key, String value) {
+        boolean result = (Boolean)this.getRedisTemplate(true).execute((RedisCallback<Object>) connection -> {
+            RedisSerializer<String> serializer = this.getRedisTemplate(true).getStringSerializer();
+            byte[] byteKey = serializer.serialize(key);
+            byte[] byteVal = serializer.serialize(value);
+            return connection.sIsMember(byteKey, byteVal);
+        });
+        return result;
+    }
 
     private RedisTemplate<K, V> getRedisTemplate(Boolean suppTrans) {
         this.redisTemplate.setEnableTransactionSupport(false);
         this.transRedisTemplate.setEnableTransactionSupport(true);
         return suppTrans ? this.redisTemplate : this.transRedisTemplate;
+    }
+
+    protected <T extends Serializable> RedisSerializer<T> getPojoSerializer(Class<T> clazz) {
+        return new PojoSerializable(clazz);
+    }
+
+    protected RedisSerializer<String> getRedisSerializer() {
+        return this.getRedisTemplate(true).getStringSerializer();
+    }
+
+    public void closeConn() {
+        RedisConnection conn = RedisConnectionUtils.getConnection(this.transRedisTemplate.getConnectionFactory());
+        conn.close();
     }
 }
