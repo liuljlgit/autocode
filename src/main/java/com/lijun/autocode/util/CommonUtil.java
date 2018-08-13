@@ -8,11 +8,17 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * 公共工具类
+ * @author lijun
  */
 public class CommonUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);
@@ -48,6 +54,72 @@ public class CommonUtil {
 
         String[] result = new String[emptyNames.size()];
         return emptyNames.toArray(result);
+    }
+
+    /**
+     * 把对象转换成一个redis的key值
+     * @param t
+     * @param bWithSupperFields
+     * @param <T>
+     * @return
+     */
+    public static <T> String getAttrVal4ForRedisKey(T t, boolean bWithSupperFields) {
+        StringBuffer sb = new StringBuffer();
+        Field[] thisClazzFields = null;
+        Field[] finalFields = new Field[0];
+        Class thisClazz = t.getClass();
+
+        Integer orinLength;
+        while(thisClazz != null) {
+            thisClazzFields = thisClazz.getDeclaredFields();
+            if (!Objects.isNull(thisClazzFields)) {
+                orinLength = finalFields.length;
+                finalFields = (Field[]) Arrays.copyOf(finalFields, finalFields.length + thisClazzFields.length);
+                System.arraycopy(thisClazzFields, 0, finalFields, orinLength, thisClazzFields.length);
+            }
+
+            if (bWithSupperFields) {
+                thisClazz = thisClazz.getSuperclass();
+            } else {
+                thisClazz = null;
+            }
+        }
+
+        orinLength = null;
+
+        try {
+            for(int i = 0; i < finalFields.length; ++i) {
+                Field field = finalFields[i];
+                String fieldName = field.getName();
+                if (!"page".equals(fieldName)) {
+                    Object val = null;
+                    StringBuffer fieldGet = new StringBuffer("get");
+                    fieldGet.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+
+                    try {
+                        Method getMethod = t.getClass().getMethod(fieldGet.toString());
+                        val = getMethod.invoke(t);
+                    } catch (NoSuchMethodException var12) {
+                        field.setAccessible(true);
+                        val = field.get(t);
+                    } catch (InvocationTargetException var13) {
+                        var13.printStackTrace();
+                    }
+
+                    if (val != null) {
+                        sb.append(field.getName()).append(val);
+                    }
+                }
+            }
+        } catch (IllegalArgumentException var14) {
+            logger.error(var14.getMessage());
+        } catch (IllegalAccessException var15) {
+            logger.error(var15.getMessage());
+        }
+
+        String val = SecureUtil.md5X16Str(sb.toString(), "utf-8");
+        sb = (new StringBuffer(t.getClass().getSimpleName())).append(":total:").append(val);
+        return sb.toString();
     }
 
     /**
