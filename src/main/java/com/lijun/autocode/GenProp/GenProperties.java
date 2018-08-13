@@ -14,7 +14,7 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static final String URL = "jdbc:mysql://192.168.1.140:3306/test";
+    public static final String URL = "jdbc:mysql://192.168.1.134:3306/test";
     public static final String NAME = "root";
     public static final String PASS = "root";
     public static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -50,6 +50,11 @@ public class GenProperties {
     public static String servicePackageOutPath = "com.lijun.test.service";
 
     /**
+     * redis路径配置
+     */
+    public static String redisPackageOutPath = "com.lijun.test.cache";
+
+    /**
      * controller路径配置
      */
     public static String controllerPackageOutPath = "com.lijun.test.controller";
@@ -68,6 +73,16 @@ public class GenProperties {
      * 所有模板文件路径
      */
     public static String templateFilePath = "com.lijun.autocode.template";
+
+    /**
+     * autocode路径
+     */
+    public static String autocodePath = "com.lijun.autocode";
+
+    /**
+     * baseredis路径
+     */
+    public static String BaseRedisPath = "com.lijun.redis";
 
 
     /**
@@ -144,6 +159,26 @@ public class GenProperties {
      * service实现类全路径
      */
     public static String implServiceFullPath;
+
+    /**
+     * redis接口名称
+     */
+    public static String inftRedisFileName;
+
+    /**
+     * redis接口全路径
+     */
+    public static String inftRedisFullPath;
+
+    /**
+     * redis实现类名称
+     */
+    public static String implRedisFileName;
+
+    /**
+     * redis实现类全路径
+     */
+    public static String implRedisFullPath;
 
     /**
      * xml文件名

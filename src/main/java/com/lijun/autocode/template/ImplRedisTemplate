@@ -1,0 +1,21 @@
+package ${packageName};
+
+import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+${importList}
+
+/**
+ * 缓存实现类 ${entityName}RedisImpl
+ * @author lijun
+ */
+@Repository("${entityObj}Redis")
+public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> implements I${entityName}Redis{
+
+    private static final Logger logger = LoggerFactory.getLogger(${entityName}RedisImpl.class);
+
+    public final static String PRE_KEY = ${entityName}.class.getSimpleName();
+    private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY) ;
+
+}

@@ -1,0 +1,12 @@
+package ${packageName};
+
+import java.util.*;
+${importList}
+
+/**
+ * 缓存接口类 I${entityName}Redis
+ * @author lijun
+ */
+public interface I${entityName}Redis {
+
+}
