@@ -24,6 +24,7 @@ public class GenService {
             implImportList.add(GenProperties.inftServiceFullPath+";");
             implImportList.add(GenProperties.inftDaoFullPath+";");
             implImportList.add(GenProperties.entityFullPath+";");
+            implImportList.add(GenProperties.inftRedisFullPath+";");
             inftImportList.add(GenProperties.entityFullPath+";");
 
             //接口Dao替换内容

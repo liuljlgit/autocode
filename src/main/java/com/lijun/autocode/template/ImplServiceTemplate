@@ -16,7 +16,7 @@ public class ${className} implements ${inftServiceName}{
     @Autowired
     private ${inftDaoName} ${implDaoName};
     @Autowired
-    private RedisTemplate redisTemplate;
+    private I${entityName}Redis ${entityObj}Redis;
 
     /**
      * 根据主键获取对象
@@ -24,7 +24,6 @@ public class ${className} implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    @Cacheable(value="${entityName}", key="keyGenerator1")
     public ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception {
         if(${KeyNotNull}){
             throw new Exception("请输入要获取的数据的ID");
@@ -91,7 +90,6 @@ public class ${className} implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(value="DailyAmount", key="keyGenerator1")
     public Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception {
         if(${KeyNotNull}){
             throw new Exception("请输入要删除的数据的ID");

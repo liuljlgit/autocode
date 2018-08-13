@@ -3,7 +3,6 @@ package com.lijun.autocode;
 import com.lijun.autocode.GenProp.GenCommon;
 import com.lijun.autocode.GenProp.GenProperties;
 import com.lijun.autocode.entity.TableColumInfo;
-import com.lijun.autocode.util.GenRedis;
 import com.lijun.autocode.util.HumpUtils;
 
 import java.sql.Connection;
