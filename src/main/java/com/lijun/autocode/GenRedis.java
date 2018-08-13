@@ -44,6 +44,7 @@ public class GenRedis {
             implReplaceMap.put("${paramIds}",createParamIds());
             implReplaceMap.put("${concatIds}",createConcatIds());
             implReplaceMap.put("${objGetIds}",createObjGetIds());
+            implReplaceMap.put("${Ids}",String.join(",",GenCommon.getEntityIdList()));
             //导入列表请在最后设置
             implReplaceMap.put("${importList}",GenCommon.changeImportSetToString(implImportList));
 

@@ -39,4 +39,26 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         return primaryKey ;
     }
 
+    /**
+     * 从缓存中得到值
+     */
+    @Override
+    public ${entityName} get${entityName}ByKey(${paramIds}){
+        String primaryKey = get${entityName}Key(${Ids});
+        ${entityName} ${entityObj} = get(primaryKey,${entityName}.class);
+        return ${entityObj};
+    }
+
+    /**
+     * 删除所有redis中的值
+     */
+    public void clearAll${entityName}() {
+        @SuppressWarnings("unchecked")
+        List<String> listKey = (List<String>)smembers(SET_${entityNameUpperCase}_KEY) ;
+        listKey.add(SET_${entityNameUpperCase}_KEY) ;
+        if(listKey.size() > 0){
+            delete(listKey) ;
+        }
+    }
+
 }
