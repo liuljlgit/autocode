@@ -36,6 +36,7 @@ public class GenXml {
             replaceMap.put("${setList}",createSetList(""));
             replaceMap.put("${batchSetList}",createSetList("obj."));
             replaceMap.put("${batchIdList}",createIdList("obj."));
+            replaceMap.put("${getIdMax}",GenCommon.getTableIdList().get(0));
 
             //创建文件
             GenCommon.createFile(false,GenProperties.xmlFileName,GenProperties.xmlPackageOutPath,GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));

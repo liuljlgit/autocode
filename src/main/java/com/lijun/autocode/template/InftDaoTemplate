@@ -57,4 +57,9 @@ public interface ${className} {
      * 动态sql
      */
      Map<String,String> execActiveSql(${entityName} ${entityObj});
+
+     /**
+      * 获取最大的ID
+      */
+     Long selectMax${entityName}Id();
 }

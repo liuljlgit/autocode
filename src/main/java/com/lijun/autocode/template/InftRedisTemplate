@@ -10,6 +10,16 @@ ${importList}
 public interface I${entityName}Redis {
 
     /**
+     * 得到id
+     */
+    Long get${entityName}Id();
+
+    /**
+     * 初始化id
+     */
+    void initMax${entityName}Id();
+
+    /**
      * 得到redis的key值
      */
     String get${entityName}Key(${paramIds});

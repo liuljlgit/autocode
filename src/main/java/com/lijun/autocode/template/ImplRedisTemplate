@@ -4,6 +4,8 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import javax.annotation.PostConstruct;
+import org.springframework.data.redis.core.RedisCallback;
 ${importList}
 
 /**
@@ -15,8 +17,51 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     private static final Logger logger = LoggerFactory.getLogger(${entityName}RedisImpl.class);
 
+    @Autowired
+    private I${entityName}Dao ${entityObj}Dao;
+
     public final static String PRE_KEY = ${entityName}.class.getSimpleName();
-    private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY) ;
+    private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
+    private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
+    private final static Long START_${entityNameUpperCase}ID = 1000000L;
+
+    /**
+     * 获取${entityName}的ID
+     * @return
+     */
+    @Override
+    public Long get${entityName}Id(){
+        return redisTemplate.execute((RedisCallback<Long>) connection->{
+            if ( !connection.exists(SEQ_${entityNameUpperCase}_KEY.getBytes())){
+                Long id = ${entityObj}Dao.selectMax${entityName}Id();
+                id = ( null == id || id == 0) ?  START_${entityNameUpperCase}ID +  Long.valueOf("1") : ++ id;
+                if ( connection.setNX(SEQ_${entityNameUpperCase}_KEY.getBytes(), String.valueOf(id).getBytes())){
+                    return  id;
+                }
+            }
+            return connection.incr(redisTemplate.getStringSerializer().serialize(SEQ_${entityNameUpperCase}_KEY));
+        });
+    }
+
+    /**
+     * 在Spring容器初始化的时候，初始化该实体ID的最大值。
+     * @return
+     */
+    @PostConstruct
+    @Override
+    public void initMax${entityName}Id(){
+        redisTemplate.execute((RedisCallback<Long>) connection->{
+            Long id = 0L;
+            if ( !connection.exists(SEQ_${entityNameUpperCase}_KEY.getBytes())){
+                id = ${entityObj}Dao.selectMax${entityName}Id();
+                if ( null == id || id == 0){
+                    id = START_${entityNameUpperCase}ID;
+                }
+                connection.setNX(SEQ_${entityNameUpperCase}_KEY.getBytes(), String.valueOf(id).getBytes());
+            }
+            return id;
+        });
+    }
 
     /**
      * 得到redis的key值
