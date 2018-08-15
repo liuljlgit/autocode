@@ -57,11 +57,11 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(connectionFactory);
         //使用Pojo进行序列化操作,或者使用FastJsonRedisSerializer也行
-        PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
+        //PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer()) ;
-        template.setValueSerializer(pojoSerializable);
-        template.setHashValueSerializer(pojoSerializable);
+       // template.setValueSerializer(pojoSerializable);
+        //template.setHashValueSerializer(pojoSerializable);
         template.setEnableTransactionSupport(false);
         template.afterPropertiesSet();
         return template;
@@ -80,8 +80,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer()) ;
-        template.setValueSerializer(pojoSerializable);
-        template.setHashValueSerializer(pojoSerializable);
+       // template.setValueSerializer(pojoSerializable);
+       // template.setHashValueSerializer(pojoSerializable);
         template.setEnableTransactionSupport(true);
         template.afterPropertiesSet();
         return template;

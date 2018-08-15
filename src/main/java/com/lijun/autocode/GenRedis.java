@@ -25,6 +25,7 @@ public class GenRedis {
             implImportList.add(GenProperties.inftRedisFullPath+";");
             implImportList.add(GenProperties.BaseRedisPath+".BaseRedis;");
             implImportList.add(GenProperties.inftDaoFullPath+";");
+            implImportList.add(GenProperties.autocodePath+".util.CommonUtil;");
             inftImportList.add(GenProperties.entityFullPath+";");
 
             //Redis接口内容替换

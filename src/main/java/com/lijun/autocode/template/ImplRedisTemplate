@@ -101,9 +101,11 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * 存储对象列表
      * @return String
      */
-    public String set${entityName}List2Redis(${entityName} ${entityObj}, long expire){
-        String primaryKey = JSON.toJSONString(${entityObj});
-        return primaryKey ;
+    public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},false);
+        byte[] bytes = CommonUtil.transObj2ByteArray(${entityObj}List);
+        hset(QUERY_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
+        return rsKey ;
     }
 
     /**
@@ -112,8 +114,9 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
-        String primaryKey = JSON.toJSONString(${entityObj});
-        return null;
+        String rsKey = CommonUtil.createRedisKey(${entityObj},false);
+        ArrayList<${entityName}> ${entityObj}List = (ArrayList<${entityName}>) hget(QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        return ${entityObj}List;
     }
 
     /**
@@ -126,6 +129,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         if(listKey.size() > 0){
             delete(listKey) ;
         }
+        delete(QUERY_${entityNameUpperCase}_KEY,true);
     }
 
 }
