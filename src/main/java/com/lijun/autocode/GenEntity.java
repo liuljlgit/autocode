@@ -35,7 +35,7 @@ public class GenEntity {
                     entityColumList.append(createField(tableColumComment,"transient "+entityType,"End",entityPropName));
                 }else if(entityType.equals("String")){
                     entityColumList.append(createField(tableColumComment,"transient Boolean","Equal = Boolean.FALSE",entityPropName));
-                }else if(entityType.equals("Integer") || entityType.equals("Long")){
+                }else if(entityType.equals("Integer") || entityType.equals("Long") || entityType.equals("Byte")){
                     entityColumList.append(createField(tableColumComment,"transient List<"+entityType+">","InList",entityPropName));
                     entityColumList.append(createField(tableColumComment,"transient List<"+entityType+">","NotInList",entityPropName));
                 }
@@ -48,7 +48,7 @@ public class GenEntity {
                     entityGetSetList.append(createGetSetFun(entityType,"End",entityPropName));
                 }else if(entityType.equals("String")){
                     entityGetSetList.append(createGetSetFun("Boolean","Equal",entityPropName));
-                }else if(entityType.equals("Integer") || entityType.equals("Long")){
+                }else if(entityType.equals("Integer") || entityType.equals("Long") || entityType.equals("Byte")){
                     entityGetSetList.append(createGetSetFun("List<"+entityType+">","InList",entityPropName));
                     entityGetSetList.append(createGetSetFun("List<"+entityType+">","NotInList",entityPropName));
                 }

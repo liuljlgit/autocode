@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
+import com.alibaba.fastjson.*;
 ${importList}
 
 /**
@@ -24,6 +25,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     public final static String PRE_KEY = ${entityName}.class.getSimpleName();
     private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
     private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
+    private final static String QUERY_${entityNameUpperCase}_KEY = "QUERY:".concat(PRE_KEY);
     private final static Long START_${entityNameUpperCase}ID = 1000000L;
 
     /**
@@ -93,6 +95,25 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         String primaryKey = get${entityName}Key(${Ids});
         ${entityName} ${entityObj} = get(primaryKey,${entityName}.class);
         return ${entityObj};
+    }
+
+    /**
+     * 存储对象列表
+     * @return String
+     */
+    public String set${entityName}List2Redis(${entityName} ${entityObj}, long expire){
+        String primaryKey = JSON.toJSONString(${entityObj});
+        return primaryKey ;
+    }
+
+    /**
+     * 获取对象列表
+     * @return List
+     */
+    @Override
+    public List<${entityName}> get${entityName}ByKey(${entityName} ${entityObj}){
+        String primaryKey = JSON.toJSONString(${entityObj});
+        return null;
     }
 
     /**
