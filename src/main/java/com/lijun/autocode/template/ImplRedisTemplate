@@ -111,7 +111,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return List
      */
     @Override
-    public List<${entityName}> get${entityName}ByKey(${entityName} ${entityObj}){
+    public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
         String primaryKey = JSON.toJSONString(${entityObj});
         return null;
     }

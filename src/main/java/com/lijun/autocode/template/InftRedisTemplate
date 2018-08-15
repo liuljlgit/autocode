@@ -44,7 +44,7 @@ public interface I${entityName}Redis {
     /**
      * 从缓存中得到查询列表
      */
-    List<${entityName}> get${entityName}ByKey(${entityName} ${entityObj});
+    List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj});
 
     /**
      * 删除所有redis中的值

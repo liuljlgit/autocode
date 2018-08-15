@@ -1,5 +1,6 @@
 package com.lijun.autocode.util;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -9,12 +10,8 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 公共工具类
@@ -57,69 +54,76 @@ public class CommonUtil {
     }
 
     /**
-     * 把对象转换成一个redis的key值
+     * 生成redis的key
+     * 根据不为空的属性和为Boolean类型值为true的属性构成
      * @param t
-     * @param bWithSupperFields
      * @param <T>
      * @return
      */
-    public static <T> String getAttrVal4ForRedisKey(T t, boolean bWithSupperFields) {
-        StringBuffer sb = new StringBuffer();
-        Field[] thisClazzFields = null;
-        Field[] finalFields = new Field[0];
-        Class thisClazz = t.getClass();
-
-        Integer orinLength;
-        while(thisClazz != null) {
-            thisClazzFields = thisClazz.getDeclaredFields();
-            if (!Objects.isNull(thisClazzFields)) {
-                orinLength = finalFields.length;
-                finalFields = (Field[]) Arrays.copyOf(finalFields, finalFields.length + thisClazzFields.length);
-                System.arraycopy(thisClazzFields, 0, finalFields, orinLength, thisClazzFields.length);
-            }
-
-            if (bWithSupperFields) {
-                thisClazz = thisClazz.getSuperclass();
-            } else {
-                thisClazz = null;
-            }
-        }
-
-        orinLength = null;
-
-        try {
-            for(int i = 0; i < finalFields.length; ++i) {
-                Field field = finalFields[i];
-                String fieldName = field.getName();
-                if (!"page".equals(fieldName)) {
-                    Object val = null;
-                    StringBuffer fieldGet = new StringBuffer("get");
-                    fieldGet.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
-
-                    try {
-                        Method getMethod = t.getClass().getMethod(fieldGet.toString());
-                        val = getMethod.invoke(t);
-                    } catch (NoSuchMethodException var12) {
-                        field.setAccessible(true);
-                        val = field.get(t);
-                    } catch (InvocationTargetException var13) {
-                        var13.printStackTrace();
-                    }
-
-                    if (val != null) {
-                        sb.append(field.getName()).append(val);
-                    }
+    public static <T> String createRedisKey(T t,boolean isEncrypt){
+        List<Field> allField = getAllField(t.getClass(), null);
+        List<Field> filterField = allField.stream().filter((Field e) -> {
+            try {
+                e.setAccessible(true);
+                Object obj = e.get(t);
+                if (Objects.isNull(obj)) {
+                    return false;
                 }
+                if (obj instanceof Boolean && obj == Boolean.FALSE) {
+                    return false;
+                }
+                if(e.getName().startsWith("PROP_")){
+                    return false;
+                }
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
             }
-        } catch (IllegalArgumentException var14) {
-            logger.error(var14.getMessage());
-        } catch (IllegalAccessException var15) {
-            logger.error(var15.getMessage());
+            return true;
+        }).collect(Collectors.toList());
+        List<String> list = new ArrayList<>();
+        for(Field f : filterField){
+            try {
+                f.setAccessible(true);
+                Object obj = f.get(t);
+                if(obj instanceof Collection){
+                    Object collect = ((Collection) obj).stream().sorted().collect(Collectors.toList());
+                    String name = f.getName();
+                    String str = name+":"+JSON.toJSONString(collect);
+                    list.add(str);
+                    continue;
+                }
+                String name = f.getName();
+                String str = name+":"+JSON.toJSONString(obj);
+                list.add(str);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
+        if(isEncrypt){
+            return SecureUtil.md5X16Str(String.join("_",list),"utf-8");
+        }else{
+            return String.join("_",list);
+        }
+    }
 
-        String val = SecureUtil.md5X16Str(sb.toString(), "utf-8");
-        sb = (new StringBuffer(t.getClass().getSimpleName())).append(":total:").append(val);
-        return sb.toString();
+    /**
+     * 把对象转换成一个redis的key值
+     * @param clazz
+     * @param fields
+     * @return
+     */
+    public static List<Field> getAllField(Class clazz, List<Field> fields) {
+        if (fields == null) {
+            fields = new ArrayList<>();
+        }
+        Field[] allFields = clazz.getDeclaredFields();
+        for (Field field : allFields) {
+            fields.add(field);
+        }
+        if (clazz.getSuperclass() != null && !clazz.getSuperclass().equals(Object.class)) {
+            getAllField(clazz.getSuperclass(), fields);
+        }
+        return fields;
     }
 
     /**
