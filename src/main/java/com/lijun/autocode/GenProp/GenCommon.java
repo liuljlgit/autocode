@@ -162,6 +162,8 @@ public class GenCommon {
         replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
         replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
+        replaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
+        replaceMap.put("${implDaoName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implDaoFileName));
         return replaceMap;
     }
 

@@ -22,10 +22,8 @@ public class GenResp {
             importList.add(GenProperties.commonUtilPath);
             importList.add(GenProperties.entityPackageOutPath+"."+GenProperties.entityName+";");
             //resp模板内容替换
-            Map<String,String> respReplaceMap = new HashMap<>();
+            Map<String, String> respReplaceMap = GenCommon.createReplaceMap();
             respReplaceMap.put("${packageName}",GenProperties.respPackageOutPath);
-            respReplaceMap.put("${entityName}",GenProperties.entityName);
-            respReplaceMap.put("${entityObj}",GenProperties.objName);
             respReplaceMap.put("${returnProp}",createReturnProp());
             //导入列表请在最后设置
             respReplaceMap.put("${importList}", GenCommon.changeImportSetToString(importList));

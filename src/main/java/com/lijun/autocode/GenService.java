@@ -28,27 +28,15 @@ public class GenService {
             inftImportList.add(GenProperties.entityFullPath+";");
 
             //接口Dao替换内容
-            Map<String,String> inftReplaceMap = new HashMap<>();
+            Map<String, String> inftReplaceMap = GenCommon.createReplaceMap();
             inftReplaceMap.put("${packageName}",GenProperties.servicePackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.inftServiceFileName));
-            inftReplaceMap.put("${className}",GenProperties.inftServiceFileName);
-            inftReplaceMap.put("${entityName}",GenProperties.entityName);
-            inftReplaceMap.put("${entityObj}",GenProperties.objName);
             inftReplaceMap.put("${loadByKeyParams1}",createIdList(1));
             //导入列表请在最后设置
             inftReplaceMap.put("${importList}",GenCommon.changeImportSetToString(inftImportList));
 
             //实现Dao替换内容
-            Map<String,String> implReplaceMap = new HashMap<>();
+            Map<String, String> implReplaceMap = GenCommon.createReplaceMap();
             implReplaceMap.put("${packageName}",GenProperties.servicePackageOutPath.concat(".impl"));
-            implReplaceMap.put("${classNote}",GenCommon.createFileNote(GenProperties.implServiceFileName));
-            implReplaceMap.put("${className}",GenProperties.implServiceFileName);
-            implReplaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
-            implReplaceMap.put("${serviceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
-            implReplaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
-            implReplaceMap.put("${implDaoName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implDaoFileName));
-            implReplaceMap.put("${entityName}",GenProperties.entityName);
-            implReplaceMap.put("${entityObj}",GenProperties.objName);
             implReplaceMap.put("${loadByKeyParams1}",createIdList(1));
             implReplaceMap.put("${loadByKeyParams2}",createIdList(2));
             implReplaceMap.put("${KeyNotNull}",createIdList(3));

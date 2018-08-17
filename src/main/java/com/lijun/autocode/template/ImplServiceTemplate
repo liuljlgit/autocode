@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 ${importList}
 
-${classNote}
-@Service("${serviceName}")
-public class ${className} implements ${inftServiceName}{
+/**
+ * I${entityName}Service service接口类
+ * @author lijun
+ */
+@Service("${implServiceName}")
+public class ${entityName}Service implements ${inftServiceName}{
 
     @Autowired
     private ${inftDaoName} ${implDaoName};

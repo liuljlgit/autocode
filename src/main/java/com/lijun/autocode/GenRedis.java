@@ -29,19 +29,15 @@ public class GenRedis {
             inftImportList.add(GenProperties.entityFullPath+";");
 
             //Redis接口内容替换
-            Map<String,String> inftReplaceMap = new HashMap<>();
+            Map<String,String> inftReplaceMap = GenCommon.createReplaceMap();
             inftReplaceMap.put("${packageName}",GenProperties.redisPackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${entityName}",GenProperties.entityName);
-            inftReplaceMap.put("${entityObj}",GenProperties.objName);
             inftReplaceMap.put("${paramIds}",createParamIds());
             //导入列表请在最后设置
             inftReplaceMap.put("${importList}",GenCommon.changeImportSetToString(inftImportList));
 
             //Redis实现类内容替换
-            Map<String,String> implReplaceMap = new HashMap<>();
+            Map<String,String> implReplaceMap = GenCommon.createReplaceMap();
             implReplaceMap.put("${packageName}",GenProperties.redisPackageOutPath.concat(".impl"));
-            implReplaceMap.put("${entityName}",GenProperties.entityName);
-            implReplaceMap.put("${entityObj}",GenProperties.objName);
             implReplaceMap.put("${entityNameUpperCase}",GenProperties.objName.toUpperCase());
             implReplaceMap.put("${paramIds}",createParamIds());
             implReplaceMap.put("${concatIds}",createConcatIds());

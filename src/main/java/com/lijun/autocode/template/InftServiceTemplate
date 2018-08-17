@@ -3,8 +3,11 @@ package ${packageName};
 import java.util.*;
 ${importList}
 
-${classNote}
-public interface ${className} {
+/**
+ * I${entityName}Service service接口类
+ * @author lijun
+ */
+public interface I${entityName}Service {
 
     /**
      * 根据主键获取对象
