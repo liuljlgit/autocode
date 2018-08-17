@@ -2,16 +2,20 @@ package ${packageName};
 
 import java.util.*;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 ${importList}
 
-${classNote}
+/**
+  * 接口类 I${entityName}Dao
+  * @author lijun
+  */
 @Repository
-public interface ${className} {
+public interface I${entityName}Dao {
 
     /**
      * 根据主键获取对象
      */
-    ${entityName} load${entityName}ByKey(${loadByKeyParams1});
+    ${entityName} load${entityName}ByKey(${@paramIds});
 
     /**
      * 插入对象
@@ -36,7 +40,7 @@ public interface ${className} {
     /**
      * 根据key删除对象
      */
-    Integer delete${entityName}ByKey(${loadByKeyParams1});
+    Integer delete${entityName}ByKey(${@paramIds});
 
     /**
      * 批量删除对象

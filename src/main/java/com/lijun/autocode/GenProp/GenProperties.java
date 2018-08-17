@@ -14,7 +14,7 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static final String URL = "jdbc:mysql://192.168.1.134:3306/test";
+    public static final String URL = "jdbc:mysql://localhost:3306/yjhd";
     public static final String NAME = "root";
     public static final String PASS = "root";
     public static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -22,7 +22,7 @@ public class GenProperties {
     /**
      * 表名，使用逗号分隔
      */
-    public static String tablenames = "daily_amount";
+    public static String tablenames = "sys_office";
 
     /**
      * 作者名称

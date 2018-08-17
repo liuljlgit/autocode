@@ -19,16 +19,11 @@ public class GenDao {
         try{
             //导入列表
             Set<String> inftImportList = new HashSet<>();
-            inftImportList.add("org.springframework.stereotype.Repository;");
             inftImportList.add(GenProperties.entityFullPath+";");
             //接口Dao替换内容
-            Map<String,String> inftReplaceMap = new HashMap<>();
+            Map<String, String> inftReplaceMap = GenCommon.createReplaceMap();
             inftReplaceMap.put("${packageName}",GenProperties.daoPackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.inftDaoFileName));
-            inftReplaceMap.put("${className}",GenProperties.inftDaoFileName);
-            inftReplaceMap.put("${entityName}",GenProperties.entityName);
-            inftReplaceMap.put("${entityObj}",GenProperties.objName);
-            inftReplaceMap.put("${loadByKeyParams1}",createIdList());
+            inftReplaceMap.put("${@paramIds}",createIdList());
             //导入列表请在最后设置
             inftReplaceMap.put("${importList}",GenCommon.changeImportSetToString(inftImportList));
             //创建接口文件

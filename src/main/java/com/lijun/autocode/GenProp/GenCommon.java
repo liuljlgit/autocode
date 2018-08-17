@@ -1,5 +1,7 @@
 package com.lijun.autocode.GenProp;
 
+import com.lijun.autocode.util.HumpUtils;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -148,6 +150,19 @@ public class GenCommon {
             entityFullTypeString.append("import ").append(nt).append("\n");
         }
         return entityFullTypeString.toString();
+    }
+
+    /**
+     * 替换公共的内容
+     * @return
+     */
+    public static Map<String,String> createReplaceMap(){
+        Map<String,String> replaceMap = new HashMap<>();
+        replaceMap.put("${entityName}",GenProperties.entityName);
+        replaceMap.put("${entityObj}",GenProperties.objName);
+        replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
+        replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
+        return replaceMap;
     }
 
     /**

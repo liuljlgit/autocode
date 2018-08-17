@@ -25,14 +25,8 @@ public class GenCtrl {
         importList.add(GenProperties.respPackageOutPath+"."+GenProperties.entityName+"Resp;");
 
         //接口Dao替换内容
-        Map<String,String> replaceMap = new HashMap<>();
+        Map<String, String> replaceMap = GenCommon.createReplaceMap();
         replaceMap.put("${packageName}",GenProperties.controllerPackageOutPath);
-        replaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.ctrlName));
-        replaceMap.put("${className}",GenProperties.ctrlName);
-        replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
-        replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
-        replaceMap.put("${entityName}",GenProperties.entityName);
-        replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${urlIdList}",String.join("/",createIdUrlList()));
         replaceMap.put("${PathVariableIdList}",String.join(",",createPathVarList()));
         replaceMap.put("${IdNotNull}",String.join(" || ",createIdNotNull()));

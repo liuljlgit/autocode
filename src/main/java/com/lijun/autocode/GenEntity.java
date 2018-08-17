@@ -66,10 +66,8 @@ public class GenEntity {
 
 
             //模板文件内容替换
-            Map<String,String> replaceMap = new HashMap<>();
+            Map<String, String> replaceMap = GenCommon.createReplaceMap();
             replaceMap.put("${packageName}",GenProperties.entityPackageOutPath);
-            replaceMap.put("${className}",GenProperties.entityName);
-            replaceMap.put("${classNote}", GenCommon.createFileNote(GenProperties.entityName));
             replaceMap.put("${importList}",GenCommon.changeImportSetToString(entityFullTypeSet));
             replaceMap.put("${entityColumList}",entityColumList.toString());
             replaceMap.put("${entityGetSetList}",entityGetSetList.toString());

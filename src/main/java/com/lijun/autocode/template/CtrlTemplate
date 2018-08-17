@@ -6,9 +6,12 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.*;
 ${importList}
 
-${classNote}
+/**
+ * ${entityName}Ctrl 控制层方法
+ * @author lijun
+ */
 @RestController
-public class ${className} {
+public class ${entityName}Ctrl {
 
     @Autowired
     private ${inftServiceName} ${implServiceName};
