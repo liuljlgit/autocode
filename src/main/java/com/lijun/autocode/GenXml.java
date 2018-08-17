@@ -21,14 +21,11 @@ public class GenXml {
     public GenXml(){
         try{
             //替换内容
-            Map<String,String> replaceMap = new HashMap<>();
+            Map<String,String> replaceMap = GenCommon.createReplaceMap();
             replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
             replaceMap.put("${entityFileFullPath}",GenProperties.entityFullPath);
             replaceMap.put("${resultMapResultList}",createResultList());
             replaceMap.put("${whereSqlList}",createWhereSqlList());
-            replaceMap.put("${tablenames}",GenProperties.tablename);
-            replaceMap.put("${entityName}",GenProperties.entityName);
-            replaceMap.put("${entityObj}",GenProperties.objName);
             replaceMap.put("${idList}",createIdList(""));
             replaceMap.put("${tableColumList}",createTableColumList((byte)1));
             replaceMap.put("${entityPropList}",createTableColumList((byte)2));
