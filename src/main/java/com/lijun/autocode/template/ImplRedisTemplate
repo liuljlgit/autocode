@@ -71,8 +71,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      * @throws Exception
      */
-    public String get${entityName}Key(${paramIds}){
-        return PRE_KEY.concat(":")${concatIds};
+    public String get${entityName}Key(final ${entityIdType} ${entityId}){
+        return PRE_KEY.concat(":").concat(String.valueOf(${entityId}));
     }
 
     /**
@@ -81,7 +81,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * 2.把key存储到一个set中,方便删除操作
      */
     public String set${entityName}2Redis(${entityName} ${entityObj}, long expire){
-        String primaryKey = get${entityName}Key(${objGetIds});
+        String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
         sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
         set(primaryKey, ${entityObj}, expire);
         return primaryKey ;
@@ -91,8 +91,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * 从缓存中得到值
      */
     @Override
-    public ${entityName} get${entityName}ByKey(${paramIds}){
-        String primaryKey = get${entityName}Key(${Ids});
+    public ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId}){
+        String primaryKey = get${entityName}Key(${entityId});
         ${entityName} ${entityObj} = get(primaryKey,${entityName}.class);
         return ${entityObj};
     }

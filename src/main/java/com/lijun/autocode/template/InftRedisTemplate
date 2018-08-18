@@ -22,7 +22,7 @@ public interface I${entityName}Redis {
     /**
      * 得到redis的key值
      */
-    String get${entityName}Key(${paramIds});
+    String get${entityName}Key(final ${entityIdType} ${entityId});
 
     /**
      * 把值存储到redis中
@@ -34,7 +34,7 @@ public interface I${entityName}Redis {
     /**
      * 从缓存中得到值
      */
-    ${entityName} get${entityName}ByKey(${paramIds});
+    ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId});
 
     /**
      * 存储查询列表到缓存中

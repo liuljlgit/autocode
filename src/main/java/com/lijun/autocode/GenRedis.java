@@ -31,19 +31,12 @@ public class GenRedis {
             //Redis接口内容替换
             Map<String,String> inftReplaceMap = GenCommon.createReplaceMap();
             inftReplaceMap.put("${packageName}",GenProperties.redisPackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${paramIds}",createParamIds());
-            //导入列表请在最后设置
             inftReplaceMap.put("${importList}",GenCommon.changeImportSetToString(inftImportList));
 
             //Redis实现类内容替换
             Map<String,String> implReplaceMap = GenCommon.createReplaceMap();
             implReplaceMap.put("${packageName}",GenProperties.redisPackageOutPath.concat(".impl"));
             implReplaceMap.put("${entityNameUpperCase}",GenProperties.objName.toUpperCase());
-            implReplaceMap.put("${paramIds}",createParamIds());
-            implReplaceMap.put("${concatIds}",createConcatIds());
-            implReplaceMap.put("${objGetIds}",createObjGetIds());
-            implReplaceMap.put("${Ids}",String.join(",",GenCommon.getEntityIdList()));
-            //导入列表请在最后设置
             implReplaceMap.put("${importList}",GenCommon.changeImportSetToString(implImportList));
 
 
@@ -54,29 +47,6 @@ public class GenRedis {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    private String createParamIds() {
-        //colName,colType
-        Map<String, String> entityIdMap = GenCommon.getEntityIdMap();
-        List<String> idList = new ArrayList<>();
-        for(Map.Entry<String, String> data : entityIdMap.entrySet()){
-            String colName = data.getKey();
-            String colType = data.getValue();
-            String str = "final "+colType+" "+colName;
-            idList.add(str);
-        }
-        return String.join(",",idList);
-    }
-
-    private String createConcatIds() {
-        List<String> collect = GenCommon.getEntityIdList().stream().map(e -> ".concat(String.valueOf(" + e + "))").collect(Collectors.toList());
-        return String.join("",collect);
-    }
-
-    private String createObjGetIds() {
-        List<String> collect = GenCommon.getEntityIdList().stream().map(e -> GenProperties.objName+".get"+HumpUtils.toUpperCaseFirstOne(e)+"()").collect(Collectors.toList());
-        return String.join(",",collect);
     }
 
 }
