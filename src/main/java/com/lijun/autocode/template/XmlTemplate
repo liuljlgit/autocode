@@ -87,7 +87,7 @@ ${whereSqlList}
     <delete id="delete${entityName}List">
         delete from ${tablename}
         <where>
-            <foreach collection="list" separator="or" item="obj" open="(" close=")">
+            <foreach collection="list" separator="or" item="obj">
                 ${tableId}=#{obj.${entityId}}
             </foreach>
         </where>
