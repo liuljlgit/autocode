@@ -15,7 +15,7 @@ public interface I${entityName}Dao {
     /**
      * 根据主键获取对象
      */
-    ${entityName} load${entityName}ByKey(${@paramIds});
+    ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
      * 插入对象
@@ -40,7 +40,7 @@ public interface I${entityName}Dao {
     /**
      * 根据key删除对象
      */
-    Integer delete${entityName}ByKey(${@paramIds});
+    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
      * 批量删除对象
