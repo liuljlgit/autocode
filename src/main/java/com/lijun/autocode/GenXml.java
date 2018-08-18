@@ -22,8 +22,6 @@ public class GenXml {
         try{
             //替换内容
             Map<String,String> replaceMap = GenCommon.createReplaceMap();
-            replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
-            replaceMap.put("${entityFileFullPath}",GenProperties.entityFullPath);
             replaceMap.put("${resultMapResultList}",createResultList());
             replaceMap.put("${whereSqlList}",createWhereSqlList());
             replaceMap.put("${tableColumList}",createTableColumList((byte)1));
