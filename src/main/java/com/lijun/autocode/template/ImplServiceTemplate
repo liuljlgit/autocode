@@ -28,7 +28,7 @@ public class ${entityName}Service implements ${inftServiceName}{
      */
     @Override
     public ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
-        if(${KeyNotNull}){
+        if(Objects.isNull(${entityId})){
             throw new Exception("请输入要获取的数据的ID");
         }
         return ${implDaoName}.load${entityName}ByKey(${entityId});
@@ -93,11 +93,11 @@ public class ${entityName}Service implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception {
+    public Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
             throw new Exception("请输入要删除的数据的ID");
         }
-        return ${implDaoName}.delete${entityName}ByKey(${loadByKeyParams2});
+        return ${implDaoName}.delete${entityName}ByKey(${entityId});
     }
 
     /**

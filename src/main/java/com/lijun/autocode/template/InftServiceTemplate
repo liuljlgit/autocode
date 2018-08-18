@@ -37,7 +37,7 @@ public interface I${entityName}Service {
     /**
      * 根据key删除对象
      */
-    Integer delete${entityName}ByKey(${loadByKeyParams1}) throws Exception;
+    Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 批量删除对象

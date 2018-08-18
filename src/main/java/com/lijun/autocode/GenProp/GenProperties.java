@@ -22,7 +22,7 @@ public class GenProperties {
     /**
      * 表名，使用逗号分隔
      */
-    public static String tablenames = "sys_office";
+    public static String tablenames = "sys_dict";
 
     /**
      * 作者名称
