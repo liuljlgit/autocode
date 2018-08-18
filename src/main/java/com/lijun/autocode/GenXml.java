@@ -26,13 +26,11 @@ public class GenXml {
             replaceMap.put("${entityFileFullPath}",GenProperties.entityFullPath);
             replaceMap.put("${resultMapResultList}",createResultList());
             replaceMap.put("${whereSqlList}",createWhereSqlList());
-            replaceMap.put("${idList}",createIdList(""));
             replaceMap.put("${tableColumList}",createTableColumList((byte)1));
             replaceMap.put("${entityPropList}",createTableColumList((byte)2));
             replaceMap.put("${batchEntityPropList}",createTableColumList((byte)3));
             replaceMap.put("${setList}",createSetList(""));
             replaceMap.put("${batchSetList}",createSetList("obj."));
-            replaceMap.put("${batchIdList}",createIdList("obj."));
 
             //创建文件
             GenCommon.createFile(false,GenProperties.xmlFileName,GenProperties.xmlPackageOutPath,GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));
@@ -130,25 +128,6 @@ public class GenXml {
             }else{
                 sb.append(str);
             }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 创建【AND id】列表
-     */
-    private String createIdList(String prefix){
-        StringBuffer sb = new StringBuffer();
-        Map<String, String> idMap = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).collect(Collectors.toMap(e -> e.getEntityPropName(), e -> e.getTableColumName()));
-        Map<String, String> typeMap = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).collect(Collectors.toMap(e -> e.getEntityPropName(), e -> e.getTableColumType()));
-        for(Map.Entry<String,String> data: idMap.entrySet()){
-            String jdbcType = typeMap.get(data.getKey()).toUpperCase();
-            if(jdbcType.equals("INT")){
-                jdbcType = "INTEGER";
-            }else if(jdbcType.equals("DATETIME")){
-                jdbcType = "DATE";
-            }
-            sb.append("AND "+data.getValue()+"=#{"+prefix+data.getKey()+",jdbcType="+jdbcType+"} ");
         }
         return sb.toString();
     }
