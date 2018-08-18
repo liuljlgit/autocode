@@ -94,7 +94,7 @@ public class ${entityName}Service implements ${inftServiceName}{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+        if(Objects.isNull(${entityId})){
             throw new Exception("请输入要删除的数据的ID");
         }
         return ${implDaoName}.delete${entityName}ByKey(${entityId});
