@@ -12,7 +12,7 @@ public interface I${entityName}Service {
     /**
      * 根据主键获取对象
      */
-    ${entityName} load${entityName}ByKey(${loadByKeyParams1}) throws Exception;
+    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 插入对象

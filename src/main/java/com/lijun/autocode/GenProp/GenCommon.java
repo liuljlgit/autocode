@@ -167,6 +167,7 @@ public class GenCommon {
         replaceMap.put("${tablename}",GenProperties.tablename);
         replaceMap.put("${tableId}",getTableId());
         replaceMap.put("${entityId}",getEntityId());
+        replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
         replaceMap.put("${entityIdType}",getEntityIdType());
         return replaceMap;
     }
@@ -185,6 +186,14 @@ public class GenCommon {
     public static String getEntityId(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
         return list.get(0);
+    }
+
+    /**
+     * 得到entityId,对应表中的id主键。首字母大写，方便得到get函数
+     */
+    public static String getEntityIdUpperFirst(){
+        List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
+        return HumpUtils.toUpperCaseFirstOne(list.get(0));
     }
 
     /**
