@@ -15,12 +15,12 @@ ${whereSqlList}
 
      <!--获取最大的主键-->
     <select id="selectMax${entityName}Id" resultType="java.lang.Long">
-        select IFNULL(max(${getIdMax}), 0) from `${tablenames}`
+        select IFNULL(max(${tableId}), 0) from `${tablename}`
     </select>
 
     <!--根据主键获取对象-->
     <select id="load${entityName}ByKey" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from ${tablenames}
+        select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             ${idList}
         </where>
@@ -28,13 +28,13 @@ ${whereSqlList}
 
     <!--插入对象-->
     <insert id="insert${entityName}">
-        insert into ${tablenames}(${tableColumList})
+        insert into ${tablename}(${tableColumList})
         values(${entityPropList})
     </insert>
 
     <!--批量插入对象-->
     <insert id="insert${entityName}List">
-        insert into ${tablenames}(${tableColumList})
+        insert into ${tablename}(${tableColumList})
         values
         <foreach collection="list" index="index" item="item" separator=",">
             (${batchEntityPropList})
@@ -43,7 +43,7 @@ ${whereSqlList}
 
     <!--更新对象-->
     <update id="update${entityName}">
-        update ${tablenames} ${setList}
+        update ${tablename} ${setList}
         <where>
             ${idList}
         </where>
@@ -52,7 +52,7 @@ ${whereSqlList}
     <!--批量更新对象-->
     <update id="update${entityName}List">
         <foreach collection="list" separator=";" item="obj">
-            update ${tablenames} ${batchSetList}
+            update ${tablename} ${batchSetList}
             <where>
                 ${batchIdList}
             </where>
@@ -61,7 +61,7 @@ ${whereSqlList}
 
     <!--查询总数-->
     <select id="get${entityName}Count" resultType="java.lang.Long">
-        select count(*) from ${tablenames}
+        select count(*) from ${tablename}
         <where>
             <include refid="where_sql" />
         </where>
@@ -69,7 +69,7 @@ ${whereSqlList}
 
     <!--查询和分页查询,区别在于page和pageSize是否为空-->
     <select id="get${entityName}List" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from ${tablenames}
+        select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             <include refid="where_sql" />
         </where>
@@ -77,7 +77,7 @@ ${whereSqlList}
 
     <!--根据主键删除对象-->
     <delete id="delete${entityName}ByKey">
-        delete from ${tablenames}
+        delete from ${tablename}
         <where>
             ${idList}
         </where>
@@ -85,7 +85,7 @@ ${whereSqlList}
 
     <!-- 批量删除对象 -->
     <delete id="delete${entityName}List">
-        delete from ${tablenames}
+        delete from ${tablename}
         <where>
             <foreach collection="list" separator="or" item="obj" open="(" close=")">
                 1=1 ${batchIdList}
@@ -104,7 +104,7 @@ ${whereSqlList}
                 *
             </otherwise>
         </choose>
-        from ${tablenames}
+        from ${tablename}
         <where>
             <include refid="where_sql" />
         </where>

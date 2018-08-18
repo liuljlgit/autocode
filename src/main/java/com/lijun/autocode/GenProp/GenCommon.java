@@ -164,29 +164,35 @@ public class GenCommon {
         replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
         replaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
         replaceMap.put("${implDaoName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implDaoFileName));
-        replaceMap.put("${tablenames}",GenProperties.tablename);
+        replaceMap.put("${tablename}",GenProperties.tablename);
+        replaceMap.put("${tableId}",getTableId());
+        replaceMap.put("${entityId}",getEntityId());
+        replaceMap.put("${entityIdType}",getEntityIdType());
         return replaceMap;
     }
 
     /**
-     * 得到id列表数据
+     * 得到id主键，注意id只能为单个，且都设置为LONG类型。如果多个字段唯一，请设置为唯一索引。
      */
-    public static List<String> getTableIdList(){
-        return GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e->e.getTableColumName()).collect(Collectors.toList());
+    public static String getTableId(){
+        List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getTableColumName()).collect(Collectors.toList());
+        return list.get(0);
     }
 
     /**
-     * 得到entity_id列表数据
+     * 得到entityId,对应表中的id主键
      */
-    public static List<String> getEntityIdList(){
-        return GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e->e.getEntityPropName()).collect(Collectors.toList());
+    public static String getEntityId(){
+        List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
+        return list.get(0);
     }
 
     /**
-     * 得到实体id列表和类型
+     * 得到主键的类型
      */
-    public static Map<String,String> getEntityIdMap(){
-        return GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).collect(Collectors.toMap(e->e.getEntityPropName(),e->e.getEntityType()));
+    public static String getEntityIdType(){
+        List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityType()).collect(Collectors.toList());
+        return list.get(0);
     }
 
     /**
@@ -206,7 +212,7 @@ public class GenCommon {
     /**
      * 得到实体名称类型列表
      */
-    public static Map<String,String> getEntityColNameAndTypeList(){
+    public static Map<String,String> getEntityColNameTypeList(){
         return GenProperties.tableColumInfoList.stream().collect(Collectors.toMap(e->e.getEntityPropName(),e->e.getEntityType()));
     }
 
