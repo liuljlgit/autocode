@@ -19,7 +19,6 @@ public class GenResp {
         try{
             //导入列表
             Set<String> importList = new HashSet<>();
-            importList.add(GenProperties.commonUtilPath);
             importList.add(GenProperties.entityPackageOutPath+"."+GenProperties.entityName+";");
             //resp模板内容替换
             Map<String, String> respReplaceMap = GenCommon.createReplaceMap();

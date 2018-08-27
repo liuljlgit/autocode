@@ -2,10 +2,10 @@ package com.gen.autocode;
 
 import com.gen.autocode.GenProp.GenCommon;
 import com.gen.autocode.GenProp.GenProperties;
-import com.gen.autocode.util.HumpUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 自动生成Redis
@@ -23,9 +23,7 @@ public class GenRedis {
             Set<String> implImportList = new HashSet<>();
             implImportList.add(GenProperties.entityFullPath+";");
             implImportList.add(GenProperties.inftRedisFullPath+";");
-            implImportList.add(GenProperties.BaseRedisPath+".BaseRedis;");
             implImportList.add(GenProperties.inftDaoFullPath+";");
-            implImportList.add(GenProperties.autocodePath+".util.CommonUtil;");
             inftImportList.add(GenProperties.entityFullPath+";");
 
             //Redis接口内容替换
