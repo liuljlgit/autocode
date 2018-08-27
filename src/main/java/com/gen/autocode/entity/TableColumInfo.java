@@ -1,4 +1,4 @@
-package com.lijun.autocode.entity;
+package com.gen.autocode.entity;
 
 /**
  * 数据库表的列相关信息

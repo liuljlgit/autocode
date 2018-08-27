@@ -1,4 +1,4 @@
-package com.lijun.autocode.util;
+package com.gen.autocode.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 
 /**
  * 加密工具类
- * @author lijun
+ * @author gen
  */
 public class SecureUtil {
     private static final Logger logger = LoggerFactory.getLogger(SecureUtil.class);

@@ -1,4 +1,4 @@
-package com.lijun.redis;
+package com.gen.redis;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -20,33 +20,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfig extends CachingConfigurerSupport {
-
-    /*@Bean
-    @ConditionalOnMissingBean(name = "redisTemplate")
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
-        //使用fastjson序列化
-        FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
-        // value值的序列化采用fastJsonRedisSerializer
-        template.setValueSerializer(fastJsonRedisSerializer);
-        template.setHashValueSerializer(fastJsonRedisSerializer);
-        // key的序列化采用StringRedisSerializer
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setHashKeySerializer(new StringRedisSerializer());
-
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }*/
-
-    /*@Bean
-    @ConditionalOnMissingBean(StringRedisTemplate.class)
-    public StringRedisTemplate stringRedisTemplate(
-            RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }*/
-
     /**
      * 不使用事务
      * @param connectionFactory
@@ -56,12 +29,8 @@ public class RedisConfig extends CachingConfigurerSupport {
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(connectionFactory);
-        //使用Pojo进行序列化操作,或者使用FastJsonRedisSerializer也行
-        //PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer()) ;
-       // template.setValueSerializer(pojoSerializable);
-        //template.setHashValueSerializer(pojoSerializable);
         template.setEnableTransactionSupport(false);
         template.afterPropertiesSet();
         return template;
@@ -80,8 +49,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         PojoSerializable pojoSerializable = new PojoSerializable(Object.class);
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer()) ;
-       // template.setValueSerializer(pojoSerializable);
-       // template.setHashValueSerializer(pojoSerializable);
         template.setEnableTransactionSupport(true);
         template.afterPropertiesSet();
         return template;

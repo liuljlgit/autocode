@@ -1,9 +1,9 @@
-package com.lijun.autocode;
+package com.gen.autocode;
 
-import com.lijun.autocode.GenProp.GenCommon;
-import com.lijun.autocode.GenProp.GenProperties;
-import com.lijun.autocode.entity.TableColumInfo;
-import com.lijun.autocode.util.HumpUtils;
+import com.gen.autocode.GenProp.GenCommon;
+import com.gen.autocode.GenProp.GenProperties;
+import com.gen.autocode.entity.TableColumInfo;
+import com.gen.autocode.util.HumpUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * 自动生成xml文件
- * @author lijun
+ * @author gen
  */
 public class GenXml {
     /**

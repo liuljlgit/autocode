@@ -1,13 +1,13 @@
-package com.lijun.autocode.GenProp;
+package com.gen.autocode.GenProp;
 
-import com.lijun.autocode.entity.TableColumInfo;
+import com.gen.autocode.entity.TableColumInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 自动生成工具的属性
- * @author lijun
+ * @author gen
  */
 public class GenProperties {
 
@@ -27,12 +27,12 @@ public class GenProperties {
     /**
      * 作者名称
      */
-    public static String authorName = "lijun";
+    public static String authorName = "gen";
 
     /**
      * entity路径配置
      */
-    public static String entityPackageOutPath = "com.lijun.test.entity";
+    public static String entityPackageOutPath = "com.gen.test.entity";
 
     /**
      * xml路径配置
@@ -42,47 +42,47 @@ public class GenProperties {
     /**
      * dao路径配置
      */
-    public static String daoPackageOutPath = "com.lijun.test.dao";
+    public static String daoPackageOutPath = "com.gen.test.dao";
 
     /**
      * service路径配置
      */
-    public static String servicePackageOutPath = "com.lijun.test.service";
+    public static String servicePackageOutPath = "com.gen.test.service";
 
     /**
      * redis路径配置
      */
-    public static String redisPackageOutPath = "com.lijun.test.cache";
+    public static String redisPackageOutPath = "com.gen.test.cache";
 
     /**
      * controller路径配置
      */
-    public static String controllerPackageOutPath = "com.lijun.test.controller";
+    public static String controllerPackageOutPath = "com.gen.test.controller";
 
     /**
      * resp对象路径配置
      */
-    public static String respPackageOutPath = "com.lijun.test.webentity";
+    public static String respPackageOutPath = "com.gen.test.webentity";
 
     /**
      * CommonUtil包路径
      */
-    public static String commonUtilPath = "com.lijun.autocode.util.CommonUtil;";
+    public static String commonUtilPath = "com.gen.autocode.util.CommonUtil;";
 
     /**
      * 所有模板文件路径
      */
-    public static String templateFilePath = "com.lijun.autocode.template";
+    public static String templateFilePath = "com.gen.autocode.template";
 
     /**
      * autocode路径
      */
-    public static String autocodePath = "com.lijun.autocode";
+    public static String autocodePath = "com.gen.autocode";
 
     /**
      * baseredis路径
      */
-    public static String BaseRedisPath = "com.lijun.redis";
+    public static String BaseRedisPath = "com.gen.redis";
 
 
     /**

@@ -1,9 +1,9 @@
-package com.lijun.autocode;
+package com.gen.autocode;
 
-import com.lijun.autocode.GenProp.GenCommon;
-import com.lijun.autocode.GenProp.GenProperties;
-import com.lijun.autocode.entity.TableColumInfo;
-import com.lijun.autocode.util.HumpUtils;
+import com.gen.autocode.GenProp.GenCommon;
+import com.gen.autocode.GenProp.GenProperties;
+import com.gen.autocode.entity.TableColumInfo;
+import com.gen.autocode.util.HumpUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * 自动生成工具的入口函数
- * @author lijun
+ * @author gen
  */
 public class GenMain {
 

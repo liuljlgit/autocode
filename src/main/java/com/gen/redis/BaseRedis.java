@@ -1,6 +1,6 @@
-package com.lijun.redis;
+package com.gen.redis;
 
-import com.lijun.autocode.util.CommonUtil;
+import com.gen.autocode.util.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

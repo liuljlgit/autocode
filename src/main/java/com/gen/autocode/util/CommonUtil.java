@@ -1,4 +1,4 @@
-package com.lijun.autocode.util;
+package com.gen.autocode.util;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * 公共工具类
- * @author lijun
+ * @author gen
  */
 public class CommonUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);

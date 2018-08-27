@@ -1,14 +1,14 @@
-package com.lijun.autocode;
+package com.gen.autocode;
 
-import com.lijun.autocode.GenProp.GenCommon;
-import com.lijun.autocode.GenProp.GenProperties;
+import com.gen.autocode.GenProp.GenCommon;
+import com.gen.autocode.GenProp.GenProperties;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * 自动生成dao
- * @author lijun
+ * @author gen
  */
 public class GenDao {
 

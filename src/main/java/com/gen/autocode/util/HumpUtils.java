@@ -1,8 +1,8 @@
-package com.lijun.autocode.util;
+package com.gen.autocode.util;
 
 /**
  * 把字符串转换成驼峰式命名法
- * @author lijun
+ * @author gen
  */
 public class HumpUtils {
     /**

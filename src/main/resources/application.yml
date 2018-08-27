@@ -26,7 +26,7 @@ spring:
 
 #mybatis配置
 mybatis:
-  type-aliases-package: com.lijun.**.entity
+  type-aliases-package: com.gen.**.entity
   mapper-locations: classpath:mybatis/test/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 

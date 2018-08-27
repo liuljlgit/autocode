@@ -1,6 +1,6 @@
-package com.lijun.redis;
+package com.gen.redis;
 
-import com.lijun.autocode.util.CommonUtil;
+import com.gen.autocode.util.CommonUtil;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 

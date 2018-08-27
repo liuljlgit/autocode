@@ -1,14 +1,14 @@
-package com.lijun.autocode;
+package com.gen.autocode;
 
-import com.lijun.autocode.GenProp.GenCommon;
-import com.lijun.autocode.GenProp.GenProperties;
-import com.lijun.autocode.entity.TableColumInfo;
+import com.gen.autocode.GenProp.GenCommon;
+import com.gen.autocode.GenProp.GenProperties;
+import com.gen.autocode.entity.TableColumInfo;
 
 import java.util.*;
 
 /**
  * 自动生成resp
- * @author lijun
+ * @author gen
  */
 public class GenResp {
 

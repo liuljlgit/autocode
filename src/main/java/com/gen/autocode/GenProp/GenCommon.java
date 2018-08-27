@@ -1,6 +1,6 @@
-package com.lijun.autocode.GenProp;
+package com.gen.autocode.GenProp;
 
-import com.lijun.autocode.util.HumpUtils;
+import com.gen.autocode.util.HumpUtils;
 
 import java.io.*;
 import java.util.*;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * 公共操作类
- * @author lijun
+ * @author gen
  */
 public class GenCommon {
 
