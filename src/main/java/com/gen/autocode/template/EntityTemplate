@@ -42,4 +42,8 @@ ${entityGetSetList}
 		}
 	}
 
+	/**
+     * 我们需要再增加一个EntityExample类，用来做复杂查询。需增加.begin() .and() .or() .end()等作为一个链式的查询生成动态的sql语句。解释begin等同于"(",end()等同于")"
+     */
+
 }
