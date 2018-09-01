@@ -63,4 +63,9 @@ public interface I${entityName}Service {
      * 保存记录
      */
      void save${entityName}(${entityName} ${entityObj}) throws Exception;
+
+     /**
+      * 保存记录列表
+      */
+     void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 }
