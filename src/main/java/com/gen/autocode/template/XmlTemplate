@@ -73,6 +73,12 @@ ${whereSqlList}
         <where>
             <include refid="where_sql" />
         </where>
+        <if test="usePage!=null and usePage" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderbyClause!=null and orderbyClause!=''">
+            order by ${orderbyClause}
+        </if>
     </select>
 
     <!--根据主键删除对象-->

@@ -1,6 +1,7 @@
 package ${packageName};
 
 import java.io.Serializable;
+import com.cloud.common.base.PageEntity;
 import java.util.*;
 ${importList}
 
@@ -8,7 +9,7 @@ ${importList}
  * ${entityName} 实体类
  * @author lijun
  */
-public class ${entityName} implements Serializable {
+public class ${entityName} extends PageEntity implements Serializable {
 ${entityColumList}
 
 ${entityColumPropName}

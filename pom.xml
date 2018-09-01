@@ -112,6 +112,13 @@
 			<artifactId>spring-boot-starter-redis</artifactId>
 			<version>${redis-spring-starter.version}</version>
 		</dependency>
+		
+		<!-- 增加frame-util -->
+		<dependency>
+			<groupId>com.cloud.common</groupId>
+			<artifactId>frame-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	
 	
 	</dependencies>
