@@ -104,7 +104,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return String
      */
     public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},false);
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
         byte[] bytes = CommonUtil.transObj2ByteArray(${entityObj}List);
         hset(QUERY_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
         return rsKey ;
@@ -116,7 +116,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},false);
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
         ArrayList<${entityName}> ${entityObj}List = (ArrayList<${entityName}>) hget(QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
         return ${entityObj}List;
     }
