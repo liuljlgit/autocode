@@ -5,7 +5,6 @@ import com.gen.autocode.GenProp.GenProperties;
 import com.gen.autocode.entity.TableColumInfo;
 import com.gen.autocode.util.HumpUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -97,24 +96,6 @@ public class GenXml {
                         "\t    </if>\n" +
                         "\t    <if test=\""+entityPropNameEnd+" != null\">\n" +
                         "\t       and #{"+entityPropNameEnd+",jdbcType="+jdbcType+"} &gt;= "+tableColumName+"\n" +
-                        "\t    </if>";
-            }else if(entityType.equals("Integer") || entityType.equals("Long") || entityType.equals("Byte")){
-                String entityPropNameInList = tableColumInfoList.get(i).getEntityPropName()+"InList";
-                String entityPropNameNotInList = tableColumInfoList.get(i).getEntityPropName()+"NotInList";
-                str =   "\t    <if test=\""+entityPropName+" != null\">\n" +
-                        "\t       and "+tableColumName+" = #{"+entityPropName+",jdbcType="+jdbcType+"}\n" +
-                        "\t    </if>\n";
-                str +=  "\t    <if test=\""+entityPropNameInList+" != null and "+entityPropNameInList+".size()>0\">\n" +
-                        "\t       and "+tableColumName+" in\n" +
-                        "\t         <foreach collection=\""+entityPropNameInList+"\" index=\"index\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n" +
-                        "\t              #{item}\n" +
-                        "\t         </foreach>\n" +
-                        "\t    </if>\n" +
-                        "\t    <if test=\""+entityPropNameNotInList+" != null and "+entityPropNameNotInList+".size()>0\">\n" +
-                        "\t       and "+tableColumName+" not in\n" +
-                        "\t         <foreach collection=\""+entityPropNameNotInList+"\" index=\"index\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n" +
-                        "\t             #{item}\n" +
-                        "\t         </foreach>\n" +
                         "\t    </if>";
             }else{
                 str =   "\t    <if test=\""+entityPropName+" != null\">\n" +

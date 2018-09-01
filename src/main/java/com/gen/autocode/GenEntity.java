@@ -5,7 +5,6 @@ import com.gen.autocode.GenProp.GenProperties;
 import com.gen.autocode.entity.TableColumInfo;
 import com.gen.autocode.util.HumpUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,12 +34,11 @@ public class GenEntity {
                     entityColumList.append(createField(tableColumComment,"transient "+entityType,"End",entityPropName));
                 }else if(entityType.equals("String")){
                     entityColumList.append(createField(tableColumComment,"transient Boolean","Equal = Boolean.FALSE",entityPropName));
-                }else if(entityType.equals("Integer") || entityType.equals("Long") || entityType.equals("Byte")){
-                    entityColumList.append(createField(tableColumComment,"transient List<"+entityType+">","InList",entityPropName));
-                    entityColumList.append(createField(tableColumComment,"transient List<"+entityType+">","NotInList",entityPropName));
                 }
                 //设置属性常量
                 entityColumPropList.append("\tpublic static final transient String PROP_"+tableColumName.toUpperCase()+" = \""+entityPropName+"\";\n");
+                //设置Table表字段常量
+                entityColumPropList.append("\tpublic static final transient String TABLE_"+tableColumName.toUpperCase()+" = \""+tableColumName+"\";\n");
                 //设置getter和setter函数
                 entityGetSetList.append(createGetSetFun(entityType,"",entityPropName));
                 if(entityType.equals("Date")){
@@ -48,9 +46,6 @@ public class GenEntity {
                     entityGetSetList.append(createGetSetFun(entityType,"End",entityPropName));
                 }else if(entityType.equals("String")){
                     entityGetSetList.append(createGetSetFun("Boolean","Equal",entityPropName));
-                }else if(entityType.equals("Integer") || entityType.equals("Long") || entityType.equals("Byte")){
-                    entityGetSetList.append(createGetSetFun("List<"+entityType+">","InList",entityPropName));
-                    entityGetSetList.append(createGetSetFun("List<"+entityType+">","NotInList",entityPropName));
                 }
             }
 
@@ -59,10 +54,14 @@ public class GenEntity {
             entityColumList.append(createField("having","transient String","","havingClause"));
             entityColumList.append(createField("select","transient String","","selectClause"));
             entityColumList.append(createField("order by","transient String","","orderbyClause"));
+            entityColumList.append(createField("and xxx in...列表","transient List<String>","","inSql"));
+            entityColumList.append(createField("and xxx not in 列表","transient List<String>","","notInSql"));
             entityGetSetList.append(createGetSetFun("String","","groupByClause"));
             entityGetSetList.append(createGetSetFun("String","","havingClause"));
             entityGetSetList.append(createGetSetFun("String","","selectClause"));
             entityGetSetList.append(createGetSetFun("String","","orderbyClause"));
+            entityGetSetList.append(createGetSetFun("List<String>","","inSql"));
+            entityGetSetList.append(createGetSetFun("List<String>","","notInSql"));
 
 
             //模板文件内容替换

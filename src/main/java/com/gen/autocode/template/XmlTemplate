@@ -6,6 +6,9 @@ ${resultMapResultList}
     </resultMap>
 
     <sql id="where_sql">
+        <if test="true">
+            and 1=1
+        </if>
 ${whereSqlList}
     </sql>
 

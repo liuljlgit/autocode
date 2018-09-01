@@ -2,6 +2,7 @@ package ${packageName};
 
 import java.io.Serializable;
 import com.cloud.common.base.PageEntity;
+import org.springframework.util.CollectionUtils;
 import java.util.*;
 ${importList}
 
@@ -14,5 +15,31 @@ ${entityColumList}
 
 ${entityColumPropName}
 ${entityGetSetList}
+
+	/**
+	 * 增加in或者not in Sql列表
+	 */
+	public void addInOrNotInSql(List<?> valueList,String tableField,String optType){
+		if(!CollectionUtils.isEmpty(valueList)){
+			List<String> list = new ArrayList<>();
+			int length = valueList.size();
+			for(int i=0;i<length;i++){
+				list.add(valueList.get(i).toString());
+			}
+			String valJoin = String.join(",", list);
+			String sql = "and "+tableField+" "+optType+" ("+valJoin+")";
+			if(optType.equals("in")){
+				if(CollectionUtils.isEmpty(inSql)){
+					inSql = new ArrayList<>();
+				}
+				inSql.add(sql);
+			}else{
+				if(CollectionUtils.isEmpty(notInSql)){
+					notInSql = new ArrayList<>();
+				}
+				notInSql.add(sql);
+			}
+		}
+	}
 
 }
