@@ -21,7 +21,7 @@ public class ${entityName}Ctrl {
    * @return
    * @throws Exception
    */
-   @GetMapping(value = "/${entityObj}/${entityId}")
+   @GetMapping(value = "/${entityObj}/{${entityId}}")
    public String get${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws Exception {
       if(Objects.isNull(${entityId})){
          throw new Exception("请输入要获取的数据的ID") ;
@@ -69,7 +69,7 @@ public class ${entityName}Ctrl {
     * @return
     * @throws Exception
     */
-    @DeleteMapping(value = "/${entityObj}/${entityId}")
+    @DeleteMapping(value = "/${entityObj}/{${entityId}}")
     public JSONObject delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new Exception("入参请求异常") ;
