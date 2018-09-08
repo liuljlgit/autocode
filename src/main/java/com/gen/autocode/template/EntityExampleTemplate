@@ -1,10 +1,7 @@
 package com.gen.test.entity;
 
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * DailyAmountExample
@@ -105,74 +102,19 @@ public class DailyAmountExample{
             criterion.setCondition(condition);
             criterion.setValue1(value1);
             criterion.setValue2(value2);
-            criterion.setValue2(value3);
+            criterion.setValue3(value3);
             criterion.setThirdValue(true);
         }
 
         //需进行以下操作判断：
         //IsNull、IsNotNull、EqualTo、NotEqualTo、GreaterThan、GreaterThanOrEqualTo、LessThan、LessThanOrEqualTo、Like、NotLike、In、NotIn、Between、NotBetween
-        public Criteria bdIdIsNull(String prefix) {
-            addCriterion(prefix+"bd_id is null");
-            return (Criteria) this;
-        }
-        public Criteria bdIdIsNotNull(String prefix) {
-            addCriterion(prefix+"bd_id is not null");
-            return (Criteria) this;
-        }
-        public Criteria bdIdEqualTo(String prefix,Long value) {
-            addCriterion(prefix+"bd_id =", value, "bdId");
-            return (Criteria) this;
-        }
-        public Criteria bdIdNotEqualTo(String prefix,Long value) {
-            addCriterion(prefix+"bd_id <>", value, "bdId");
-            return (Criteria) this;
-        }
-        public Criteria bdIdGreaterThan(String prefix,Long value) {
-            addCriterion(prefix+"bd_id >", value, "bdId");
-            return (Criteria) this;
-        }
-        public Criteria bdIdGreaterThanOrEqualTo(String prefix,Long value) {
-            addCriterion(prefix+"bd_id >=", value, "bdId");
-            return (Criteria) this;
-        }
-        public Criteria andBdIdLessThan(String prefix,Long value) {
-            addCriterion(prefix+"bd_id <", value, "bdId");
-            return (Criteria) this;
+        ${exampleSql}
+        public List<Criterion> getCriterions() {
+            return criterions;
         }
 
-        public Criteria andBdIdLessThanOrEqualTo(String prefix,Long value) {
-            addCriterion(prefix+"bd_id <=", value, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdLike(String prefix,String value) {
-            addCriterion(prefix+"bd_id like", value, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdNotLike(String prefix,String value) {
-            addCriterion(prefix+"bd_id not like", value, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdIn(String prefix,List<Long> values) {
-            addCriterion(prefix+"bd_id in", values, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdNotIn(String prefix,List<Long> values) {
-            addCriterion(prefix+"bd_id not in", values, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdBetween(String prefix,Long value1, Long value2) {
-            addCriterion(prefix+"bd_id between", value1, value2, "bdId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBdIdNotBetween(String prefix,Long value1, Long value2) {
-            addCriterion(prefix+"bd_id not between", value1, value2, "bdId");
-            return (Criteria) this;
+        public void setCriterions(List<Criterion> criterions) {
+            this.criterions = criterions;
         }
 
         public String getOptStr() {
@@ -181,14 +123,6 @@ public class DailyAmountExample{
 
         public void setOptStr(String optStr) {
             this.optStr = optStr;
-        }
-
-        public List<Criterion> getCriterions() {
-            return criterions;
-        }
-
-        public void setCriterions(List<Criterion> criterions) {
-            this.criterions = criterions;
         }
     }
 
