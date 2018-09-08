@@ -57,11 +57,6 @@ public interface I${entityName}Dao {
      */
     List<${entityName}> get${entityName}List(${entityName} ${entityObj});
 
-    /**
-     * 动态sql
-     */
-     Map<String,String> execActiveSql(${entityName} ${entityObj});
-
      /**
       * 获取最大的ID
       */

@@ -1,6 +1,7 @@
 package ${packageName};
 
 import java.io.Serializable;
+import com.cloud.common.base.IntervalEntity;
 import com.cloud.common.base.PageEntity;
 import org.springframework.util.CollectionUtils;
 import java.util.*;
@@ -16,31 +17,26 @@ ${entityColumList}
 ${entityColumPropName}
 ${entityGetSetList}
 
-	/**
-	 * 增加in或者not in Sql列表
-	 */
-	public void addInOrNotInSql(List<?> valueList,String tableField,String optType){
-		if(!CollectionUtils.isEmpty(valueList)){
-			List<String> list = new ArrayList<>();
-			int length = valueList.size();
-			for(int i=0;i<length;i++){
-				list.add(valueList.get(i).toString());
-			}
-			String valJoin = String.join(",", list);
-			String sql = "and "+tableField+" "+optType+" ("+valJoin+")";
-			if(optType.equals("in")){
-				if(CollectionUtils.isEmpty(inSql)){
-					inSql = new ArrayList<>();
-				}
-				inSql.add(sql);
-			}else{
-				if(CollectionUtils.isEmpty(notInSql)){
-					notInSql = new ArrayList<>();
-				}
-				notInSql.add(sql);
-			}
-		}
-	}
+    /* 增加in列表 */
+    public void addInSql(String name,Object list) {
+        if(CollectionUtils.isEmpty(inSql)){
+            inSql = new ArrayList<>();
+        }
+        IntervalEntity intervalEntity = new IntervalEntity();
+        intervalEntity.setName(name);
+        intervalEntity.setList(list);
+        inSql.add(intervalEntity);
+    }
+    /* 增加not in列表 */
+    public void addNotInSql(String name,Object list) {
+        if(CollectionUtils.isEmpty(notInSql)){
+            notInSql = new ArrayList<>();
+        }
+        IntervalEntity intervalEntity = new IntervalEntity();
+        intervalEntity.setList(list);
+        intervalEntity.setName(name);
+        notInSql.add(intervalEntity);
+    }
 
 	/**
      * 我们需要再增加一个EntityExample类，用来做复杂查询。需增加.begin() .and() .or() .end()等作为一个链式的查询生成动态的sql语句。解释begin等同于"(",end()等同于")"

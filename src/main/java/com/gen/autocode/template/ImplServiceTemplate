@@ -136,19 +136,6 @@ public class ${entityName}Service implements ${inftServiceName}{
     }
 
     /**
-     * 执行动态sql
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public Map<String,String> execActiveSql(${entityName} ${entityObj}) throws Exception {
-        if(Objects.isNull(${entityObj})){
-            throw new Exception("请求参数不能为空");
-        }
-        return ${implDaoName}.execActiveSql(${entityObj});
-    }
-
-    /**
      * 保存记录
      * @return
      * @throws Exception

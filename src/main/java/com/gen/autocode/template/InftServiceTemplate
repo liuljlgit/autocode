@@ -55,11 +55,6 @@ public interface I${entityName}Service {
     List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception;
 
     /**
-     * 动态sql
-     */
-     Map<String,String> execActiveSql(${entityName} ${entityObj}) throws Exception;
-
-    /**
      * 保存记录
      */
      void save${entityName}(${entityName} ${entityObj}) throws Exception;

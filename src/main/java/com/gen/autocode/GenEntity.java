@@ -49,19 +49,13 @@ public class GenEntity {
                 }
             }
 
-            //设置groupByClause、havingClause、selectClause、orderbyClause
-            entityColumList.append(createField("group by","transient String","","groupByClause"));
-            entityColumList.append(createField("having","transient String","","havingClause"));
-            entityColumList.append(createField("select","transient String","","selectClause"));
+            //设置order by && in && not in
             entityColumList.append(createField("order by","transient String","","orderbyClause"));
-            entityColumList.append(createField("and xxx in...列表","transient List<String>","","inSql"));
-            entityColumList.append(createField("and xxx not in 列表","transient List<String>","","notInSql"));
-            entityGetSetList.append(createGetSetFun("String","","groupByClause"));
-            entityGetSetList.append(createGetSetFun("String","","havingClause"));
-            entityGetSetList.append(createGetSetFun("String","","selectClause"));
+            entityColumList.append(createField("and xxx in...列表","transient List<IntervalEntity>","","inSql"));
+            entityColumList.append(createField("and xxx not in 列表","transient List<IntervalEntity>","","notInSql"));
             entityGetSetList.append(createGetSetFun("String","","orderbyClause"));
-            entityGetSetList.append(createGetSetFun("List<String>","","inSql"));
-            entityGetSetList.append(createGetSetFun("List<String>","","notInSql"));
+            entityGetSetList.append(createGetSetFun("List<IntervalEntity>","","inSql"));
+            entityGetSetList.append(createGetSetFun("List<IntervalEntity>","","notInSql"));
 
 
             //模板文件内容替换
