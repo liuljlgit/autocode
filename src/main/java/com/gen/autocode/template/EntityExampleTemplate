@@ -53,6 +53,21 @@ public class ${entityName}Example{
          */
         private String optStr;
 
+        /**
+         * field comment:用来临时存储字符串"or" 或者 "and"
+         */
+        private String orAndStr;
+
+        public Criteria or(){
+            setOrAndStr("or");
+            return (Criteria)this;
+        }
+
+        public Criteria and(){
+            setOrAndStr("and");
+            return (Criteria)this;
+        }
+
         public void addCriterion(String condition) {
             if (condition == null) {
                 throw new RuntimeException("Value for condition cannot be null");
@@ -116,6 +131,14 @@ public class ${entityName}Example{
 
         public void setOptStr(String optStr) {
             this.optStr = optStr;
+        }
+
+        public String getOrAndStr() {
+            return orAndStr;
+        }
+
+        public void setOrAndStr(String orAndStr) {
+            this.orAndStr = orAndStr;
         }
     }
 
