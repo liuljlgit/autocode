@@ -1,35 +1,27 @@
-package ${packageName};
+package com.gen.test.entity;
 
-import java.util.*;
-${importList}
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
-  * ${entityName}Example
-  * 注意:Criteria代表着一个大括号，里面有很多表达式
-  * Criterion代表着一个表达式
-  */
-public class ${entityName}Example{
+ * DailyAmountExample
+ * 注意:Criteria代表着一个大括号，里面有很多表达式
+ * Criterion代表着一个表达式
+ */
+public class DailyAmountExample{
 
     private String orderByClause;
     private int index;
     private int pageSize;
     private List<Criteria> criterias;
 
-    public Criteria createAndCriteria(){
+    public Criteria createCriteria(String prefix){
         Criteria criteria = new Criteria();
-        criteria.setOptStr("and");
-        return criteria;
-    }
-
-    public Criteria createOrCriteria(){
-        Criteria criteria = new Criteria();
-        criteria.setOptStr("or");
-        return criteria;
-    }
-
-    public Criteria createCriteria(){
-        Criteria criteria = new Criteria();
-        criteria.setOptStr("");
+        criteria.setOptStr(prefix);
+        addCriteria(criteria);
         return criteria;
     }
 
@@ -40,121 +32,211 @@ public class ${entityName}Example{
         criterias.add(criteria);
     }
 
-   /**
-    * Criteria类,每个Criteria有多个Criterion表达式
-    */
-   public static class Criteria {
 
-       /**
-        * field comment:一个Example有多个Criteria,
-        */
-       private List<Criterion> criterions;
+    /**
+     * Criteria类,每个Criteria有多个Criterion表达式
+     */
+    public static class Criteria {
 
-       /**
-        * field comment:类型,是and还是or 这个字段是为了两个表达式CriteriaA optStr CriteriaB 如果是最后一个Criteria,那么应该设置为""
-        */
-       private String optStr;
+        /**
+         * field comment:一个Example有多个Criteria,
+         */
+        private List<Criterion> criterions;
 
-       public Criterion createAndCriterion(){
-           Criterion criterion = new Criterion();
-           criterion.setOptStr("and");
-           return criterion;
-       }
+        /**
+         * field comment:类型,是and还是or 这个字段是为了两个表达式optStr CriteriaA optStr CriteriaB 如果是最前面一个Criteria,那么应该设置为""
+         */
+        private String optStr;
 
-       public Criterion createOrCriterion(){
-           Criterion criterion = new Criterion();
-           criterion.setOptStr("or");
-           return criterion;
-       }
+        public void addCriterion(String prefix,String condition) {
+            if (condition == null) {
+                throw new RuntimeException("Value for condition cannot be null");
+            }
+            if(CollectionUtils.isEmpty(criterions)){
+                criterions = new ArrayList<>();
+            }
+            Criterion criterion = new Criterion();
+            criterion.setCondition(condition);
+            criterion.setOptStr(prefix);
+            criterion.setNoValue(true);
+            criterions.add(criterion);
+        }
 
-       public Criterion createCriterion(){
-           Criterion criterion = new Criterion();
-           criterion.setOptStr("");
-           return criterion;
-       }
+        protected void addCriterion(String prefix,String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            if(CollectionUtils.isEmpty(criterions)){
+                criterions = new ArrayList<>();
+            }
+            Criterion criterion = new Criterion();
+            criterion.setCondition(condition);
+            criterion.setOptStr(prefix);
+            if(value instanceof Collection){
+                criterion.setList(value);
+                criterion.setListValue(true);
+            }else{
+                criterion.setValue1(value);
+                criterion.setOneValue(true);
+            }
+            criterions.add(criterion);
+        }
 
-       public void addCriterion(Criterion criterion){
-           if(CollectionUtils.isEmpty(criterions)){
-               criterions = new ArrayList<>();
-           }
-           criterions.add(criterion);
-       }
+        protected void addCriterion(String prefix,String condition, Object value1, Object value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            if(CollectionUtils.isEmpty(criterions)){
+                criterions = new ArrayList<>();
+            }
+            Criterion criterion = new Criterion();
+            criterion.setCondition(condition);
+            criterion.setOptStr(prefix);
+            criterion.setValue1(value1);
+            criterion.setValue2(value2);
+            criterion.setSecondValue(true);
+        }
 
-       public String getOptStr() {
-           return optStr;
-       }
+        protected void addCriterion(String prefix,String condition, Object value1, Object value2, Object value3, String property) {
+            if (value1 == null || value2 == null || value3 == null) {
+                throw new RuntimeException("funtion values for " + property + " cannot be null");
+            }
+            if(CollectionUtils.isEmpty(criterions)){
+                criterions = new ArrayList<>();
+            }
+            Criterion criterion = new Criterion();
+            criterion.setCondition(condition);
+            criterion.setOptStr(prefix);
+            criterion.setValue1(value1);
+            criterion.setValue2(value2);
+            criterion.setValue2(value3);
+            criterion.setThirdValue(true);
+        }
 
-       public void setOptStr(String optStr) {
-           this.optStr = optStr;
-       }
+        //需进行以下操作判断：
+        //IsNull、IsNotNull、EqualTo、NotEqualTo、GreaterThan、GreaterThanOrEqualTo、LessThan、LessThanOrEqualTo、Like、NotLike、In、NotIn、Between、NotBetween
 
-       public List<Criterion> getCriterions() {
-           return criterions;
-       }
+        public String getOptStr() {
+            return optStr;
+        }
 
-       public void setCriterions(List<Criterion> criterions) {
-           this.criterions = criterions;
-       }
-   }
+        public void setOptStr(String optStr) {
+            this.optStr = optStr;
+        }
 
-   /**
-    * 表达式类
-    */
-   public static class Criterion {
-       private Object oneValue;
-       private Object secondValue;
-       private Object thirdValue;
-       private Object listValue;
-       private String optStr;
-       private boolean isList;
+        public List<Criterion> getCriterions() {
+            return criterions;
+        }
 
-       public Object getOneValue() {
-           return oneValue;
-       }
+        public void setCriterions(List<Criterion> criterions) {
+            this.criterions = criterions;
+        }
+    }
 
-       public void setOneValue(Object oneValue) {
-           this.oneValue = oneValue;
-       }
+    /**
+     * 表达式类
+     */
+    public static class Criterion {
+        private String condition;
+        private Object value1;
+        private Object value2;
+        private Object value3;
+        private Object list;
+        private String optStr;
+        private boolean noValue;
+        private boolean oneValue;
+        private boolean secondValue;
+        private boolean thirdValue;
+        private boolean listValue;
 
-       public Object getSecondValue() {
-           return secondValue;
-       }
+        public String getCondition() {
+            return condition;
+        }
 
-       public void setSecondValue(Object secondValue) {
-           this.secondValue = secondValue;
-       }
+        public void setCondition(String condition) {
+            this.condition = condition;
+        }
 
-       public Object getThirdValue() {
-           return thirdValue;
-       }
+        public Object getValue1() {
+            return value1;
+        }
 
-       public void setThirdValue(Object thirdValue) {
-           this.thirdValue = thirdValue;
-       }
+        public void setValue1(Object value1) {
+            this.value1 = value1;
+        }
 
-       public Object getListValue() {
-           return listValue;
-       }
+        public Object getValue2() {
+            return value2;
+        }
 
-       public void setListValue(Object listValue) {
-           this.listValue = listValue;
-       }
+        public void setValue2(Object value2) {
+            this.value2 = value2;
+        }
 
-       public String getOptStr() {
-           return optStr;
-       }
+        public Object getValue3() {
+            return value3;
+        }
 
-       public void setOptStr(String optStr) {
-           this.optStr = optStr;
-       }
+        public void setValue3(Object value3) {
+            this.value3 = value3;
+        }
 
-       public boolean isList() {
-           return isList;
-       }
+        public Object getList() {
+            return list;
+        }
 
-       public void setList(boolean list) {
-           isList = list;
-       }
-   }
+        public void setList(Object list) {
+            this.list = list;
+        }
+
+        public String getOptStr() {
+            return optStr;
+        }
+
+        public void setOptStr(String optStr) {
+            this.optStr = optStr;
+        }
+
+        public boolean isNoValue() {
+            return noValue;
+        }
+
+        public void setNoValue(boolean noValue) {
+            this.noValue = noValue;
+        }
+
+        public boolean isOneValue() {
+            return oneValue;
+        }
+
+        public void setOneValue(boolean oneValue) {
+            this.oneValue = oneValue;
+        }
+
+        public boolean isSecondValue() {
+            return secondValue;
+        }
+
+        public void setSecondValue(boolean secondValue) {
+            this.secondValue = secondValue;
+        }
+
+        public boolean isThirdValue() {
+            return thirdValue;
+        }
+
+        public void setThirdValue(boolean thirdValue) {
+            this.thirdValue = thirdValue;
+        }
+
+        public boolean isListValue() {
+            return listValue;
+        }
+
+        public void setListValue(boolean listValue) {
+            this.listValue = listValue;
+        }
+    }
 
 }
+
