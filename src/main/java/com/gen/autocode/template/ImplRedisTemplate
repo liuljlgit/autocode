@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
-import com.alibaba.fastjson.*;
-import com.gen.redis.BaseRedis;
+import com.cloud.common.redis.BaseRedis;
 import com.cloud.common.utils.CommonUtil;
 ${importList}
 
