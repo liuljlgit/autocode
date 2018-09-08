@@ -3,6 +3,7 @@ package ${packageName};
 import java.io.Serializable;
 import com.cloud.common.base.IntervalEntity;
 import com.cloud.common.base.PageEntity;
+import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
 import java.util.*;
 ${importList}
@@ -24,7 +25,10 @@ ${entityGetSetList}
         }
         IntervalEntity intervalEntity = new IntervalEntity();
         intervalEntity.setName(name);
-        intervalEntity.setList(list);
+        /*此处进行排序,方便生成redisKey的值*/
+        List collect = (List)((List) list).stream().sorted().collect(Collectors.toList());
+        Collections.sort(collect);
+        intervalEntity.setList(collect);
         inSql.add(intervalEntity);
     }
     /* 增加not in列表 */
@@ -33,7 +37,10 @@ ${entityGetSetList}
             notInSql = new ArrayList<>();
         }
         IntervalEntity intervalEntity = new IntervalEntity();
-        intervalEntity.setList(list);
+        /*此处进行排序,方便生成redisKey的值*/
+        List collect = (List)((List) list).stream().sorted().collect(Collectors.toList());
+        Collections.sort(collect);
+        intervalEntity.setList(collect);
         intervalEntity.setName(name);
         notInSql.add(intervalEntity);
     }

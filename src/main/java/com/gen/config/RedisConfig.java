@@ -1,4 +1,4 @@
-package com.gen.redis;
+package com.gen.config;
 
 import com.cloud.common.redis.PojoSerializable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

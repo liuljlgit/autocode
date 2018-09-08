@@ -6,9 +6,6 @@ ${resultMapResultList}
     </resultMap>
 
     <sql id="where_sql">
-        <if test="true">
-            and 1=1
-        </if>
 ${whereSqlList}
         <if test="inSql != null and inSql.size()>0">
             <foreach collection="inSql" item="intervalEntity" separator=" ">
