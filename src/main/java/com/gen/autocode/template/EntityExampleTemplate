@@ -48,7 +48,7 @@ public class DailyAmountExample{
          */
         private String optStr;
 
-        public void addCriterion(String prefix,String condition) {
+        public void addCriterion(String condition) {
             if (condition == null) {
                 throw new RuntimeException("Value for condition cannot be null");
             }
@@ -57,12 +57,11 @@ public class DailyAmountExample{
             }
             Criterion criterion = new Criterion();
             criterion.setCondition(condition);
-            criterion.setOptStr(prefix);
             criterion.setNoValue(true);
             criterions.add(criterion);
         }
 
-        protected void addCriterion(String prefix,String condition, Object value, String property) {
+        protected void addCriterion(String condition, Object value, String property) {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
@@ -71,7 +70,6 @@ public class DailyAmountExample{
             }
             Criterion criterion = new Criterion();
             criterion.setCondition(condition);
-            criterion.setOptStr(prefix);
             if(value instanceof Collection){
                 criterion.setList(value);
                 criterion.setListValue(true);
@@ -82,7 +80,7 @@ public class DailyAmountExample{
             criterions.add(criterion);
         }
 
-        protected void addCriterion(String prefix,String condition, Object value1, Object value2, String property) {
+        protected void addCriterion(String condition, Object value1, Object value2, String property) {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
@@ -91,13 +89,12 @@ public class DailyAmountExample{
             }
             Criterion criterion = new Criterion();
             criterion.setCondition(condition);
-            criterion.setOptStr(prefix);
             criterion.setValue1(value1);
             criterion.setValue2(value2);
             criterion.setSecondValue(true);
         }
 
-        protected void addCriterion(String prefix,String condition, Object value1, Object value2, Object value3, String property) {
+        protected void addCriterion(String condition, Object value1, Object value2, Object value3, String property) {
             if (value1 == null || value2 == null || value3 == null) {
                 throw new RuntimeException("funtion values for " + property + " cannot be null");
             }
@@ -106,7 +103,6 @@ public class DailyAmountExample{
             }
             Criterion criterion = new Criterion();
             criterion.setCondition(condition);
-            criterion.setOptStr(prefix);
             criterion.setValue1(value1);
             criterion.setValue2(value2);
             criterion.setValue2(value3);
@@ -115,6 +111,69 @@ public class DailyAmountExample{
 
         //需进行以下操作判断：
         //IsNull、IsNotNull、EqualTo、NotEqualTo、GreaterThan、GreaterThanOrEqualTo、LessThan、LessThanOrEqualTo、Like、NotLike、In、NotIn、Between、NotBetween
+        public Criteria bdIdIsNull(String prefix) {
+            addCriterion(prefix+"bd_id is null");
+            return (Criteria) this;
+        }
+        public Criteria bdIdIsNotNull(String prefix) {
+            addCriterion(prefix+"bd_id is not null");
+            return (Criteria) this;
+        }
+        public Criteria bdIdEqualTo(String prefix,Long value) {
+            addCriterion(prefix+"bd_id =", value, "bdId");
+            return (Criteria) this;
+        }
+        public Criteria bdIdNotEqualTo(String prefix,Long value) {
+            addCriterion(prefix+"bd_id <>", value, "bdId");
+            return (Criteria) this;
+        }
+        public Criteria bdIdGreaterThan(String prefix,Long value) {
+            addCriterion(prefix+"bd_id >", value, "bdId");
+            return (Criteria) this;
+        }
+        public Criteria bdIdGreaterThanOrEqualTo(String prefix,Long value) {
+            addCriterion(prefix+"bd_id >=", value, "bdId");
+            return (Criteria) this;
+        }
+        public Criteria andBdIdLessThan(String prefix,Long value) {
+            addCriterion(prefix+"bd_id <", value, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdLessThanOrEqualTo(String prefix,Long value) {
+            addCriterion(prefix+"bd_id <=", value, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdLike(String prefix,String value) {
+            addCriterion(prefix+"bd_id like", value, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdNotLike(String prefix,String value) {
+            addCriterion(prefix+"bd_id not like", value, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdIn(String prefix,List<Long> values) {
+            addCriterion(prefix+"bd_id in", values, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdNotIn(String prefix,List<Long> values) {
+            addCriterion(prefix+"bd_id not in", values, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdBetween(String prefix,Long value1, Long value2) {
+            addCriterion(prefix+"bd_id between", value1, value2, "bdId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBdIdNotBetween(String prefix,Long value1, Long value2) {
+            addCriterion(prefix+"bd_id not between", value1, value2, "bdId");
+            return (Criteria) this;
+        }
 
         public String getOptStr() {
             return optStr;
@@ -142,7 +201,6 @@ public class DailyAmountExample{
         private Object value2;
         private Object value3;
         private Object list;
-        private String optStr;
         private boolean noValue;
         private boolean oneValue;
         private boolean secondValue;
@@ -187,14 +245,6 @@ public class DailyAmountExample{
 
         public void setList(Object list) {
             this.list = list;
-        }
-
-        public String getOptStr() {
-            return optStr;
-        }
-
-        public void setOptStr(String optStr) {
-            this.optStr = optStr;
         }
 
         public boolean isNoValue() {
