@@ -1,5 +1,6 @@
 package com.gen.redis;
 
+import com.cloud.common.redis.PojoSerializable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
