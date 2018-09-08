@@ -1,0 +1,160 @@
+package ${packageName};
+
+import java.util.*;
+${importList}
+
+/**
+  * ${entityName}Example
+  * 注意:Criteria代表着一个大括号，里面有很多表达式
+  * Criterion代表着一个表达式
+  */
+public class ${entityName}Example{
+
+    private String orderByClause;
+    private int index;
+    private int pageSize;
+    private List<Criteria> criterias;
+
+    public Criteria createAndCriteria(){
+        Criteria criteria = new Criteria();
+        criteria.setOptStr("and");
+        return criteria;
+    }
+
+    public Criteria createOrCriteria(){
+        Criteria criteria = new Criteria();
+        criteria.setOptStr("or");
+        return criteria;
+    }
+
+    public Criteria createCriteria(){
+        Criteria criteria = new Criteria();
+        criteria.setOptStr("");
+        return criteria;
+    }
+
+    public void addCriteria(Criteria criteria){
+        if(CollectionUtils.isEmpty(criterias)){
+            criterias = new ArrayList<>();
+        }
+        criterias.add(criteria);
+    }
+
+   /**
+    * Criteria类,每个Criteria有多个Criterion表达式
+    */
+   public static class Criteria {
+
+       /**
+        * field comment:一个Example有多个Criteria,
+        */
+       private List<Criterion> criterions;
+
+       /**
+        * field comment:类型,是and还是or 这个字段是为了两个表达式CriteriaA optStr CriteriaB 如果是最后一个Criteria,那么应该设置为""
+        */
+       private String optStr;
+
+       public Criterion createAndCriterion(){
+           Criterion criterion = new Criterion();
+           criterion.setOptStr("and");
+           return criterion;
+       }
+
+       public Criterion createOrCriterion(){
+           Criterion criterion = new Criterion();
+           criterion.setOptStr("or");
+           return criterion;
+       }
+
+       public Criterion createCriterion(){
+           Criterion criterion = new Criterion();
+           criterion.setOptStr("");
+           return criterion;
+       }
+
+       public void addCriterion(Criterion criterion){
+           if(CollectionUtils.isEmpty(criterions)){
+               criterions = new ArrayList<>();
+           }
+           criterions.add(criterion);
+       }
+
+       public String getOptStr() {
+           return optStr;
+       }
+
+       public void setOptStr(String optStr) {
+           this.optStr = optStr;
+       }
+
+       public List<Criterion> getCriterions() {
+           return criterions;
+       }
+
+       public void setCriterions(List<Criterion> criterions) {
+           this.criterions = criterions;
+       }
+   }
+
+   /**
+    * 表达式类
+    */
+   public static class Criterion {
+       private Object oneValue;
+       private Object secondValue;
+       private Object thirdValue;
+       private Object listValue;
+       private String optStr;
+       private boolean isList;
+
+       public Object getOneValue() {
+           return oneValue;
+       }
+
+       public void setOneValue(Object oneValue) {
+           this.oneValue = oneValue;
+       }
+
+       public Object getSecondValue() {
+           return secondValue;
+       }
+
+       public void setSecondValue(Object secondValue) {
+           this.secondValue = secondValue;
+       }
+
+       public Object getThirdValue() {
+           return thirdValue;
+       }
+
+       public void setThirdValue(Object thirdValue) {
+           this.thirdValue = thirdValue;
+       }
+
+       public Object getListValue() {
+           return listValue;
+       }
+
+       public void setListValue(Object listValue) {
+           this.listValue = listValue;
+       }
+
+       public String getOptStr() {
+           return optStr;
+       }
+
+       public void setOptStr(String optStr) {
+           this.optStr = optStr;
+       }
+
+       public boolean isList() {
+           return isList;
+       }
+
+       public void setList(boolean list) {
+           isList = list;
+       }
+   }
+
+}
