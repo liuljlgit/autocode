@@ -1,6 +1,6 @@
 package com.gen.autocode.GenProp;
 
-import com.gen.autocode.util.HumpUtils;
+import com.cloud.common.utils.HumpUtil;
 
 import java.io.*;
 import java.util.*;
@@ -161,9 +161,9 @@ public class GenCommon {
         replaceMap.put("${entityName}",GenProperties.entityName);
         replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
-        replaceMap.put("${implServiceName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implServiceFileName));
+        replaceMap.put("${implServiceName}", HumpUtil.toLowerCaseFirstOne(GenProperties.implServiceFileName));
         replaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
-        replaceMap.put("${implDaoName}", HumpUtils.toLowerCaseFirstOne(GenProperties.implDaoFileName));
+        replaceMap.put("${implDaoName}", HumpUtil.toLowerCaseFirstOne(GenProperties.implDaoFileName));
         replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
         replaceMap.put("${entityFullPath}",GenProperties.entityFullPath);
         replaceMap.put("${tablename}",GenProperties.tablename);
@@ -195,7 +195,7 @@ public class GenCommon {
      */
     public static String getEntityIdUpperFirst(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
-        return HumpUtils.toUpperCaseFirstOne(list.get(0));
+        return HumpUtil.toUpperCaseFirstOne(list.get(0));
     }
 
     /**

@@ -1,14 +1,16 @@
 package com.gen.redis;
 
-import com.gen.autocode.util.CommonUtil;
+import com.cloud.common.utils.CommonUtil;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
+import java.io.Serializable;
+
 /**
  * 自定义redis序列化类2
+ *
  * @param <T>
  */
-import java.io.Serializable;
 
 public class PojoSerializable<T extends Serializable> implements RedisSerializer<T> {
 

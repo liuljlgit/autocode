@@ -3,10 +3,9 @@ package com.gen.autocode;
 
 import com.gen.autocode.GenProp.GenCommon;
 import com.gen.autocode.GenProp.GenProperties;
-import com.gen.autocode.util.HumpUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 自动生成controller

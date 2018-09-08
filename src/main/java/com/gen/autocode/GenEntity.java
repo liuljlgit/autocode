@@ -1,9 +1,9 @@
 package com.gen.autocode;
 
+import com.cloud.common.utils.HumpUtil;
 import com.gen.autocode.GenProp.GenCommon;
 import com.gen.autocode.GenProp.GenProperties;
 import com.gen.autocode.entity.TableColumInfo;
-import com.gen.autocode.util.HumpUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -81,8 +81,8 @@ public class GenEntity {
      */
     public String createGetSetFun(String entityType,String suffix,String entityPropName){
         StringBuffer sb = new StringBuffer("");
-        sb.append("\tpublic "+entityType+" "+"get"+ HumpUtils.toUpperCaseFirstOne(entityPropName)+suffix+"() { return "+entityPropName+suffix+"; }\n\n");//设置get函数
-        sb.append("\tpublic void set"+ HumpUtils.toUpperCaseFirstOne(entityPropName)+suffix+"("+entityType+" "+entityPropName+suffix+") { this."+entityPropName+suffix+" = "+entityPropName+suffix+"; }\n\n");//设置set函数
+        sb.append("\tpublic "+entityType+" "+"get"+ HumpUtil.toUpperCaseFirstOne(entityPropName)+suffix+"() { return "+entityPropName+suffix+"; }\n\n");//设置get函数
+        sb.append("\tpublic void set"+ HumpUtil.toUpperCaseFirstOne(entityPropName)+suffix+"("+entityType+" "+entityPropName+suffix+") { this."+entityPropName+suffix+" = "+entityPropName+suffix+"; }\n\n");//设置set函数
         return sb.toString();
     }
 

@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
 import com.alibaba.fastjson.*;
 import com.gen.redis.BaseRedis;
-import com.gen.autocode.util.CommonUtil;
+import com.cloud.common.utils.CommonUtil;
 ${importList}
 
 /**

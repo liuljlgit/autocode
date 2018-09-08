@@ -1,9 +1,9 @@
 package com.gen.autocode;
 
+import com.cloud.common.utils.HumpUtil;
 import com.gen.autocode.GenProp.GenCommon;
 import com.gen.autocode.GenProp.GenProperties;
 import com.gen.autocode.entity.TableColumInfo;
-import com.gen.autocode.util.HumpUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -121,12 +121,12 @@ public class GenXml {
             return String.join(",",tableColList);
         }else if(type == 2){
             List<String> objList = tableColList.stream().map(e -> {
-                return "#{"+ HumpUtils.convertToJava(e)+"}";
+                return "#{"+ HumpUtil.convertToJava(e)+"}";
             }).collect(Collectors.toList());
             return String.join(",",objList);
         }else if(type == 3){
             List<String> objList = tableColList.stream().map(e -> {
-                return "#{item."+HumpUtils.convertToJava(e)+"}";
+                return "#{item."+HumpUtil.convertToJava(e)+"}";
             }).collect(Collectors.toList());
             return String.join(",",objList);
         }
@@ -138,7 +138,7 @@ public class GenXml {
      */
     private String createSetList(String prefix){
         List<String> tableColList = GenProperties.tableColumInfoList.stream().map(e -> {
-            return e.getTableColumName()+" = #{"+prefix+HumpUtils.convertToJava(e.getTableColumName())+"}";
+            return e.getTableColumName()+" = #{"+prefix+HumpUtil.convertToJava(e.getTableColumName())+"}";
         }).collect(Collectors.toList());
         return "set "+String.join(",",tableColList);
     }
