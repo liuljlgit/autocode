@@ -2,13 +2,14 @@ package com.gen.test.entity;
 
 import org.springframework.util.CollectionUtils;
 import java.util.*;
+import java.math.*;
 
 /**
- * DailyAmountExample
+ * ${entityName}Example
  * 注意:Criteria代表着一个大括号，里面有很多表达式
  * Criterion代表着一个表达式
  */
-public class DailyAmountExample{
+public class ${entityName}Example{
 
     private String orderByClause;
     private int index;
@@ -34,6 +35,13 @@ public class DailyAmountExample{
      * Criteria类,每个Criteria有多个Criterion表达式
      */
     public static class Criteria {
+
+        /**
+         * field comment:判断是否有值合法
+         */
+        public boolean isValid() {
+            return criterions.size() > 0;
+        }
 
         /**
          * field comment:一个Example有多个Criteria,
@@ -91,21 +99,6 @@ public class DailyAmountExample{
             criterion.setSecondValue(true);
         }
 
-        public void addCriterion(String condition, Object value1, Object value2, Object value3, String property) {
-            if (value1 == null || value2 == null || value3 == null) {
-                throw new RuntimeException("funtion values for " + property + " cannot be null");
-            }
-            if(CollectionUtils.isEmpty(criterions)){
-                criterions = new ArrayList<>();
-            }
-            Criterion criterion = new Criterion();
-            criterion.setCondition(condition);
-            criterion.setValue1(value1);
-            criterion.setValue2(value2);
-            criterion.setValue3(value3);
-            criterion.setThirdValue(true);
-        }
-
         //需进行以下操作判断：
         //IsNull、IsNotNull、EqualTo、NotEqualTo、GreaterThan、GreaterThanOrEqualTo、LessThan、LessThanOrEqualTo、Like、NotLike、In、NotIn、Between、NotBetween
         ${exampleSql}
@@ -133,12 +126,10 @@ public class DailyAmountExample{
         private String condition;
         private Object value1;
         private Object value2;
-        private Object value3;
         private Object list;
         private boolean noValue;
         private boolean oneValue;
         private boolean secondValue;
-        private boolean thirdValue;
         private boolean listValue;
 
         public String getCondition() {
@@ -163,14 +154,6 @@ public class DailyAmountExample{
 
         public void setValue2(Object value2) {
             this.value2 = value2;
-        }
-
-        public Object getValue3() {
-            return value3;
-        }
-
-        public void setValue3(Object value3) {
-            this.value3 = value3;
         }
 
         public Object getList() {
@@ -205,14 +188,6 @@ public class DailyAmountExample{
             this.secondValue = secondValue;
         }
 
-        public boolean isThirdValue() {
-            return thirdValue;
-        }
-
-        public void setThirdValue(boolean thirdValue) {
-            this.thirdValue = thirdValue;
-        }
-
         public boolean isListValue() {
             return listValue;
         }
@@ -220,6 +195,38 @@ public class DailyAmountExample{
         public void setListValue(boolean listValue) {
             this.listValue = listValue;
         }
+    }
+
+    public String getOrderByClause() {
+        return orderByClause;
+    }
+
+    public void setOrderByClause(String orderByClause) {
+        this.orderByClause = orderByClause;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public List<Criteria> getCriterias() {
+        return criterias;
+    }
+
+    public void setCriterias(List<Criteria> criterias) {
+        this.criterias = criterias;
     }
 
 }

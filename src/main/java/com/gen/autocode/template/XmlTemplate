@@ -24,6 +24,34 @@ ${whereSqlList}
             </foreach>
         </if>
     </sql>
+    <sql id="Example_Where_Clause">
+        <where>
+          <foreach collection="criterias" item="criteria" separator="">
+            ${criteria.optStr}
+            <if test="criteria.valid">
+                <foreach collection="criteria.criterions" item="criterion">
+                  <choose>
+                    <when test="criterion.noValue">
+                        ${criterion.condition}
+                    </when>
+                    <when test="criterion.oneValue">
+                        ${criterion.condition} #{criterion.value1}
+                    </when>
+                    <when test="criterion.secondValue">
+                        ${criterion.condition} #{criterion.value1} and #{criterion.value2}
+                    </when>
+                    <when test="criterion.listValue">
+                        ${criterion.condition}
+                      <foreach close=")" collection="criterion.list" item="listItem" open="(" separator=",">
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+            </if>
+          </foreach>
+        </where>
+      </sql>
 
     <sql id="Base_Column_List">
         ${tableColumList}
