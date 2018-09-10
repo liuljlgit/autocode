@@ -16,9 +16,23 @@ public class ${entityName}Example{
     private int pageSize;
     private List<Criteria> criterias;
 
-    public Criteria createCriteria(String prefix){
+    public Criteria createAndCriteria(){
         Criteria criteria = new Criteria();
-        criteria.setOptStr(prefix);
+        criteria.setOptStr("and");
+        addCriteria(criteria);
+        return criteria;
+    }
+
+    public Criteria createOrCriteria(){
+            Criteria criteria = new Criteria();
+            criteria.setOptStr("or");
+            addCriteria(criteria);
+            return criteria;
+        }
+
+    public Criteria createCriteria(){
+        Criteria criteria = new Criteria();
+        criteria.setOptStr("");
         addCriteria(criteria);
         return criteria;
     }
@@ -56,15 +70,20 @@ public class ${entityName}Example{
         /**
          * field comment:用来临时存储字符串"or" 或者 "and"
          */
-        private String orAndStr;
+        private String prefix = "";
+
+        public Criteria clearPrefix(){
+            setPrefix("");
+            return (Criteria)this;
+        }
 
         public Criteria or(){
-            setOrAndStr("or");
+            setPrefix("or");
             return (Criteria)this;
         }
 
         public Criteria and(){
-            setOrAndStr("and");
+            setPrefix("and");
             return (Criteria)this;
         }
 
@@ -133,12 +152,12 @@ public class ${entityName}Example{
             this.optStr = optStr;
         }
 
-        public String getOrAndStr() {
-            return orAndStr;
+        public String getPrefix() {
+            return prefix;
         }
 
-        public void setOrAndStr(String orAndStr) {
-            this.orAndStr = orAndStr;
+        public void setPrefix(String prefix) {
+            this.prefix = prefix;
         }
     }
 

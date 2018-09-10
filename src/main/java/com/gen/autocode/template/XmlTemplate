@@ -6,6 +6,7 @@ ${resultMapResultList}
     </resultMap>
 
     <sql id="where_sql">
+        and 1=1
 ${whereSqlList}
         <if test="inSql != null and inSql.size()>0">
             <foreach collection="inSql" item="intervalEntity" separator=" ">
@@ -25,33 +26,32 @@ ${whereSqlList}
         </if>
     </sql>
     <sql id="Example_Where_Clause">
-        <where>
-          <foreach collection="criterias" item="criteria" separator="">
+      and 1=1
+      <foreach collection="criterias" item="criteria" open="(" close=")" separator=" ">
+        <if test="criteria.valid">
             ${criteria.optStr}
-            <if test="criteria.valid">
-                <foreach collection="criteria.criterions" item="criterion">
-                  <choose>
-                    <when test="criterion.noValue">
-                        ${criterion.condition}
-                    </when>
-                    <when test="criterion.oneValue">
-                        ${criterion.condition} #{criterion.value1}
-                    </when>
-                    <when test="criterion.secondValue">
-                        ${criterion.condition} #{criterion.value1} and #{criterion.value2}
-                    </when>
-                    <when test="criterion.listValue">
-                        ${criterion.condition}
-                      <foreach close=")" collection="criterion.list" item="listItem" open="(" separator=",">
-                        #{listItem}
-                      </foreach>
-                    </when>
-                  </choose>
-                </foreach>
-            </if>
-          </foreach>
-        </where>
-      </sql>
+            <foreach collection="criteria.criterions" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                    ${criterion.condition}
+                </when>
+                <when test="criterion.oneValue">
+                    ${criterion.condition} #{criterion.value1}
+                </when>
+                <when test="criterion.secondValue">
+                    ${criterion.condition} #{criterion.value1} and #{criterion.value2}
+                </when>
+                <when test="criterion.listValue">
+                    ${criterion.condition}
+                  <foreach collection="criterion.list" item="listItem" open="(" close=")" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+        </if>
+      </foreach>
+   </sql>
 
     <sql id="Base_Column_List">
         ${tableColumList}

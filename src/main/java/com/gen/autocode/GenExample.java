@@ -44,75 +44,75 @@ public class GenExample {
             String tableName = tableColNameList.get(i);
             String javaName = HumpUtil.convertToJava(tableName);
             String javaType = entityColNameTypeList.get(javaName);
-            String tmp = "\t\tpublic Criteria "+javaName+"IsNull(String prefix) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" is null\");\n" +
+            String tmp = "public Criteria "+javaName+"IsNull() {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" is null\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"IsNotNull(String prefix) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" is not null\");\n" +
+                    "        public Criteria "+javaName+"IsNotNull() {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" is not null\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"EqualTo(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" =\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"EqualTo("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" =\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"NotEqualTo(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" <>\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"NotEqualTo("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" <>\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"GreaterThan(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" >\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"GreaterThan("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" >\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"GreaterThanOrEqualTo(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" >=\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"GreaterThanOrEqualTo("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" >=\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "        \n" +
-                    "        public Criteria "+javaName+"LessThan(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" <\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"LessThan("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" <\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"LessThanOrEqualTo(String prefix,"+javaType+" value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" <=\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"LessThanOrEqualTo("+javaType+" value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" <=\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"Like(String prefix,String value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" like\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"Like(String value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" like\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"NotLike(String prefix,String value) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" not like\", value, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"NotLike(String value) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" not like\", value, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"In(String prefix,List<"+javaType+"> values) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" in\", values, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"In(List<"+javaType+"> values) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" in\", values, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"NotIn(String prefix,List<"+javaType+"> values) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" not in\", values, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"NotIn(List<"+javaType+"> values) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" not in\", values, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"Between(String prefix,"+javaType+" value1, "+javaType+" value2) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" between\", value1, value2, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"Between("+javaType+" value1, "+javaType+" value2) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" between\", value1, value2, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
                     "        }\n" +
                     "\n" +
-                    "        public Criteria "+javaName+"NotBetween(String prefix,"+javaType+" value1, "+javaType+" value2) {\n" +
-                    "            addCriterion(prefix+\" "+tableName+" not between\", value1, value2, \""+javaName+"\");\n" +
+                    "        public Criteria "+javaName+"NotBetween("+javaType+" value1, "+javaType+" value2) {\n" +
+                    "            addCriterion(this.prefix+\" "+tableName+" not between\", value1, value2, \""+javaName+"\");\n" +
                     "            return (Criteria) this;\n" +
-                    "        }\n\n";
+                    "        }\n\n\t\t";
             sb.append(tmp);
         }
         return sb.toString();
