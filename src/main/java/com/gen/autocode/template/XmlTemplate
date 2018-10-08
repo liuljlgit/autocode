@@ -29,7 +29,7 @@ ${whereSqlList}
       and 1=1
       <foreach collection="criterias" item="criteria" open="(" close=")" separator=" ">
         <if test="criteria.valid">
-            ${criteria.optStr}
+            ${criteria.opt}
             <foreach collection="criteria.criterions" item="criterion">
               <choose>
                 <when test="criterion.noValue">

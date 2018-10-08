@@ -23,7 +23,6 @@ public class GenMain {
         Arrays.stream(tablenames.split(",")).forEach(e->{
             initGenProperties(e);         //初始化配置
             new GenEntity();       //生成实体类
-            new GenExample();      //生成实体Example类
             new GenXml();          //生成XML
             new GenDao();          //生成DAO
             new GenService();      //生成SERVICE
