@@ -25,30 +25,32 @@ ${whereSqlList}
             </foreach>
         </if>
     </sql>
+
     <sql id="Example_Where_Clause">
-      and 1=1
-      <foreach collection="criterias" item="criteria" open="(" close=")" separator=" ">
+      <foreach collection="criterias" item="criteria" separator=" ">
         <if test="criteria.valid">
             ${criteria.opt}
-            <foreach collection="criteria.criterions" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                    ${criterion.condition}
-                </when>
-                <when test="criterion.oneValue">
-                    ${criterion.condition} #{criterion.value1}
-                </when>
-                <when test="criterion.secondValue">
-                    ${criterion.condition} #{criterion.value1} and #{criterion.value2}
-                </when>
-                <when test="criterion.listValue">
-                    ${criterion.condition}
-                  <foreach collection="criterion.list" item="listItem" open="(" close=")" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
+            <trim prefix="(" prefixOverrides="and | or" suffix=")">
+                <foreach collection="criteria.criterions" item="criterion">
+                  <choose>
+                    <when test="criterion.noValue">
+                        ${criterion.condition}
+                    </when>
+                    <when test="criterion.oneValue">
+                        ${criterion.condition} #{criterion.value1}
+                    </when>
+                    <when test="criterion.secondValue">
+                        ${criterion.condition} #{criterion.value1} and #{criterion.value2}
+                    </when>
+                    <when test="criterion.listValue">
+                        ${criterion.condition}
+                      <foreach collection="criterion.list" item="listItem" open="(" close=")" separator=",">
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+            </trim>
         </if>
       </foreach>
    </sql>
