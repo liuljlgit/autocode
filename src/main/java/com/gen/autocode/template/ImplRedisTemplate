@@ -27,6 +27,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
     private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
     private final static String QUERY_${entityNameUpperCase}_KEY = "QUERY:".concat(PRE_KEY);
+    //自定义查询缓存,HashMap结构
+    private final static String CUSTOM_${entityNameUpperCase}_KEY = "CUSTOM:".concat(PRE_KEY);
     private final static Long START_${entityNameUpperCase}ID = 1000000L;
 
     /**
@@ -131,6 +133,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
             delete(listKey) ;
         }
         delete(QUERY_${entityNameUpperCase}_KEY,true);
+        delete(CUSTOM_${entityNameUpperCase}_KEY,true);
     }
 
 }
