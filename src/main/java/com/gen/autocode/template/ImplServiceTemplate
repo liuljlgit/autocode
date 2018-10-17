@@ -2,6 +2,7 @@ package ${packageName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.cache.annotation.*;
@@ -133,6 +134,28 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("请求参数不能为空");
         }
         return ${implDaoName}.get${entityName}List(${entityObj});
+    }
+
+    /**
+     * 复杂查询查询总数
+     */
+    @Override
+    public List<${entityName}> get${entityName}ExampleCount(QueryExample queryExample) throws Exception {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${entityObj}Dao.get${entityName}ExampleCount(queryExample);
+    }
+
+    /**
+     * 复杂查询获取列表
+     */
+    @Override
+    public List<${entityName}> get${entityName}ExampleList(QueryExample queryExample) throws Exception {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${entityObj}Dao.get${entityName}ExampleList(queryExample);
     }
 
     /**

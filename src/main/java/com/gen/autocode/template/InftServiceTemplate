@@ -1,6 +1,7 @@
 package ${packageName};
 
 import java.util.*;
+import com.cloud.common.complexquery.QueryExample;
 ${importList}
 
 /**
@@ -53,6 +54,16 @@ public interface I${entityName}Service {
      * 列表
      */
     List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 获取总数
+     */
+    List<${entityName}> get${entityName}ExampleCount(QueryExample queryExample) throws Exception;
+
+    /**
+     * 复杂查询列表
+     */
+    List<${entityName}> get${entityName}ExampleList(QueryExample queryExample) throws Exception;
 
     /**
      * 保存记录

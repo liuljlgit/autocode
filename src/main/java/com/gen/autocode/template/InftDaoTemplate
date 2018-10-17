@@ -3,6 +3,7 @@ package ${packageName};
 import java.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import com.cloud.common.complexquery.QueryExample;
 ${importList}
 
 /**
@@ -61,4 +62,18 @@ public interface I${entityName}Dao {
       * 获取最大的ID
       */
      Long selectMax${entityName}Id();
+
+     /**
+      * 复杂查询获取总数
+      * @param queryExample
+      * @return
+      */
+     List<DailyAmount> get${entityName}ExampleCount(QueryExample queryExample);
+
+     /**
+      * 复杂查询获取列表
+      * @param queryExample
+      * @return
+      */
+     List<DailyAmount> get${entityName}ExampleList(QueryExample queryExample);
 }

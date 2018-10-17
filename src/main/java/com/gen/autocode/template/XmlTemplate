@@ -127,6 +127,28 @@ ${whereSqlList}
         </if>
     </select>
 
+    <!--复杂查询获取总数-->
+    <select id="get${entityName}ExampleCount" resultType="java.lang.Long">
+        select count(*) from ${tablename}
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+    </select>
+
+    <!--复杂查询查询列表-->
+    <select id="get${entityName}ExampleList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+        <if test="index!=null and pageSize!=null" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderbyClause!=null and orderbyClause!=''">
+            order by ${orderbyClause}
+        </if>
+    </select>
+
     <!--根据主键删除对象-->
     <delete id="delete${entityName}ByKey">
         delete from ${tablename}
