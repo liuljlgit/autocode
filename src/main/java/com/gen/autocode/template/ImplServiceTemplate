@@ -60,7 +60,9 @@ public class ${entityName}Service implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             throw new Exception("插入对象不能为空");
         }
-        return ${implDaoName}.insert${entityName}(${entityObj});
+        Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
+        dailyAmountRedis.clearAllDailyAmount();
+        return result;
     }
 
     /**
@@ -75,6 +77,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("插入对象不能为空");
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
+        dailyAmountRedis.clearAllDailyAmount();
     }
 
     /**
@@ -88,7 +91,9 @@ public class ${entityName}Service implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             throw new Exception("更新对象不能为空");
         }
-        return ${implDaoName}.update${entityName}(${entityObj});
+        Integer result = ${implDaoName}.update${entityName}(${entityObj});
+        dailyAmountRedis.clearAllDailyAmount();
+        return result;
     }
 
     /**
@@ -101,6 +106,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("更新对象不能为空");
         }
         ${implDaoName}.update${entityName}List(${entityObj}List);
+        dailyAmountRedis.clearAllDailyAmount();
     }
 
     /**
@@ -112,7 +118,9 @@ public class ${entityName}Service implements ${inftServiceName}{
         if(Objects.isNull(${entityId})){
             throw new Exception("请输入要删除的数据的ID");
         }
-        return ${implDaoName}.delete${entityName}ByKey(${entityId});
+        Integer result = ${implDaoName}.delete${entityName}ByKey(${entityId});
+        dailyAmountRedis.clearAllDailyAmount();
+        return result;
     }
 
     /**
@@ -125,6 +133,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("请输入要删除的数据的ID列表");
         }
         ${implDaoName}.delete${entityName}List(${entityObj}List);
+        dailyAmountRedis.clearAllDailyAmount();
     }
 
     /**
