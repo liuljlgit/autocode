@@ -3,6 +3,7 @@ package ${packageName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.cloud.common.base.BaseController;
+import com.cloud.common.webcomm.ReqEntity;
 import com.alibaba.fastjson.JSONObject;
 import java.util.*;
 ${importList}
@@ -34,7 +35,7 @@ public class ${entityName}Ctrl extends BaseController {
       }
       JSONObject resp = new JSONObject();
       resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
-      return formatResponseParams(EXEC_OK,resp,null);
+      return formatResponseParams(EXEC_OK,resp);
    }
 
   /**
@@ -43,12 +44,26 @@ public class ${entityName}Ctrl extends BaseController {
    * @throws Exception
    */
    @PostMapping(value = "/${entityObj}/list")
-   public JSONObject get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
+   public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        List<${entityName}> ${entityObj}List = ${implServiceName}.get${entityName}List(${entityObj});
        JSONObject resp = new JSONObject();
        resp.put("list",${entityObj}List);
-       return resp;
+       return formatResponseParams(EXEC_OK,resp);
+   }
+
+   /**
+    * 复杂查询
+    * @return
+    * @throws Exception
+    */
+   @PostMapping(value = "/${entityObj}/criteria")
+   public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
+       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
+       List<${entityName}> ${entityObj}ExampleList = ${entityObj}Service.get${entityName}ListByExample(${entityObj});
+       JSONObject resp = new JSONObject();
+       resp.put("list",${entityObj}ExampleList);
+       return formatResponseParams(EXEC_OK, resp);
    }
 
   /**
@@ -57,12 +72,10 @@ public class ${entityName}Ctrl extends BaseController {
    * @throws Exception
    */
    @PostMapping(value = "/${entityObj}")
-   public JSONObject save${entityName}(@RequestBody JSONObject reqEntity) throws  Exception{
-       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.toJSONString(), ${entityName}.class);
+   public String save${entityName}(@RequestBody ReqEntity reqEntity) throws  Exception{
+       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        ${implServiceName}.save${entityName}(${entityObj});
-       JSONObject resp = new JSONObject();
-       resp.put("status","success");
-       return resp;
+       return formatResponseParams(EXEC_OK,null);
    }
 
    /**
@@ -71,15 +84,13 @@ public class ${entityName}Ctrl extends BaseController {
     * @throws Exception
     */
     @DeleteMapping(value = "/${entityObj}/{${entityId}}")
-    public JSONObject delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
+    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new Exception("入参请求异常") ;
         }
 
         ${implServiceName}.delete${entityName}ByKey(${entityId});
-        JSONObject resp = new JSONObject();
-        resp.put("status","success");
-        return resp;
+        return formatResponseParams(EXEC_OK,null);
     }
 
 

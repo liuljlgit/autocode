@@ -140,22 +140,24 @@ public class ${entityName}Service implements ${inftServiceName}{
      * 复杂查询查询总数
      */
     @Override
-    public List<${entityName}> get${entityName}ExampleCount(QueryExample queryExample) throws Exception {
-        if(Objects.isNull(queryExample)){
+    public List<${entityName}> get${entityName}CountByExample(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
         }
-        return ${entityObj}Dao.get${entityName}ExampleCount(queryExample);
+        QueryExample queryExample = new QueryExample();
+        return ${entityObj}Dao.get${entityName}CountByExample(queryExample);
     }
 
     /**
      * 复杂查询获取列表
      */
     @Override
-    public List<${entityName}> get${entityName}ExampleList(QueryExample queryExample) throws Exception {
-        if(Objects.isNull(queryExample)){
+    public List<${entityName}> get${entityName}ListByExample(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
         }
-        return ${entityObj}Dao.get${entityName}ExampleList(queryExample);
+        QueryExample queryExample = new QueryExample();
+        return ${entityObj}Dao.get${entityName}ListByExample(queryExample);
     }
 
     /**

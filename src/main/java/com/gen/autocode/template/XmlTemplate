@@ -119,7 +119,7 @@ ${whereSqlList}
         <where>
             <include refid="where_sql" />
         </where>
-        <if test="usePage!=null and usePage" >
+        <if test="page!=null and pageSize!=null and page!=-1" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderbyClause!=null and orderbyClause!=''">
@@ -128,7 +128,7 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询获取总数-->
-    <select id="get${entityName}ExampleCount" resultType="java.lang.Long">
+    <select id="get${entityName}CountByExample" resultType="java.lang.Long">
         select count(*) from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
@@ -136,7 +136,7 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询查询列表-->
-    <select id="get${entityName}ExampleList" resultMap="BaseResultMap">
+    <select id="get${entityName}ListByExample" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />

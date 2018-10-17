@@ -58,12 +58,12 @@ public interface I${entityName}Service {
     /**
      * 获取总数
      */
-    List<${entityName}> get${entityName}ExampleCount(QueryExample queryExample) throws Exception;
+    List<${entityName}> get${entityName}CountByExample(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 复杂查询列表
      */
-    List<${entityName}> get${entityName}ExampleList(QueryExample queryExample) throws Exception;
+    List<${entityName}> get${entityName}ListByExample(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 保存记录
