@@ -2,6 +2,7 @@ package ${packageName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.cloud.common.base.BaseController;
 import com.alibaba.fastjson.JSONObject;
 import java.util.*;
 ${importList}
@@ -11,7 +12,7 @@ ${importList}
  * @author lijun
  */
 @RestController
-public class ${entityName}Ctrl {
+public class ${entityName}Ctrl extends BaseController {
 
     @Autowired
     private ${inftServiceName} ${implServiceName};
@@ -33,7 +34,7 @@ public class ${entityName}Ctrl {
       }
       JSONObject resp = new JSONObject();
       resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
-      return JSONObject.toJSONString(resp);
+      return formatResponseParams(EXEC_OK,resp,null);
    }
 
   /**
@@ -42,8 +43,8 @@ public class ${entityName}Ctrl {
    * @throws Exception
    */
    @PostMapping(value = "/${entityObj}/list")
-   public JSONObject get${entityName}List(@RequestBody JSONObject reqEntity) throws Exception {
-       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.toJSONString(), ${entityName}.class);
+   public JSONObject get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
+       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        List<${entityName}> ${entityObj}List = ${implServiceName}.get${entityName}List(${entityObj});
        JSONObject resp = new JSONObject();
        resp.put("list",${entityObj}List);
