@@ -3,6 +3,8 @@ package ${packageName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cloud.common.complexquery.QueryExample;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.cache.annotation.*;
@@ -17,6 +19,8 @@ ${importList}
  */
 @Service("${implServiceName}")
 public class ${entityName}Service implements ${inftServiceName}{
+
+    private static final Logger logger = LoggerFactory.getLogger(${entityName}Service.class);
 
     @Autowired
     private ${inftDaoName} ${implDaoName};
@@ -33,7 +37,16 @@ public class ${entityName}Service implements ${inftServiceName}{
         if(Objects.isNull(${entityId})){
             throw new Exception("请输入要获取的数据的ID");
         }
-        return ${implDaoName}.load${entityName}ByKey(${entityId});
+        ${entityName} ${entityObj};
+        ${entityObj} = ${entityObj}Redis.get${entityName}ByKey(daId);
+        if(Objects.nonNull(${entityObj})){
+            logger.info("===> fetch ${entityId} = "+${entityId}+" entity from redis");
+            return ${entityObj};
+        }
+        logger.info("===> fetch ${entityId} = "+${entityId}+" entity from database");
+        ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(daId);
+        ${entityObj}Redis.set${entityName}2Redis(${entityObj},0L);
+        return ${entityObj};
     }
 
     /**
