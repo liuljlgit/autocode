@@ -42,6 +42,12 @@ public interface I${entityName}Redis {
      */
     String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire);
 
+   /**
+     * 获取分页数量
+     * @return
+     */
+    Long get${entityName}CountFromRedis(${entityName} ${entityObj});
+
     /**
      * 存储分页列表到缓存中
      */
@@ -51,12 +57,6 @@ public interface I${entityName}Redis {
      * 从缓存中得到分页列表
      */
     List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj});
-
-   /**
-     * 获取分页数量
-     * @return
-     */
-    Long get${entityName}CountFromRedis(${entityName} ${entityObj});
 
     /**
      * 删除所有redis中的值

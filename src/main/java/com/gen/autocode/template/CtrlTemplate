@@ -46,9 +46,7 @@ public class ${entityName}Ctrl extends BaseController {
    @PostMapping(value = "/${entityObj}/list")
    public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       List<${entityName}> ${entityObj}List = ${implServiceName}.get${entityName}List(${entityObj});
-       JSONObject resp = new JSONObject();
-       resp.put("list",${entityObj}List);
+       JSONObject resp = ${implServiceName}.get${entityName}List(${entityObj},true);
        return formatResponseParams(EXEC_OK,resp);
    }
 

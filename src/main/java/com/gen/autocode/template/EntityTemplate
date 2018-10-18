@@ -30,6 +30,7 @@ ${entityGetSetList}
         Collections.sort(collect);
         intervalEntity.setList(collect);
         inSql.add(intervalEntity);
+        inSql = inSql.stream().sorted(Comparator.comparing(IntervalEntity::getName)).collect(Collectors.toList());
     }
     /* 增加not in列表 */
     public void addNotInSql(String name,Object list) {
@@ -43,6 +44,7 @@ ${entityGetSetList}
         intervalEntity.setList(collect);
         intervalEntity.setName(name);
         notInSql.add(intervalEntity);
+        notInSql = notInSql.stream().sorted(Comparator.comparing(IntervalEntity::getName)).collect(Collectors.toList());
     }
 
 }

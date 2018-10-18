@@ -107,10 +107,20 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
-        byte[] bytes = CommonUtil.transObj2ByteArray(count);
-        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
         return rsKey ;
+    }
+
+    /**
+     * 获取分页数量
+     * @return List
+     */
+    @Override
+    public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
     }
 
     /**
@@ -119,9 +129,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> list, long expire){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
-        byte[] bytes = CommonUtil.transObj2ByteArray(list);
-        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
+        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
         return rsKey ;
     }
 
@@ -131,20 +140,9 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
         ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
         return list;
-    }
-
-    /**
-     * 获取分页数量
-     * @return List
-     */
-    @Override
-    public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
-        Long count = (Long) hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
-        return count;
     }
 
     /**

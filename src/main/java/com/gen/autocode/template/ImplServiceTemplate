@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.stream.Collectors;
+import com.alibaba.fastjson.JSONObject;
 ${importList}
 
 /**
@@ -140,22 +141,58 @@ public class ${entityName}Service implements ${inftServiceName}{
      * 查询总数
      */
     @Override
-    public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception{
+    public Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
         }
-        return ${implDaoName}.get${entityName}Count(${entityObj});
+        Long count;
+        if(useCache){
+            count = ${entityObj}Redis.get${entityName}CountFromRedis(${entityObj});
+            if(Objects.nonNull(count)){
+                logger.info("===> fetch count = "+count+" entity from redis");
+                return count;
+            }
+            logger.info("===> fetch count = "+count+" entity from database");
+            count = ${entityObj}Dao.get${entityName}Count(${entityObj});
+            ${entityObj}Redis.set${entityName}Count2Redis(${entityObj},count,0L);
+        }else{
+            count = ${entityObj}Dao.get${entityName}Count(${entityObj});
+        }
+        return count;
     }
 
     /**
      * 列表
      */
     @Override
-    public List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception{
+    public JSONObject get${entityName}List(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("请求参数不能为空");
         }
-        return ${implDaoName}.get${entityName}List(${entityObj});
+        JSONObject resp = new JSONObject();
+        List<${entityName}> list;
+        if(-1 != ${entityObj}.getPage()){
+            Long total = get${entityName}Count(${entityObj}, useCache);
+            ${entityObj}.setTotal(total.intValue());
+            resp.put("total",${entityObj}.getTotal());
+            resp.put("totalPage",${entityObj}.getTotalPage());
+        }
+        if(useCache){
+            list = ${entityObj}Redis.get${entityName}ListFromRedis(${entityObj});
+            if(Objects.nonNull(list)){
+                logger.info("===> fetch page list from redis");
+                resp.put("list",list);
+                return resp;
+            }
+            logger.info("===> fetch page list from database");
+            list = ${entityObj}Dao.get${entityName}List(${entityObj});
+            ${entityObj}Redis.set${entityName}List2Redis(${entityObj},new ArrayList<>(list),0L);
+        }else{
+            logger.info("===> fetch page list from database");
+            list = ${entityObj}Dao.get${entityName}List(${entityObj});
+            resp.put("list",list);
+        }
+        return resp;
     }
 
     /**

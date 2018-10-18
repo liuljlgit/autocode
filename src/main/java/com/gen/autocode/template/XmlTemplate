@@ -16,7 +16,7 @@ ${whereSqlList}
                 </foreach>
             </foreach>
         </if>
-        <if test="notInSql != null and notInSql()>0">
+        <if test="notInSql != null and notInSql.size()>0">
             <foreach collection="notInSql" item="intervalEntity" separator=" ">
                 and ${intervalEntity.name} not in
                 <foreach collection="intervalEntity.list" item="item" separator="," open="(" close=")">

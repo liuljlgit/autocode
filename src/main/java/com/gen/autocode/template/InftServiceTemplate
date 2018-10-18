@@ -2,6 +2,7 @@ package ${packageName};
 
 import java.util.*;
 import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSONObject;
 ${importList}
 
 /**
@@ -48,12 +49,12 @@ public interface I${entityName}Service {
     /**
      * 查询总数
      */
-    Long get${entityName}Count(${entityName} ${entityObj}) throws Exception;
+    Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 列表
      */
-    List<${entityName}> get${entityName}List(${entityName} ${entityObj}) throws Exception;
+    JSONObject get${entityName}List(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 获取总数
