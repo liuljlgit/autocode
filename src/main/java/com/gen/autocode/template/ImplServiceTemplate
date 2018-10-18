@@ -152,7 +152,7 @@ public class ${entityName}Service implements ${inftServiceName}{
                 logger.info("===> fetch count = "+count+" entity from redis");
                 return count;
             }
-            logger.info("===> fetch count = "+count+" entity from database");
+            logger.info("===> fetch count value from database");
             count = ${entityObj}Dao.get${entityName}Count(${entityObj});
             ${entityObj}Redis.set${entityName}Count2Redis(${entityObj},count,0L);
         }else{
