@@ -26,8 +26,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     public final static String PRE_KEY = ${entityName}.class.getSimpleName();
     private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
     private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
-    private final static String QUERY_${entityNameUpperCase}_KEY = "QUERY:".concat(PRE_KEY);
-    //自定义查询缓存,HashMap结构
+    private final static String PAGE_QUERY_${entityNameUpperCase}_KEY = "PAGE_QUERY:".concat(PRE_KEY);
+    private final static String PAGE_COUNT_${entityNameUpperCase}_KEY = "PAGE_COUNT:".concat(PRE_KEY);
     private final static String CUSTOM_${entityNameUpperCase}_KEY = "CUSTOM:".concat(PRE_KEY);
     private final static Long START_${entityNameUpperCase}ID = 1000000L;
 
@@ -83,6 +83,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * 1.Key-Value对象
      * 2.把key存储到一个set中,方便删除操作
      */
+    @Override
     public String set${entityName}2Redis(${entityName} ${entityObj}, long expire){
         String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
         sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
@@ -101,30 +102,55 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 存储对象列表
+     * 存储分页数量
      * @return String
      */
-    public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire){
+    @Override
+    public String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true);
-        byte[] bytes = CommonUtil.transObj2ByteArray(${entityObj}List);
-        hset(QUERY_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
+        byte[] bytes = CommonUtil.transObj2ByteArray(count);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
         return rsKey ;
     }
 
     /**
-     * 获取对象列表
+     * 存储分页列表
+     * @return String
+     */
+    @Override
+    public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> list, long expire){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
+        byte[] bytes = CommonUtil.transObj2ByteArray(list);
+        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,bytes,expire);
+        return rsKey ;
+    }
+
+    /**
+     * 获取分页列表
      * @return List
      */
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true);
-        ArrayList<${entityName}> ${entityObj}List = (ArrayList<${entityName}>) hget(QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
-        return ${entityObj}List;
+        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        return list;
+    }
+
+    /**
+     * 获取分页数量
+     * @return List
+     */
+    @Override
+    public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true);
+        Long count = (Long) hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
     }
 
     /**
      * 删除所有redis中的值
      */
+    @Override
     public void clearAll${entityName}() {
         @SuppressWarnings("unchecked")
         List<String> listKey = (List<String>)smembers(SET_${entityNameUpperCase}_KEY) ;
@@ -132,7 +158,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         if(listKey.size() > 0){
             delete(listKey) ;
         }
-        delete(QUERY_${entityNameUpperCase}_KEY,true);
+        delete(PAGE_QUERY_${entityNameUpperCase}_KEY,true);
+        delete(PAGE_COUNT_${entityNameUpperCase}_KEY,true);
         delete(CUSTOM_${entityNameUpperCase}_KEY,true);
     }
 
