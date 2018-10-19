@@ -72,7 +72,7 @@ public class GenMain {
             //service层
             GenProperties.inftServiceFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Service");
             GenProperties.inftServiceFullPath = GenProperties.servicePackageOutPath.concat(".inft.").concat(GenProperties.inftServiceFileName);
-            GenProperties.implServiceFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Service");
+            GenProperties.implServiceFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("ServiceImpl");
             GenProperties.implServiceFullPath = GenProperties.servicePackageOutPath.concat(".impl.").concat(GenProperties.implServiceFileName);
             //redis层
             GenProperties.inftRedisFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Redis");

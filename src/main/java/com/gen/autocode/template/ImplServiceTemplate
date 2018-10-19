@@ -19,9 +19,9 @@ ${importList}
  * @author lijun
  */
 @Service("${implServiceName}")
-public class ${entityName}Service implements ${inftServiceName}{
+public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
-    private static final Logger logger = LoggerFactory.getLogger(${entityName}Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(${entityName}ServiceImpl.class);
 
     @Autowired
     private ${inftDaoName} ${implDaoName};

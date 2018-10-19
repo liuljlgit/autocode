@@ -127,28 +127,6 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 存储分页数量
-     * @return String
-     */
-    @Override
-    public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
-        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
-        return rsKey ;
-    }
-
-    /**
-     * 获取分页数量
-     * @return List
-     */
-    @Override
-    public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
-        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
-        return count;
-    }
-
-    /**
      * 存储分页列表
      * @return String
      */
@@ -171,7 +149,29 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 存储分页列表
+     * Example 存储分页数量
+     * @return String
+     */
+    @Override
+    public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
+        return rsKey ;
+    }
+
+    /**
+     * Example 获取分页数量
+     * @return List
+     */
+    @Override
+    public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
+    }
+
+    /**
+     * Example 存储分页列表
      * @return String
      */
     @Override
@@ -182,7 +182,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 获取分页列表
+     * Example 获取分页列表
      * @return List
      */
     @Override
