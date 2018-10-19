@@ -186,6 +186,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             logger.info("===> fetch page list from database");
             list = ${entityObj}Dao.get${entityName}List(${entityObj});
+            resp.put("list",list);
             ${entityObj}Redis.set${entityName}List2Redis(${entityObj},new ArrayList<>(list),0L);
         }else{
             logger.info("===> fetch page list from database");
@@ -199,24 +200,58 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * 复杂查询查询总数
      */
     @Override
-    public List<${entityName}> get${entityName}CountByExample(${entityName} ${entityObj}) throws Exception {
-        if(Objects.isNull(${entityObj})){
+    public Long get${entityName}CountByExample(QueryExample queryExample,Boolean useCache) throws Exception {
+        if(Objects.isNull(queryExample)){
             throw new Exception("请求参数不能为空");
         }
-        QueryExample queryExample = new QueryExample();
-        return ${entityObj}Dao.get${entityName}CountByExample(queryExample);
+        Long count;
+        if(useCache){
+            count = ${entityObj}Redis.get${entityName}ExampleCountFromRedis(queryExample);
+            if(Objects.nonNull(count)){
+                logger.info("===> fetch count = "+count+" entity from redis");
+                return count;
+            }
+            logger.info("===> fetch count value from database");
+            count = ${entityObj}Dao.get${entityName}CountByExample(queryExample);
+            ${entityObj}Redis.set${entityName}ExampleCount2Redis(queryExample,count,0L);
+        }else{
+            count = ${entityObj}Dao.get${entityName}CountByExample(queryExample);
+        }
+        return count;
     }
 
     /**
      * 复杂查询获取列表
      */
     @Override
-    public List<${entityName}> get${entityName}ListByExample(${entityName} ${entityObj}) throws Exception {
-        if(Objects.isNull(${entityObj})){
+    public JSONObject get${entityName}ListByExample(QueryExample queryExample,Boolean useCache) throws Exception {
+        if(Objects.isNull(queryExample)){
             throw new Exception("请求参数不能为空");
         }
-        QueryExample queryExample = new QueryExample();
-        return ${entityObj}Dao.get${entityName}ListByExample(queryExample);
+        JSONObject resp = new JSONObject();
+        List<${entityName}> list;
+        if(Objects.nonNull(queryExample.getIndex()) && Objects.nonNull(queryExample.getPageSize())){
+            Long total = get${entityName}CountByExample(queryExample, useCache);
+            resp.put("total",total);
+            resp.put("totalPage",(total-1)/queryExample.getPageSize()+1);
+        }
+        if(useCache){
+            list = ${entityObj}Redis.get${entityName}ExampleListFromRedis(queryExample);
+            if(Objects.nonNull(list)){
+                logger.info("===> fetch page list from redis");
+                resp.put("list",list);
+                return resp;
+            }
+            logger.info("===> fetch page list from database");
+            list = ${entityObj}Dao.get${entityName}ListByExample(queryExample);
+            resp.put("list",list);
+            ${entityObj}Redis.set${entityName}ExampleList2Redis(queryExample,new ArrayList<>(list),0L);
+        }else{
+            logger.info("===> fetch page list from database");
+            list = ${entityObj}Dao.get${entityName}ListByExample(queryExample);
+            resp.put("list",list);
+        }
+        return resp;
     }
 
     /**

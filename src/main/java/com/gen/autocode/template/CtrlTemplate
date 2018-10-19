@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.cloud.common.base.BaseController;
 import com.cloud.common.webcomm.ReqEntity;
 import com.alibaba.fastjson.JSONObject;
+import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
 ${importList}
 
@@ -55,12 +56,11 @@ public class ${entityName}Ctrl extends BaseController {
     * @return
     * @throws Exception
     */
-   @PostMapping(value = "/${entityObj}/criteria")
+   @PostMapping(value = "/${entityObj}/criteria/list")
    public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       List<${entityName}> ${entityObj}ExampleList = ${entityObj}Service.get${entityName}ListByExample(${entityObj});
-       JSONObject resp = new JSONObject();
-       resp.put("list",${entityObj}ExampleList);
+       QueryExample queryExample = new QueryExample();
+       JSONObject resp = ${entityObj}Service.get${entityName}ListByExample(queryExample,true);
        return formatResponseParams(EXEC_OK, resp);
    }
 

@@ -50,10 +50,10 @@ public class GenEntity {
             }
 
             //设置order by && in && not in
-            entityColumList.append(createField("order by","transient String","","orderbyClause"));
+            entityColumList.append(createField("order by","transient String","","orderByClause"));
             entityColumList.append(createField("and xxx in...列表","transient List<IntervalEntity>","","inSql"));
             entityColumList.append(createField("and xxx not in 列表","transient List<IntervalEntity>","","notInSql"));
-            entityGetSetList.append(createGetSetFun("String","","orderbyClause"));
+            entityGetSetList.append(createGetSetFun("String","","orderByClause"));
             entityGetSetList.append(createGetSetFun("List<IntervalEntity>","","inSql"));
             entityGetSetList.append(createGetSetFun("List<IntervalEntity>","","notInSql"));
 

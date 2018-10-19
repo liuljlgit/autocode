@@ -68,7 +68,7 @@ public interface I${entityName}Dao {
       * @param queryExample
       * @return
       */
-     List<${entityName}> get${entityName}CountByExample(QueryExample queryExample);
+     Long get${entityName}CountByExample(QueryExample queryExample);
 
      /**
       * 复杂查询获取列表

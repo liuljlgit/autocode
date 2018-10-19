@@ -144,8 +144,8 @@ ${whereSqlList}
         <if test="index!=null and pageSize!=null" >
             limit #{index},#{pageSize}
         </if>
-        <if test="orderbyClause!=null and orderbyClause!=''">
-            order by ${orderbyClause}
+        <if test="orderByClause!=null and orderByClause!=''">
+            order by ${orderByClause}
         </if>
     </select>
 
