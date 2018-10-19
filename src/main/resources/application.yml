@@ -1,6 +1,6 @@
 #端口配置
 server:
-  port: 8082
+  port: 8083
 
 #数据库配置
 spring:
