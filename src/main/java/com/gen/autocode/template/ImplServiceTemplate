@@ -46,6 +46,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         logger.info("===> fetch ${entityId} = "+${entityId}+" entity from database");
         ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(${entityId});
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("没有符合条件的记录！") ;
+        }
         ${entityObj}Redis.set${entityName}2Redis(${entityObj},0L);
         return ${entityObj};
     }

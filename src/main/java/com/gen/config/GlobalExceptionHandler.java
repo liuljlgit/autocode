@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * 全局异常处理类
@@ -24,22 +23,16 @@ public class GlobalExceptionHandler extends BaseController {
     @ExceptionHandler(BusiException.class)
     @ResponseBody
     public String busiExcepitonHandler(HttpServletRequest request, Exception e) {
-        e.printStackTrace();
-        if(Objects.nonNull(e) && Objects.nonNull(e.getMessage())){
-            return formatResponseParams(EXEC_ERROR,null,e.getMessage());
-        }
-        return formatResponseParams(EXEC_ERROR,null);
+        logger.error(e.getMessage(),e);
+        return formatResponseParams(EXEC_ERROR,null,e.getMessage());
     }
 
     //系统异常
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public String defultExcepitonHandler(HttpServletRequest request, Exception e) {
-        e.printStackTrace();
-        if(Objects.nonNull(e) && Objects.nonNull(e.getMessage())){
-            return formatResponseParams(EXEC_ERROR,null,e.getMessage());
-        }
-        return formatResponseParams(EXEC_ERROR,null);
+        logger.error(e.getMessage(),e);
+        return formatResponseParams(EXEC_ERROR,null,e.getMessage());
     }
 
 }
