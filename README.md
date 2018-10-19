@@ -6,8 +6,13 @@
 
 操作步骤：
 1、拉取frame-util和autocade这两个代码的仓库到本地
+
 2、mvn install frame-util项目
+
 3、配置GenProperties.java文件，主要配置mysql地址，需要生成的表名（逗号分隔），还有生成实体的路径
+
 4、运行GenMain即可生成代码
+
 5、如需运行，还需配置application.yml这个配置文件
+
 6、启动，使用postman进行测试
