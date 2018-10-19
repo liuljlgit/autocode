@@ -9,6 +9,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
 import com.cloud.common.redis.BaseRedis;
 import com.cloud.common.utils.CommonUtil;
+import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 ${importList}
 
 /**
@@ -124,6 +127,28 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
+     * 存储分页数量
+     * @return String
+     */
+    @Override
+    public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
+        return rsKey ;
+    }
+
+    /**
+     * 获取分页数量
+     * @return List
+     */
+    @Override
+    public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
+    }
+
+    /**
      * 存储分页列表
      * @return String
      */
@@ -141,6 +166,28 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
+        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        return list;
+    }
+
+    /**
+     * 存储分页列表
+     * @return String
+     */
+    @Override
+    public String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
+        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
+        return rsKey ;
+    }
+
+    /**
+     * 获取分页列表
+     * @return List
+     */
+    @Override
+    public List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
         ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
         return list;
     }

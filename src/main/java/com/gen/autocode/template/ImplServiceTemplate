@@ -39,13 +39,13 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("请输入要获取的数据的ID");
         }
         ${entityName} ${entityObj};
-        ${entityObj} = ${entityObj}Redis.get${entityName}ByKey(daId);
+        ${entityObj} = ${entityObj}Redis.get${entityName}ByKey(${entityId});
         if(Objects.nonNull(${entityObj})){
             logger.info("===> fetch ${entityId} = "+${entityId}+" entity from redis");
             return ${entityObj};
         }
         logger.info("===> fetch ${entityId} = "+${entityId}+" entity from database");
-        ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(daId);
+        ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(${entityId});
         ${entityObj}Redis.set${entityName}2Redis(${entityObj},0L);
         return ${entityObj};
     }
@@ -62,7 +62,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("插入对象不能为空");
         }
         Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
         return result;
     }
 
@@ -78,7 +78,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("插入对象不能为空");
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
     }
 
     /**
@@ -93,7 +93,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("更新对象不能为空");
         }
         Integer result = ${implDaoName}.update${entityName}(${entityObj});
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
         return result;
     }
 
@@ -107,7 +107,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("更新对象不能为空");
         }
         ${implDaoName}.update${entityName}List(${entityObj}List);
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
     }
 
     /**
@@ -120,7 +120,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("请输入要删除的数据的ID");
         }
         Integer result = ${implDaoName}.delete${entityName}ByKey(${entityId});
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
         return result;
     }
 
@@ -134,7 +134,7 @@ public class ${entityName}Service implements ${inftServiceName}{
             throw new Exception("请输入要删除的数据的ID列表");
         }
         ${implDaoName}.delete${entityName}List(${entityObj}List);
-        dailyAmountRedis.clearAllDailyAmount();
+        ${entityObj}Redis.clearAll${entityName}();
     }
 
     /**

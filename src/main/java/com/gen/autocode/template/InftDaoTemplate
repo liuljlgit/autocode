@@ -68,12 +68,12 @@ public interface I${entityName}Dao {
       * @param queryExample
       * @return
       */
-     List<DailyAmount> get${entityName}CountByExample(QueryExample queryExample);
+     List<${entityName}> get${entityName}CountByExample(QueryExample queryExample);
 
      /**
       * 复杂查询获取列表
       * @param queryExample
       * @return
       */
-     List<DailyAmount> get${entityName}ListByExample(QueryExample queryExample);
+     List<${entityName}> get${entityName}ListByExample(QueryExample queryExample);
 }

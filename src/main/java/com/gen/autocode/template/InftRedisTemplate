@@ -1,6 +1,8 @@
 package ${packageName};
 
 import java.util.*;
+import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSONObject;
 ${importList}
 
 /**
@@ -49,6 +51,18 @@ public interface I${entityName}Redis {
     Long get${entityName}CountFromRedis(${entityName} ${entityObj});
 
     /**
+     * 设置分页数量到缓存中
+     * @return
+     */
+    String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire);
+
+    /**
+     * 获取分页数量
+     * @return
+     */
+    Long get${entityName}ExampleCountFromRedis(QueryExample queryExample);
+
+    /**
      * 存储分页列表到缓存中
      */
     String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire);
@@ -57,6 +71,16 @@ public interface I${entityName}Redis {
      * 从缓存中得到分页列表
      */
     List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj});
+
+    /**
+     * 存储分页列表到缓存中
+     */
+    String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire);
+
+    /**
+     * 从缓存中得到分页列表
+     */
+    List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample);
 
     /**
      * 删除所有redis中的值
