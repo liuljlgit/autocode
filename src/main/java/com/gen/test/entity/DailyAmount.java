@@ -84,6 +84,16 @@ public class DailyAmount extends PageEntity implements Serializable {
 	private Byte status;
 
 	/**
+	* field comment:  
+	*/
+	private Byte ce;
+
+	/**
+	* field comment:  
+	*/
+	private Byte sa;
+
+	/**
 	* field comment: 创建时间 
 	*/
 	private Date createTime;
@@ -152,6 +162,10 @@ public class DailyAmount extends PageEntity implements Serializable {
 	public static final transient String TABLE_POSITIVE_DEVIATION = "positive_deviation";
 	public static final transient String PROP_STATUS = "status";
 	public static final transient String TABLE_STATUS = "status";
+	public static final transient String PROP_CE = "ce";
+	public static final transient String TABLE_CE = "ce";
+	public static final transient String PROP_SA = "sa";
+	public static final transient String TABLE_SA = "sa";
 	public static final transient String PROP_CREATE_TIME = "createTime";
 	public static final transient String TABLE_CREATE_TIME = "create_time";
 	public static final transient String PROP_STATUS_TIME = "statusTime";
@@ -208,6 +222,14 @@ public class DailyAmount extends PageEntity implements Serializable {
 	public Byte getStatus() { return status; }
 
 	public void setStatus(Byte status) { this.status = status; }
+
+	public Byte getCe() { return ce; }
+
+	public void setCe(Byte ce) { this.ce = ce; }
+
+	public Byte getSa() { return sa; }
+
+	public void setSa(Byte sa) { this.sa = sa; }
 
 	public Date getCreateTime() { return createTime; }
 

@@ -16,6 +16,8 @@ import com.gen.test.entity.DailyAmount;
 	DailyAmount.PROP_MINUS_DEVIATION,
 	DailyAmount.PROP_POSITIVE_DEVIATION,
 	DailyAmount.PROP_STATUS,
+	DailyAmount.PROP_CE,
+	DailyAmount.PROP_SA,
 	DailyAmount.PROP_CREATE_TIME,
 	DailyAmount.PROP_STATUS_TIME
 })
