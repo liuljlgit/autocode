@@ -34,6 +34,7 @@ public class DailyAmountCtrl extends BaseController {
          throw new Exception("请输入要获取的数据的ID") ;
       }
       DailyAmount dailyAmount = dailyAmountService.loadDailyAmountByKey(daId);
+      System.out.println("aaaa");
       JSONObject resp = new JSONObject();
       resp.put("dailyAmount",new DailyAmountResp(dailyAmount));
       return formatResponseParams(EXEC_OK,resp);
