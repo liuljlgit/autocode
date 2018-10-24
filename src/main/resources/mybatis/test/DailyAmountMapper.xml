@@ -14,6 +14,7 @@
 		<result column="positive_deviation" jdbcType="DECIMAL" property="positiveDeviation" />
 		<result column="status" jdbcType="TINYINT" property="status" />
 		<result column="ce" jdbcType="TINYINT" property="ce" />
+		<result column="sa" jdbcType="TINYINT" property="sa" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="status_time" jdbcType="TIMESTAMP" property="statusTime" />
     </resultMap>
@@ -58,6 +59,9 @@
 	    </if>
 	    <if test="ce != null">
 	       and ce = #{ce,jdbcType=TINYINT}
+	    </if>
+	    <if test="sa != null">
+	       and sa = #{sa,jdbcType=TINYINT}
 	    </if>
 	    <if test="createTimeStart != null">
 	       and create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
@@ -119,7 +123,7 @@
    </sql>
 
     <sql id="Base_Column_List">
-        da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,create_time,status_time
+        da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,sa,create_time,status_time
      </sql>
 
      <!--获取最大的主键-->
@@ -137,22 +141,22 @@
 
     <!--插入对象-->
     <insert id="insertDailyAmount">
-        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,create_time,status_time)
-        values(#{daId},#{entityId},#{dateTime},#{settProfit},#{expendProfit},#{incomeProfit},#{profitHours},#{deficitHours},#{minusDeviation},#{positiveDeviation},#{status},#{ce},#{createTime},#{statusTime})
+        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,sa,create_time,status_time)
+        values(#{daId},#{entityId},#{dateTime},#{settProfit},#{expendProfit},#{incomeProfit},#{profitHours},#{deficitHours},#{minusDeviation},#{positiveDeviation},#{status},#{ce},#{sa},#{createTime},#{statusTime})
     </insert>
 
     <!--批量插入对象-->
     <insert id="insertDailyAmountList">
-        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,create_time,status_time)
+        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,ce,sa,create_time,status_time)
         values
         <foreach collection="list" index="index" item="item" separator=",">
-            (#{item.daId},#{item.entityId},#{item.dateTime},#{item.settProfit},#{item.expendProfit},#{item.incomeProfit},#{item.profitHours},#{item.deficitHours},#{item.minusDeviation},#{item.positiveDeviation},#{item.status},#{item.ce},#{item.createTime},#{item.statusTime})
+            (#{item.daId},#{item.entityId},#{item.dateTime},#{item.settProfit},#{item.expendProfit},#{item.incomeProfit},#{item.profitHours},#{item.deficitHours},#{item.minusDeviation},#{item.positiveDeviation},#{item.status},#{item.ce},#{item.sa},#{item.createTime},#{item.statusTime})
         </foreach>
     </insert>
 
     <!--更新对象-->
     <update id="updateDailyAmount">
-        update daily_amount set da_id = #{daId},entity_id = #{entityId},date_time = #{dateTime},sett_profit = #{settProfit},expend_profit = #{expendProfit},income_profit = #{incomeProfit},profit_hours = #{profitHours},deficit_hours = #{deficitHours},minus_deviation = #{minusDeviation},positive_deviation = #{positiveDeviation},status = #{status},ce = #{ce},create_time = #{createTime},status_time = #{statusTime}
+        update daily_amount set da_id = #{daId},entity_id = #{entityId},date_time = #{dateTime},sett_profit = #{settProfit},expend_profit = #{expendProfit},income_profit = #{incomeProfit},profit_hours = #{profitHours},deficit_hours = #{deficitHours},minus_deviation = #{minusDeviation},positive_deviation = #{positiveDeviation},status = #{status},ce = #{ce},sa = #{sa},create_time = #{createTime},status_time = #{statusTime}
         <where>
             AND da_id=#{daId}
         </where>
@@ -161,7 +165,7 @@
     <!--批量更新对象-->
     <update id="updateDailyAmountList">
         <foreach collection="list" separator=";" item="obj">
-            update daily_amount set da_id = #{obj.daId},entity_id = #{obj.entityId},date_time = #{obj.dateTime},sett_profit = #{obj.settProfit},expend_profit = #{obj.expendProfit},income_profit = #{obj.incomeProfit},profit_hours = #{obj.profitHours},deficit_hours = #{obj.deficitHours},minus_deviation = #{obj.minusDeviation},positive_deviation = #{obj.positiveDeviation},status = #{obj.status},ce = #{obj.ce},create_time = #{obj.createTime},status_time = #{obj.statusTime}
+            update daily_amount set da_id = #{obj.daId},entity_id = #{obj.entityId},date_time = #{obj.dateTime},sett_profit = #{obj.settProfit},expend_profit = #{obj.expendProfit},income_profit = #{obj.incomeProfit},profit_hours = #{obj.profitHours},deficit_hours = #{obj.deficitHours},minus_deviation = #{obj.minusDeviation},positive_deviation = #{obj.positiveDeviation},status = #{obj.status},ce = #{obj.ce},sa = #{obj.sa},create_time = #{obj.createTime},status_time = #{obj.statusTime}
             <where>
                 AND da_id=#{obj.daId}
             </where>
