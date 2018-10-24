@@ -1,11 +1,10 @@
 package com.gen.test.dao.inft;
 
-import com.cloud.common.complexquery.QueryExample;
-import com.gen.test.entity.DailyAmount;
+import java.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import com.cloud.common.complexquery.QueryExample;
+import com.gen.test.entity.DailyAmount;
 
 
 /**

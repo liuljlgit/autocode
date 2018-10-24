@@ -1,16 +1,13 @@
 package com.gen.test.entity;
 
-import java.io.Serializable;
 import com.cloud.common.simplequery.IntervalEntity;
 import com.cloud.common.webcomm.PageEntity;
-import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
-import java.util.*;
-import java.lang.Long;
-import java.lang.Integer;
-import java.util.Date;
-import java.lang.Byte;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -84,6 +81,11 @@ public class DailyAmount extends PageEntity implements Serializable {
 	private Byte status;
 
 	/**
+	* field comment:  
+	*/
+	private Byte ce;
+
+	/**
 	* field comment: 创建时间 
 	*/
 	private Date createTime;
@@ -152,6 +154,8 @@ public class DailyAmount extends PageEntity implements Serializable {
 	public static final transient String TABLE_POSITIVE_DEVIATION = "positive_deviation";
 	public static final transient String PROP_STATUS = "status";
 	public static final transient String TABLE_STATUS = "status";
+	public static final transient String PROP_CE = "ce";
+	public static final transient String TABLE_CE = "ce";
 	public static final transient String PROP_CREATE_TIME = "createTime";
 	public static final transient String TABLE_CREATE_TIME = "create_time";
 	public static final transient String PROP_STATUS_TIME = "statusTime";
@@ -208,6 +212,10 @@ public class DailyAmount extends PageEntity implements Serializable {
 	public Byte getStatus() { return status; }
 
 	public void setStatus(Byte status) { this.status = status; }
+
+	public Byte getCe() { return ce; }
+
+	public void setCe(Byte ce) { this.ce = ce; }
 
 	public Date getCreateTime() { return createTime; }
 
