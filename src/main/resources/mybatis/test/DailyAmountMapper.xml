@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gen.test.dao.inft.IDailyAmountDao">
+    <resultMap id="BaseResultMap" type="com.gen.test.entity.DailyAmount">
+		<result column="da_id" jdbcType="BIGINT" property="daId" />
+		<result column="entity_id" jdbcType="INTEGER" property="entityId" />
+		<result column="date_time" jdbcType="DATE" property="dateTime" />
+		<result column="sett_profit" jdbcType="DECIMAL" property="settProfit" />
+		<result column="expend_profit" jdbcType="DECIMAL" property="expendProfit" />
+		<result column="income_profit" jdbcType="DECIMAL" property="incomeProfit" />
+		<result column="profit_hours" jdbcType="TINYINT" property="profitHours" />
+		<result column="deficit_hours" jdbcType="TINYINT" property="deficitHours" />
+		<result column="minus_deviation" jdbcType="DECIMAL" property="minusDeviation" />
+		<result column="positive_deviation" jdbcType="DECIMAL" property="positiveDeviation" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="status_time" jdbcType="TIMESTAMP" property="statusTime" />
+    </resultMap>
+
+    <sql id="where_sql">
+        and 1=1
+	    <if test="daId != null">
+	       and da_id = #{daId,jdbcType=BIGINT}
+	    </if>
+	    <if test="entityId != null">
+	       and entity_id = #{entityId,jdbcType=INTEGER}
+	    </if>
+	    <if test="dateTimeStart != null">
+	       and date_time &gt;= #{dateTimeStart,jdbcType=DATE}
+	    </if>
+	    <if test="dateTimeEnd != null">
+	       and #{dateTimeEnd,jdbcType=DATE} &gt;= date_time
+	    </if>
+	    <if test="settProfit != null">
+	       and sett_profit = #{settProfit,jdbcType=DECIMAL}
+	    </if>
+	    <if test="expendProfit != null">
+	       and expend_profit = #{expendProfit,jdbcType=DECIMAL}
+	    </if>
+	    <if test="incomeProfit != null">
+	       and income_profit = #{incomeProfit,jdbcType=DECIMAL}
+	    </if>
+	    <if test="profitHours != null">
+	       and profit_hours = #{profitHours,jdbcType=TINYINT}
+	    </if>
+	    <if test="deficitHours != null">
+	       and deficit_hours = #{deficitHours,jdbcType=TINYINT}
+	    </if>
+	    <if test="minusDeviation != null">
+	       and minus_deviation = #{minusDeviation,jdbcType=DECIMAL}
+	    </if>
+	    <if test="positiveDeviation != null">
+	       and positive_deviation = #{positiveDeviation,jdbcType=DECIMAL}
+	    </if>
+	    <if test="status != null">
+	       and status = #{status,jdbcType=TINYINT}
+	    </if>
+	    <if test="createTimeStart != null">
+	       and create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="createTimeEnd != null">
+	       and #{createTimeEnd,jdbcType=TIMESTAMP} &gt;= create_time
+	    </if>
+	    <if test="statusTimeStart != null">
+	       and status_time &gt;= #{statusTimeStart,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="statusTimeEnd != null">
+	       and #{statusTimeEnd,jdbcType=TIMESTAMP} &gt;= status_time
+	    </if>
+        <if test="inSql != null and inSql.size()>0">
+            <foreach collection="inSql" item="intervalEntity" separator=" ">
+                and ${intervalEntity.name} in
+                <foreach collection="intervalEntity.list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="notInSql != null and notInSql.size()>0">
+            <foreach collection="notInSql" item="intervalEntity" separator=" ">
+                and ${intervalEntity.name} not in
+                <foreach collection="intervalEntity.list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause">
+      <foreach collection="criterias" item="criteria" separator=" ">
+        <if test="criteria.valid">
+            ${criteria.opt}
+            <trim prefix="(" prefixOverrides="and|or" suffix=")">
+                <foreach collection="criteria.criterions" item="criterion">
+                  <choose>
+                    <when test="criterion.noValue">
+                        ${criterion.condition}
+                    </when>
+                    <when test="criterion.oneValue">
+                        ${criterion.condition} #{criterion.value1}
+                    </when>
+                    <when test="criterion.secondValue">
+                        ${criterion.condition} #{criterion.value1} and #{criterion.value2}
+                    </when>
+                    <when test="criterion.listValue">
+                        ${criterion.condition}
+                      <foreach collection="criterion.list" item="listItem" open="(" close=")" separator=",">
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+            </trim>
+        </if>
+      </foreach>
+   </sql>
+
+    <sql id="Base_Column_List">
+        da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,create_time,status_time
+     </sql>
+
+     <!--获取最大的主键-->
+    <select id="selectMaxDailyAmountId" resultType="java.lang.Long">
+        select IFNULL(max(da_id), 0) from `daily_amount`
+    </select>
+
+    <!--根据主键获取对象-->
+    <select id="loadDailyAmountByKey" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from daily_amount
+        <where>
+            AND da_id=#{daId}
+        </where>
+    </select>
+
+    <!--插入对象-->
+    <insert id="insertDailyAmount">
+        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,create_time,status_time)
+        values(#{daId},#{entityId},#{dateTime},#{settProfit},#{expendProfit},#{incomeProfit},#{profitHours},#{deficitHours},#{minusDeviation},#{positiveDeviation},#{status},#{createTime},#{statusTime})
+    </insert>
+
+    <!--批量插入对象-->
+    <insert id="insertDailyAmountList">
+        insert into daily_amount(da_id,entity_id,date_time,sett_profit,expend_profit,income_profit,profit_hours,deficit_hours,minus_deviation,positive_deviation,status,create_time,status_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.daId},#{item.entityId},#{item.dateTime},#{item.settProfit},#{item.expendProfit},#{item.incomeProfit},#{item.profitHours},#{item.deficitHours},#{item.minusDeviation},#{item.positiveDeviation},#{item.status},#{item.createTime},#{item.statusTime})
+        </foreach>
+    </insert>
+
+    <!--更新对象-->
+    <update id="updateDailyAmount">
+        update daily_amount set da_id = #{daId},entity_id = #{entityId},date_time = #{dateTime},sett_profit = #{settProfit},expend_profit = #{expendProfit},income_profit = #{incomeProfit},profit_hours = #{profitHours},deficit_hours = #{deficitHours},minus_deviation = #{minusDeviation},positive_deviation = #{positiveDeviation},status = #{status},create_time = #{createTime},status_time = #{statusTime}
+        <where>
+            AND da_id=#{daId}
+        </where>
+    </update>
+
+    <!--批量更新对象-->
+    <update id="updateDailyAmountList">
+        <foreach collection="list" separator=";" item="obj">
+            update daily_amount set da_id = #{obj.daId},entity_id = #{obj.entityId},date_time = #{obj.dateTime},sett_profit = #{obj.settProfit},expend_profit = #{obj.expendProfit},income_profit = #{obj.incomeProfit},profit_hours = #{obj.profitHours},deficit_hours = #{obj.deficitHours},minus_deviation = #{obj.minusDeviation},positive_deviation = #{obj.positiveDeviation},status = #{obj.status},create_time = #{obj.createTime},status_time = #{obj.statusTime}
+            <where>
+                AND da_id=#{obj.daId}
+            </where>
+        </foreach>
+    </update>
+
+    <!--查询总数-->
+    <select id="getDailyAmountCount" resultType="java.lang.Long">
+        select count(*) from daily_amount
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </select>
+
+    <!--查询和分页查询,区别在于page和pageSize是否为空-->
+    <select id="getDailyAmountList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from daily_amount
+        <where>
+            <include refid="where_sql" />
+        </where>
+        <if test="page!=null and pageSize!=null and page!=-1" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderByClause!=null and orderByClause!=''">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--复杂查询获取总数-->
+    <select id="getDailyAmountCountByExample" resultType="java.lang.Long">
+        select count(*) from daily_amount
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+    </select>
+
+    <!--复杂查询查询列表-->
+    <select id="getDailyAmountListByExample" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from daily_amount
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+        <if test="index!=null and pageSize!=null" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderByClause!=null and orderByClause!=''">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--根据主键删除对象-->
+    <delete id="deleteDailyAmountByKey">
+        delete from daily_amount
+        <where>
+            AND da_id=#{daId}
+        </where>
+    </delete>
+
+    <!-- 批量删除对象 -->
+    <delete id="deleteDailyAmountList">
+        delete from daily_amount
+        <where>
+            <foreach collection="list" separator="or" item="obj">
+                da_id=#{obj.daId}
+            </foreach>
+        </where>
+    </delete>
+</mapper>
+

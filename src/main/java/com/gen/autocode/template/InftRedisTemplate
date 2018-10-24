@@ -12,17 +12,21 @@ ${importList}
 public interface I${entityName}Redis {
 
     /**
-     * 得到id
+     * 获取${entityName}的ID
+     * @return
      */
     Long get${entityName}Id();
 
     /**
-     * 初始化id
+     * 在Spring容器初始化的时候，初始化该实体ID的最大值。
+     * @return
      */
     void initMax${entityName}Id();
 
     /**
      * 得到redis的key值
+     * @return
+     * @throws Exception
      */
     String get${entityName}Key(final ${entityIdType} ${entityId});
 
@@ -35,55 +39,77 @@ public interface I${entityName}Redis {
 
     /**
      * 从缓存中得到值
+     * @param ${entityId}
+     * @return
      */
     ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId});
 
     /**
-     * 设置分页数量到缓存中
+     * 存储分页数量
+     * @param ${entityObj}
+     * @param count
+     * @param expire
      * @return
      */
     String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire);
 
-   /**
+    /**
      * 获取分页数量
+     * @param ${entityObj}
      * @return
      */
     Long get${entityName}CountFromRedis(${entityName} ${entityObj});
 
     /**
-     * 存储分页列表到缓存中
+     * 存储分页列表
+     * @param ${entityObj}
+     * @param ${entityObj}List
+     * @param expire
+     * @return
      */
     String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire);
 
     /**
-     * 从缓存中得到分页列表
+     * 获取分页列表
+     * @param ${entityObj}
+     * @return
      */
     List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj});
 
     /**
-     * Example 设置分页数量到缓存中
+     * Example 存储分页数量
+     * @param queryExample
+     * @param count
+     * @param expire
      * @return
      */
     String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire);
 
     /**
      * Example 获取分页数量
+     * @param queryExample
      * @return
      */
     Long get${entityName}ExampleCountFromRedis(QueryExample queryExample);
 
     /**
-     * Example 存储分页列表到缓存中
+     * Example 存储分页列表
+     * @param queryExample
+     * @param list
+     * @param expire
+     * @return
      */
     String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire);
 
     /**
-     * Example 从缓存中得到分页列表
+     * Example 获取分页列表
+     * @param queryExample
+     * @return
      */
     List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample);
 
     /**
-     * 删除所有redis中的值
+     * 删除redis中相关值
      */
     void clearAll${entityName}();
 }

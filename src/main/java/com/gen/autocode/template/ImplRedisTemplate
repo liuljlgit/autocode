@@ -96,6 +96,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 从缓存中得到值
+     * @param ${entityId}
+     * @return
      */
     @Override
     public ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId}){
@@ -106,7 +108,10 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 存储分页数量
-     * @return String
+     * @param ${entityObj}
+     * @param count
+     * @param expire
+     * @return
      */
     @Override
     public String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire){
@@ -117,7 +122,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 获取分页数量
-     * @return List
+     * @param ${entityObj}
+     * @return
      */
     @Override
     public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
@@ -128,7 +134,10 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 存储分页列表
-     * @return String
+     * @param ${entityObj}
+     * @param list
+     * @param expire
+     * @return
      */
     @Override
     public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> list, long expire){
@@ -139,7 +148,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 获取分页列表
-     * @return List
+     * @param ${entityObj}
+     * @return
      */
     @Override
     public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
@@ -150,7 +160,10 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * Example 存储分页数量
-     * @return String
+     * @param queryExample
+     * @param count
+     * @param expire
+     * @return
      */
     @Override
     public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
@@ -161,7 +174,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * Example 获取分页数量
-     * @return List
+     * @param queryExample
+     * @return
      */
     @Override
     public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
@@ -172,7 +186,10 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * Example 存储分页列表
-     * @return String
+     * @param queryExample
+     * @param list
+     * @param expire
+     * @return
      */
     @Override
     public String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
@@ -183,7 +200,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * Example 获取分页列表
-     * @return List
+     * @param queryExample
+     * @return
      */
     @Override
     public List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample){
@@ -193,7 +211,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 删除所有redis中的值
+     * 删除redis中相关值
      */
     @Override
     public void clearAll${entityName}() {

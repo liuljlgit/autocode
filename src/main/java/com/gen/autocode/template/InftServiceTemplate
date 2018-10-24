@@ -13,66 +13,113 @@ public interface I${entityName}Service {
 
     /**
      * 根据主键获取对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
      */
     ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
-     * 插入对象
+     * 新增对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
      */
     Integer insert${entityName}(${entityName} ${entityObj}) throws Exception;
 
     /**
-     * 批量插入对象
+     * 批量新增对象
+     * @param ${entityObj}List
+     * @throws Exception
      */
     void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 
     /**
      * 更新对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
      */
     Integer update${entityName}(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 批量更新
+     * @param ${entityObj}List
+     * @throws Exception
      */
     void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 
     /**
-     * 根据key删除对象
+     * 删除对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
      */
     Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 批量删除对象
+     * @param ${entityObj}List
+     * @throws Exception
      */
     void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 
     /**
-     * 查询总数
+     * 查询记录总数
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
-     * 列表
+     * 分页查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     JSONObject get${entityName}List(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
-     * 获取总数
+     * 查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception;
+
+    /**
+     * 查询总记录数
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     Long get${entityName}CountByExample(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
-     * 复杂查询列表
+     * 分页查询列表
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     JSONObject get${entityName}ListByExample(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
      * 保存记录
+     * @param ${entityObj}
+     * @throws Exception
      */
      void save${entityName}(${entityName} ${entityObj}) throws Exception;
 
-     /**
-      * 保存记录列表
-      */
+    /**
+     * 批量保存记录
+     * @param ${entityObj}List
+     * @throws Exception
+     */
      void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 }

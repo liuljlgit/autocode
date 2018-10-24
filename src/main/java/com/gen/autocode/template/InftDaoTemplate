@@ -15,65 +15,81 @@ public interface I${entityName}Dao {
 
     /**
      * 根据主键获取对象
+     * @param ${entityId}
+     * @return
      */
     ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
-     * 插入对象
+     * 新增对象
+     * @param ${entityObj}
+     * @return
      */
     Integer insert${entityName}(${entityName} ${entityObj});
 
     /**
-     * 批量插入对象
+     * 批量新增对象
+     * @param list
      */
     void insert${entityName}List(List<${entityName}> list);
 
     /**
      * 更新对象
+     * @param ${entityObj}
+     * @return
      */
     Integer update${entityName}(${entityName} ${entityObj});
 
     /**
      * 批量更新
+     * @param list
      */
     void update${entityName}List(List<${entityName}> list);
 
     /**
-     * 根据key删除对象
+     * 删除对象
+     * @param ${entityId}
+     * @return
      */
     Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
      * 批量删除对象
+     * @param list
      */
     void delete${entityName}List(List<${entityName}> list);
 
     /**
-     * 查询总数
+     * 查询记录总数
+     * @param ${entityObj}
+     * @return
      */
     Long get${entityName}Count(${entityName} ${entityObj});
 
     /**
-     * 列表
+     * 分页查询列表
+     * @param ${entityObj}
+     * @return
      */
     List<${entityName}> get${entityName}List(${entityName} ${entityObj});
 
-     /**
-      * 获取最大的ID
-      */
+    /**
+     * 获取表的最大ID
+     * @return
+     */
      Long selectMax${entityName}Id();
 
-     /**
-      * 复杂查询获取总数
-      * @param queryExample
-      * @return
-      */
+    /**
+     * 查询记录总数
+     * @param queryExample
+     * @return
+     */
      Long get${entityName}CountByExample(QueryExample queryExample);
 
-     /**
-      * 复杂查询获取列表
-      * @param queryExample
-      * @return
-      */
+    /**
+     * 分页查询列表
+     * @param queryExample
+     * @return
+     */
      List<${entityName}> get${entityName}ListByExample(QueryExample queryExample);
 }

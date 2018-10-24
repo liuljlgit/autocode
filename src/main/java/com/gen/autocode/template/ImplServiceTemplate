@@ -30,6 +30,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 根据主键获取对象
+     * @param ${entityId}
      * @return
      * @throws Exception
      */
@@ -54,7 +55,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 插入新对象
+     * 新增对象
+     * @param ${entityObj}
      * @return
      * @throws Exception
      */
@@ -70,8 +72,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 批量插入对象
-     * @return
+     * 批量新增对象
+     * @param ${entityObj}List
      * @throws Exception
      */
     @Override
@@ -86,6 +88,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 更新对象
+     * @param ${entityObj}
      * @return
      * @throws Exception
      */
@@ -102,6 +105,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 批量更新
+     * @param ${entityObj}List
+     * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -114,7 +119,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 根据key删除对象
+     * 删除对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -129,6 +137,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 批量删除对象
+     * @param ${entityObj}List
+     * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -141,7 +151,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 查询总数
+     * 查询记录总数
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     @Override
     public Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception{
@@ -165,7 +179,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 列表
+     * 分页查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     @Override
     public JSONObject get${entityName}List(${entityName} ${entityObj},Boolean useCache) throws Exception{
@@ -200,7 +218,28 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 复杂查询查询总数
+     * 查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception{
+        JSONObject ${entityObj}List = get${entityName}List(${entityObj}, useCache);
+        List<${entityName}> list = JSONObject.parseArray(${entityObj}List.getJSONArray("list").toJSONString(), ${entityName}.class);
+        if(CollectionUtils.isEmpty(list)){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+    /**
+     * 查询总记录数
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     @Override
     public Long get${entityName}CountByExample(QueryExample queryExample,Boolean useCache) throws Exception {
@@ -224,7 +263,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 复杂查询获取列表
+     * 分页查询列表
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
      */
     @Override
     public JSONObject get${entityName}ListByExample(QueryExample queryExample,Boolean useCache) throws Exception {
@@ -259,7 +302,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 保存记录
-     * @return
+     * @param ${entityObj}
      * @throws Exception
      */
     @Override
@@ -277,8 +320,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
-     * 保存列表
-     * @return
+     * 批量保存记录
+     * @param ${entityObj}List
      * @throws Exception
      */
     @Override
