@@ -40,6 +40,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public Long get${entityName}Id(){
+        redisTemplate.setEnableTransactionSupport(false);
         return redisTemplate.execute((RedisCallback<Long>) connection->{
             if ( !connection.exists(SEQ_${entityNameUpperCase}_KEY.getBytes())){
                 Long id = ${entityObj}Dao.selectMax${entityName}Id();
