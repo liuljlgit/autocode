@@ -1,6 +1,8 @@
 package com.gen.autocode.GenProp;
 
 import com.cloud.common.utils.HumpUtil;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.util.*;
@@ -121,17 +123,16 @@ public class GenCommon {
      */
     public static String replaceTemplateContent(String templateFileName,Map<String,String> replaceMap){
         try{
-            String templateFile = new File("").getAbsolutePath()+ "/src/main/java/"+GenProperties.templateFilePath.replace(".", "/")+"/"+templateFileName;
-            BufferedReader br = new BufferedReader(new FileReader(templateFile));
-            StringBuffer sb = new StringBuffer("");
-            String s = null;
-            while((s = br.readLine()) != null){
+            StringBuffer sb = new StringBuffer();
+            ClassPathResource resource = new ClassPathResource("template/"+templateFileName);
+            InputStream inputStream = resource.getInputStream();
+            IOUtils.readLines(inputStream).forEach(e->{
                 for(Map.Entry<String, String> data : replaceMap.entrySet()){
-                    s = s.replace(data.getKey(),data.getValue());
+                    e = e.replace(data.getKey(),data.getValue());
                 }
-                sb.append(s);
+                sb.append(e);
                 sb.append("\n");
-            }
+            });
             return sb.toString();
         }catch(Exception e){
             e.printStackTrace();
