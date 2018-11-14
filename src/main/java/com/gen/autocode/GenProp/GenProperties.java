@@ -25,6 +25,11 @@ public class GenProperties {
     public static String tablenames = "daily_amount";
 
     /**
+     * 是否是视图
+     */
+    public static Boolean isTableView = Boolean.FALSE;
+
+    /**
      * 作者名称
      */
     public static String authorName = "lijun";
