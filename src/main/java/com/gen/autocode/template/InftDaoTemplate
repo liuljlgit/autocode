@@ -84,12 +84,12 @@ public interface I${entityName}Dao {
      * @param queryExample
      * @return
      */
-     Long get${entityName}CountByExample(QueryExample queryExample);
+     Long get${entityName}CountExample(QueryExample queryExample);
 
     /**
      * 分页查询列表
      * @param queryExample
      * @return
      */
-     List<${entityName}> get${entityName}ListByExample(QueryExample queryExample);
+     List<${entityName}> get${entityName}ListExample(QueryExample queryExample);
 }

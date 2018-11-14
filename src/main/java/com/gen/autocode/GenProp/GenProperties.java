@@ -32,37 +32,37 @@ public class GenProperties {
     /**
      * entity路径配置
      */
-    public static String entityPackageOutPath = "com.gen.test.entity";
+    public static String entityPackageOutPath = "com.gen.dy.entity";
 
     /**
      * xml路径配置
      */
-    public static String xmlPackageOutPath = "mybatis.test";
+    public static String xmlPackageOutPath = "mybatis.dy";
 
     /**
      * dao路径配置
      */
-    public static String daoPackageOutPath = "com.gen.test.dao";
+    public static String daoPackageOutPath = "com.gen.dy.dao";
 
     /**
      * service路径配置
      */
-    public static String servicePackageOutPath = "com.gen.test.service";
+    public static String servicePackageOutPath = "com.gen.dy.service";
 
     /**
      * redis路径配置
      */
-    public static String redisPackageOutPath = "com.gen.test.cache";
+    public static String redisPackageOutPath = "com.gen.dy.cache";
 
     /**
      * controller路径配置
      */
-    public static String controllerPackageOutPath = "com.gen.test.controller";
+    public static String controllerPackageOutPath = "com.gen.dy.controller";
 
     /**
      * resp对象路径配置
      */
-    public static String respPackageOutPath = "com.gen.test.webentity";
+    public static String respPackageOutPath = "com.gen.dy.webentity";
 
     /**
      * 所有模板文件路径

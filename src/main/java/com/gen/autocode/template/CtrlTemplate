@@ -43,7 +43,7 @@ public class ${entityName}Ctrl extends BaseController {
    @PostMapping(value = "/${entityObj}/list")
    public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       JSONObject resp = ${implServiceName}.get${entityName}List(${entityObj},true);
+       JSONObject resp = ${implServiceName}.get${entityName}ListByPage(${entityObj},true);
        return formatResponseParams(EXEC_OK,resp);
    }
 
@@ -56,7 +56,7 @@ public class ${entityName}Ctrl extends BaseController {
    public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        QueryExample queryExample = new QueryExample();
-       JSONObject resp = ${entityObj}Service.get${entityName}ListByExample(queryExample,true);
+       JSONObject resp = ${entityObj}Service.get${entityName}ListExampleByPage(queryExample,true);
        return formatResponseParams(EXEC_OK, resp);
    }
 
