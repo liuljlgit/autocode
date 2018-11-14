@@ -14,10 +14,10 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static final String URL = "jdbc:mysql://192.168.1.137:3306/test";
-    public static final String NAME = "root";
-    public static final String PASS = "root";
-    public static final String DRIVER = "com.mysql.jdbc.Driver";
+    public static String URL = "jdbc:mysql://192.168.1.137:3306/test";
+    public static String NAME = "root";
+    public static String PASS = "root";
+    public static String DRIVER = "com.mysql.jdbc.Driver";
 
     /**
      * 表名，使用逗号分隔
@@ -32,42 +32,37 @@ public class GenProperties {
     /**
      * entity路径配置
      */
-    public static String entityPackageOutPath = "com.gen.dy.entity";
+    public static String entityPackageOutPath = "com.gen.test.entity";
 
     /**
      * xml路径配置
      */
-    public static String xmlPackageOutPath = "mybatis.dy";
+    public static String xmlPackageOutPath = "mybatis.test";
 
     /**
      * dao路径配置
      */
-    public static String daoPackageOutPath = "com.gen.dy.dao";
+    public static String daoPackageOutPath = "com.gen.test.dao";
 
     /**
      * service路径配置
      */
-    public static String servicePackageOutPath = "com.gen.dy.service";
+    public static String servicePackageOutPath = "com.gen.test.service";
 
     /**
      * redis路径配置
      */
-    public static String redisPackageOutPath = "com.gen.dy.cache";
+    public static String redisPackageOutPath = "com.gen.test.cache";
 
     /**
      * controller路径配置
      */
-    public static String controllerPackageOutPath = "com.gen.dy.controller";
+    public static String controllerPackageOutPath = "com.gen.test.controller";
 
     /**
      * resp对象路径配置
      */
-    public static String respPackageOutPath = "com.gen.dy.webentity";
-
-    /**
-     * 所有模板文件路径
-     */
-    public static String templateFilePath = "com.gen.autocode.template";
+    public static String respPackageOutPath = "com.gen.test.webentity";
 
     /**
      * 当前表名
