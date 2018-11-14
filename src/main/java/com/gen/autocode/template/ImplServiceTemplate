@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 import org.springframework.util.CollectionUtils;
+import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -192,7 +193,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         JSONObject resp = new JSONObject();
         List<${entityName}> list;
-        if(-1 != ${entityObj}.getPage()){
+        if(IConst.PAGE_NO_USE != ${entityObj}.getPage()){
             Long total = get${entityName}Count(${entityObj}, useCache);
             ${entityObj}.setTotal(total.intValue());
             resp.put("total",${entityObj}.getTotal());
@@ -276,10 +277,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         JSONObject resp = new JSONObject();
         List<${entityName}> list;
-        if(Objects.nonNull(queryExample.getIndex()) && Objects.nonNull(queryExample.getPageSize())){
+        if(IConst.PAGE_NO_USE != queryExample.getPage()){
             Long total = get${entityName}CountByExample(queryExample, useCache);
-            resp.put("total",total);
-            resp.put("totalPage",(total-1)/queryExample.getPageSize()+1);
+            queryExample.setTotal(total.intValue());
+            resp.put("total",queryExample.getTotal());
+            resp.put("totalPage",queryExample.getTotalPage());
         }
         if(useCache){
             list = ${entityObj}Redis.get${entityName}ExampleListFromRedis(queryExample);

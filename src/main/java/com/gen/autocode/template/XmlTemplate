@@ -141,7 +141,7 @@ ${whereSqlList}
         <where>
             <include refid="Example_Where_Clause" />
         </where>
-        <if test="index!=null and pageSize!=null" >
+        <if test="page!=null and pageSize!=null and page!=-1" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderByClause!=null and orderByClause!=''">
