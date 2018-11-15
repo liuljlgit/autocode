@@ -1,0 +1,151 @@
+package ${packageName};
+
+import java.util.*;
+import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSONObject;
+${importList}
+
+/**
+ * I${entityName}Service service接口类
+ * @author lijun
+ */
+public interface I${entityName}Service {
+
+    /**
+     * 根据主键获取对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
+     */
+    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
+
+    /**
+     * 普通查询获取单个结果
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    ${entityName} loadSingle${entityName}(${entityName} ${entityObj}, Boolean useCache) throws Exception;
+
+    /**
+     * 复杂查询获取单个结果
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    ${entityName} loadSingle${entityName}Example(QueryExample queryExample, Boolean useCache) throws Exception;
+
+    /**
+     * 新增对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    Integer insert${entityName}(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 批量新增对象
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 更新对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    Integer update${entityName}(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 批量更新
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 删除对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
+     */
+    Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
+
+    /**
+     * 批量删除对象
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+
+    /**
+     * 查询记录总数
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception;
+
+    /**
+     * 分页查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    JSONObject get${entityName}ListByPage(${entityName} ${entityObj},Boolean useCache) throws Exception;
+
+    /**
+     * 查询列表
+     * @param ${entityObj}
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception;
+
+    /**
+     * 查询总记录数 Example
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    Long get${entityName}CountExample(QueryExample queryExample,Boolean useCache) throws Exception;
+
+    /**
+     * 分页查询列表 Example
+     * @param queryExample
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,Boolean useCache) throws Exception;
+
+    /**
+     * 获取列表 Example
+     * @param queryExample
+     * @param useCache
+     * @return
+     */
+    List<${entityName}>  find${entityName}ListExample(QueryExample queryExample, Boolean useCache) throws Exception;
+
+    /**
+     * 保存记录
+     * @param ${entityObj}
+     * @throws Exception
+     */
+     void save${entityName}(${entityName} ${entityObj}) throws Exception;
+
+    /**
+     * 批量保存记录
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+     void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+}
