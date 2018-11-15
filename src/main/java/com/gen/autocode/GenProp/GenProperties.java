@@ -30,6 +30,11 @@ public class GenProperties {
     public static Boolean isTableView = Boolean.FALSE;
 
     /**
+     * 是否不使用缓存
+     */
+    public static Boolean isNoUseCache = Boolean.FALSE;
+
+    /**
      * 作者名称
      */
     public static String authorName = "lijun";
