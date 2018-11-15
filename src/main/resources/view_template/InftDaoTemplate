@@ -1,10 +1,10 @@
-package ${packageName};
+package ${daoPackageOutPath}.inft;
 
 import java.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import com.cloud.common.complexquery.QueryExample;
-${importList}
+import ${entityFullPath}
 
 /**
   * 接口类 I${entityName}Dao

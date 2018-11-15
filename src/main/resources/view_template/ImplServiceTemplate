@@ -1,4 +1,4 @@
-package ${packageName};
+package ${servicePackageOutPath}.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONObject;
-${importList}
+import ${inftServiceFullPath}
+import ${inftDaoFullPath}
+import ${entityFullPath}
 
 /**
  * I${entityName}Service service接口类
