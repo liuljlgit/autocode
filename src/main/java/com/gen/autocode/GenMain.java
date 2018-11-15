@@ -62,27 +62,30 @@ public class GenMain {
             GenProperties.tablename = tablename;
             GenProperties.entityName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename));
             GenProperties.objName = HumpUtil.convertToJava(tablename);
-            GenProperties.entityFullPath = GenProperties.entityPackageOutPath.concat(".").concat(GenProperties.entityName);
+            GenProperties.entityFullPath = GenProperties.entityPackageOutPath.concat(".").concat(GenProperties.entityName).concat(";");
             //控制层
             GenProperties.ctrlName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Ctrl");
-            GenProperties.ctrlFullPath = GenProperties.controllerPackageOutPath.concat(".").concat(GenProperties.ctrlName);
+            GenProperties.ctrlFullPath = GenProperties.controllerPackageOutPath.concat(".").concat(GenProperties.ctrlName).concat(";");
             //dao层
             GenProperties.inftDaoFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Dao");
-            GenProperties.inftDaoFullPath = GenProperties.daoPackageOutPath.concat(".inft.").concat(GenProperties.inftDaoFileName);
+            GenProperties.inftDaoFullPath = GenProperties.daoPackageOutPath.concat(".inft.").concat(GenProperties.inftDaoFileName).concat(";");
             GenProperties.implDaoFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Dao");
-            GenProperties.implDaoFullPath = GenProperties.daoPackageOutPath.concat(".impl.").concat(GenProperties.implDaoFileName);
+            GenProperties.implDaoFullPath = GenProperties.daoPackageOutPath.concat(".impl.").concat(GenProperties.implDaoFileName).concat(";");
             //service层
             GenProperties.inftServiceFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Service");
-            GenProperties.inftServiceFullPath = GenProperties.servicePackageOutPath.concat(".inft.").concat(GenProperties.inftServiceFileName);
+            GenProperties.inftServiceFullPath = GenProperties.servicePackageOutPath.concat(".inft.").concat(GenProperties.inftServiceFileName).concat(";");
             GenProperties.implServiceFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("ServiceImpl");
-            GenProperties.implServiceFullPath = GenProperties.servicePackageOutPath.concat(".impl.").concat(GenProperties.implServiceFileName);
+            GenProperties.implServiceFullPath = GenProperties.servicePackageOutPath.concat(".impl.").concat(GenProperties.implServiceFileName).concat(";");
             //redis层
             GenProperties.inftRedisFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Redis");
-            GenProperties.inftRedisFullPath = GenProperties.redisPackageOutPath.concat(".inft.").concat(GenProperties.inftRedisFileName);
+            GenProperties.inftRedisFullPath = GenProperties.redisPackageOutPath.concat(".inft.").concat(GenProperties.inftRedisFileName).concat(";");
             GenProperties.implRedisFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("RedisImpl");
-            GenProperties.implRedisFullPath = GenProperties.redisPackageOutPath.concat(".impl.").concat(GenProperties.implRedisFileName);
+            GenProperties.implRedisFullPath = GenProperties.redisPackageOutPath.concat(".impl.").concat(GenProperties.implRedisFileName).concat(";");
             //xml层
             GenProperties.xmlFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Mapper");
+            //resp层
+            GenProperties.respFileName = GenProperties.entityName+"Resp";
+            GenProperties.respFullPath = GenProperties.respPackageOutPath.concat(".").concat(GenProperties.respFileName).concat(";");
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -164,15 +164,33 @@ public class GenCommon {
      */
     public static Map<String,String> createReplaceMap(){
         Map<String,String> replaceMap = new HashMap<>();
+        //替换名称
         replaceMap.put("${entityName}",GenProperties.entityName);
         replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
         replaceMap.put("${implServiceName}", HumpUtil.toLowerCaseFirstOne(GenProperties.inftServiceFileName.substring(1,GenProperties.inftServiceFileName.length())));
         replaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
         replaceMap.put("${implDaoName}", HumpUtil.toLowerCaseFirstOne(GenProperties.implDaoFileName));
-        replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
-        replaceMap.put("${entityFullPath}",GenProperties.entityFullPath);
+        replaceMap.put("${respFileName}", GenProperties.respFileName);
         replaceMap.put("${tablename}",GenProperties.tablename);
+        //替换导入路径
+        replaceMap.put("${entityFullPath}",GenProperties.entityFullPath);
+        replaceMap.put("${ctrlFullPath}", GenProperties.ctrlFullPath);
+        replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
+        replaceMap.put("${implDaoFullPath}", GenProperties.implDaoFullPath);
+        replaceMap.put("${inftServiceFullPath}", GenProperties.inftServiceFullPath);
+        replaceMap.put("${implServiceFullPath}", GenProperties.implServiceFullPath);
+        replaceMap.put("${inftRedisFullPath}", GenProperties.inftRedisFullPath);
+        replaceMap.put("${implRedisFullPath}", GenProperties.implRedisFullPath);
+        replaceMap.put("${respFullPath}", GenProperties.respFullPath);
+        //替换包路径
+        replaceMap.put("${controllerPackageOutPath}", GenProperties.controllerPackageOutPath);
+        replaceMap.put("${entityPackageOutPath}", GenProperties.entityPackageOutPath);
+        replaceMap.put("${xmlPackageOutPath}", GenProperties.xmlPackageOutPath);
+        replaceMap.put("${daoPackageOutPath}", GenProperties.daoPackageOutPath);
+        replaceMap.put("${servicePackageOutPath}", GenProperties.servicePackageOutPath);
+        replaceMap.put("${redisPackageOutPath}", GenProperties.redisPackageOutPath);
+        replaceMap.put("${respPackageOutPath}", GenProperties.respPackageOutPath);
         if(!GenProperties.isTableView){
             replaceMap.put("${tableId}",getTableId());
             replaceMap.put("${entityId}",getEntityId());

@@ -1,4 +1,4 @@
-package ${packageName};
+package ${controllerPackageOutPath};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +7,9 @@ import com.cloud.common.webcomm.ReqEntity;
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
+import ${inftServiceFullPath}
+import ${entityFullPath}
+import ${respFullPath}
 ${importList}
 
 /**

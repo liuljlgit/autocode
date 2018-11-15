@@ -14,7 +14,7 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static String URL = "jdbc:mysql://192.168.1.137:3306/test";
+    public static String URL = "jdbc:mysql://192.168.1.135:3306/test";
     public static String NAME = "root";
     public static String PASS = "root";
     public static String DRIVER = "com.mysql.jdbc.Driver";
@@ -173,5 +173,15 @@ public class GenProperties {
      * xml文件名
      */
     public static String xmlFileName;
+
+    /**
+     * resp文件名
+     */
+    public static String respFileName;
+
+    /**
+     * resp文件路径
+     */
+    public static String respFullPath;
 
 }
