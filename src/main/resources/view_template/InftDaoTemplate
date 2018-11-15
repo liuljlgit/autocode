@@ -14,52 +14,6 @@ ${importList}
 public interface I${entityName}Dao {
 
     /**
-     * 根据主键获取对象
-     * @param ${entityId}
-     * @return
-     */
-    ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
-
-    /**
-     * 新增对象
-     * @param ${entityObj}
-     * @return
-     */
-    Integer insert${entityName}(${entityName} ${entityObj});
-
-    /**
-     * 批量新增对象
-     * @param list
-     */
-    void insert${entityName}List(List<${entityName}> list);
-
-    /**
-     * 更新对象
-     * @param ${entityObj}
-     * @return
-     */
-    Integer update${entityName}(${entityName} ${entityObj});
-
-    /**
-     * 批量更新
-     * @param list
-     */
-    void update${entityName}List(List<${entityName}> list);
-
-    /**
-     * 删除对象
-     * @param ${entityId}
-     * @return
-     */
-    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
-
-    /**
-     * 批量删除对象
-     * @param list
-     */
-    void delete${entityName}List(List<${entityName}> list);
-
-    /**
      * 查询记录总数
      * @param ${entityObj}
      * @return
@@ -72,12 +26,6 @@ public interface I${entityName}Dao {
      * @return
      */
     List<${entityName}> get${entityName}List(${entityName} ${entityObj});
-
-    /**
-     * 获取表的最大ID
-     * @return
-     */
-     Long selectMax${entityName}Id();
 
     /**
      * 查询记录总数

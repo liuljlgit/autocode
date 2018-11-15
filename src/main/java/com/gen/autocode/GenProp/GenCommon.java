@@ -124,7 +124,12 @@ public class GenCommon {
     public static String replaceTemplateContent(String templateFileName,Map<String,String> replaceMap){
         try{
             StringBuffer sb = new StringBuffer();
-            ClassPathResource resource = new ClassPathResource("template/"+templateFileName);
+            ClassPathResource resource;
+            if(GenProperties.isTableView){
+                resource = new ClassPathResource("view_template/"+templateFileName);
+            }else{
+                resource = new ClassPathResource("template/"+templateFileName);
+            }
             InputStream inputStream = resource.getInputStream();
             IOUtils.readLines(inputStream).forEach(e->{
                 for(Map.Entry<String, String> data : replaceMap.entrySet()){
@@ -168,10 +173,12 @@ public class GenCommon {
         replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
         replaceMap.put("${entityFullPath}",GenProperties.entityFullPath);
         replaceMap.put("${tablename}",GenProperties.tablename);
-        replaceMap.put("${tableId}",getTableId());
-        replaceMap.put("${entityId}",getEntityId());
-        replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
-        replaceMap.put("${entityIdType}",getEntityIdType());
+        if(!GenProperties.isTableView){
+            replaceMap.put("${tableId}",getTableId());
+            replaceMap.put("${entityId}",getEntityId());
+            replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
+            replaceMap.put("${entityIdType}",getEntityIdType());
+        }
         return replaceMap;
     }
 

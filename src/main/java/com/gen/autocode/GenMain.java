@@ -28,7 +28,9 @@ public class GenMain {
             new GenService();      //生成SERVICE
             new GenCtrl();         //生成Controller
             new GenResp();         //生成resp对象文件
-            new GenRedis();        //生成Redis对象文件
+            if(!GenProperties.isTableView){
+                new GenRedis();        //生成Redis对象文件
+            }
         });
     }
 

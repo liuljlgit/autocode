@@ -59,52 +59,6 @@ ${whereSqlList}
         ${tableColumList}
      </sql>
 
-     <!--获取最大的主键-->
-    <select id="selectMax${entityName}Id" resultType="java.lang.Long">
-        select IFNULL(max(${tableId}), 0) from `${tablename}`
-    </select>
-
-    <!--根据主键获取对象-->
-    <select id="load${entityName}ByKey" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from ${tablename}
-        <where>
-            AND ${tableId}=#{${entityId}}
-        </where>
-    </select>
-
-    <!--插入对象-->
-    <insert id="insert${entityName}">
-        insert into ${tablename}(${tableColumList})
-        values(${entityPropList})
-    </insert>
-
-    <!--批量插入对象-->
-    <insert id="insert${entityName}List">
-        insert into ${tablename}(${tableColumList})
-        values
-        <foreach collection="list" index="index" item="item" separator=",">
-            (${batchEntityPropList})
-        </foreach>
-    </insert>
-
-    <!--更新对象-->
-    <update id="update${entityName}">
-        update ${tablename} ${setList}
-        <where>
-            AND ${tableId}=#{${entityId}}
-        </where>
-    </update>
-
-    <!--批量更新对象-->
-    <update id="update${entityName}List">
-        <foreach collection="list" separator=";" item="obj">
-            update ${tablename} ${batchSetList}
-            <where>
-                AND ${tableId}=#{obj.${entityId}}
-            </where>
-        </foreach>
-    </update>
-
     <!--查询总数-->
     <select id="get${entityName}Count" resultType="java.lang.Long">
         select count(*) from ${tablename}
@@ -113,7 +67,7 @@ ${whereSqlList}
         </where>
     </select>
 
-    <!--查询和分页查询,区别在于page和pageSize是否为空-->
+    <!--查询和分页查询-->
     <select id="get${entityName}List" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
         <where>
@@ -149,21 +103,4 @@ ${whereSqlList}
         </if>
     </select>
 
-    <!--根据主键删除对象-->
-    <delete id="delete${entityName}ByKey">
-        delete from ${tablename}
-        <where>
-            AND ${tableId}=#{${entityId}}
-        </where>
-    </delete>
-
-    <!-- 批量删除对象 -->
-    <delete id="delete${entityName}List">
-        delete from ${tablename}
-        <where>
-            <foreach collection="list" separator="or" item="obj">
-                ${tableId}=#{obj.${entityId}}
-            </foreach>
-        </where>
-    </delete>
 </mapper>

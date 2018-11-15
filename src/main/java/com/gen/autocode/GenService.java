@@ -24,8 +24,10 @@ public class GenService {
             implImportList.add(GenProperties.inftServiceFullPath+";");
             implImportList.add(GenProperties.inftDaoFullPath+";");
             implImportList.add(GenProperties.entityFullPath+";");
-            implImportList.add(GenProperties.inftRedisFullPath+";");
             inftImportList.add(GenProperties.entityFullPath+";");
+            if(!GenProperties.isTableView){
+                implImportList.add(GenProperties.inftRedisFullPath+";");
+            }
 
             //接口Dao替换内容
             Map<String, String> inftReplaceMap = GenCommon.createReplaceMap();
