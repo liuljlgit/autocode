@@ -1,4 +1,4 @@
-package ${packageName};
+package ${entityPackageOutPath};
 
 import java.io.Serializable;
 import com.cloud.common.simplequery.IntervalEntity;

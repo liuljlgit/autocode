@@ -166,6 +166,7 @@ public class GenCommon {
         Map<String,String> replaceMap = new HashMap<>();
         //替换名称
         replaceMap.put("${entityName}",GenProperties.entityName);
+        replaceMap.put("${entityNameUpperCase}",GenProperties.objName.toUpperCase());
         replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
         replaceMap.put("${implServiceName}", HumpUtil.toLowerCaseFirstOne(GenProperties.inftServiceFileName.substring(1,GenProperties.inftServiceFileName.length())));

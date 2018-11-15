@@ -10,7 +10,6 @@ import java.util.*;
 import ${inftServiceFullPath}
 import ${entityFullPath}
 import ${respFullPath}
-${importList}
 
 /**
  * ${entityName}Ctrl 控制层方法

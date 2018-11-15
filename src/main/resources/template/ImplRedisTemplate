@@ -1,4 +1,4 @@
-package ${packageName};
+package ${redisPackageOutPath}.impl;
 
 import java.util.*;
 import org.slf4j.Logger;
@@ -12,7 +12,9 @@ import com.cloud.common.utils.CommonUtil;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-${importList}
+import ${entityFullPath}
+import ${inftRedisFullPath}
+import ${inftDaoFullPath}
 
 /**
  * 缓存实现类 ${entityName}RedisImpl

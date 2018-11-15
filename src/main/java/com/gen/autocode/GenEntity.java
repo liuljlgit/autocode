@@ -14,9 +14,6 @@ public class GenEntity {
 
     public GenEntity() {
         try{
-            /*获取导入列表*/
-            Set<String> entityFullTypeSet = GenProperties.tableColumInfoList.stream().map(e->e.getEntityFullType()).collect(Collectors.toSet());
-
             //生成属性列表和getter和setter函数
             StringBuffer entityColumList = new StringBuffer("");//属性定义
             StringBuffer entityColumPropList = new StringBuffer("");//常量定义
@@ -60,13 +57,16 @@ public class GenEntity {
 
             //模板文件内容替换
             Map<String, String> replaceMap = GenCommon.createReplaceMap();
-            replaceMap.put("${packageName}",GenProperties.entityPackageOutPath);
+            Set<String> entityFullTypeSet = GenProperties.tableColumInfoList.stream().map(e->e.getEntityFullType()).collect(Collectors.toSet());
             replaceMap.put("${importList}",GenCommon.changeImportSetToString(entityFullTypeSet));
             replaceMap.put("${entityColumList}",entityColumList.toString());
             replaceMap.put("${entityGetSetList}",entityGetSetList.toString());
             replaceMap.put("${entityColumPropName}",entityColumPropList.toString());
             //创建文件
-            GenCommon.createFile(true,GenProperties.entityName,GenProperties.entityPackageOutPath,GenCommon.replaceTemplateContent("EntityTemplate",replaceMap));
+            GenCommon.createFile(true,
+                    GenProperties.entityName,
+                    GenProperties.entityPackageOutPath,
+                    GenCommon.replaceTemplateContent("EntityTemplate",replaceMap));
         }catch(Exception e){
             e.printStackTrace();
         }

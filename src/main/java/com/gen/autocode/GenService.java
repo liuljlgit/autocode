@@ -3,10 +3,6 @@ package com.gen.autocode;
 import com.gen.autocode.GenProp.GenCommon;
 import com.gen.autocode.GenProp.GenProperties;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * 自动生成service
  * @author gen
@@ -18,31 +14,16 @@ public class GenService {
      */
     public GenService() {
         try{
-            //导入列表
-            Set<String> inftImportList = new HashSet<>();
-            Set<String> implImportList = new HashSet<>();
-            implImportList.add(GenProperties.inftServiceFullPath+";");
-            implImportList.add(GenProperties.inftDaoFullPath+";");
-            implImportList.add(GenProperties.entityFullPath+";");
-            inftImportList.add(GenProperties.entityFullPath+";");
-            if(!GenProperties.isTableView){
-                implImportList.add(GenProperties.inftRedisFullPath+";");
-            }
-
-            //接口Dao替换内容
-            Map<String, String> inftReplaceMap = GenCommon.createReplaceMap();
-            inftReplaceMap.put("${packageName}",GenProperties.servicePackageOutPath.concat(".inft"));
-            inftReplaceMap.put("${importList}",GenCommon.changeImportSetToString(inftImportList));
-
-            //实现Dao替换内容
-            Map<String, String> implReplaceMap = GenCommon.createReplaceMap();
-            implReplaceMap.put("${packageName}",GenProperties.servicePackageOutPath.concat(".impl"));
-            implReplaceMap.put("${importList}",GenCommon.changeImportSetToString(implImportList));
-
             //创建接口文件
-            GenCommon.createFile(true,GenProperties.inftServiceFileName,GenProperties.servicePackageOutPath.concat(".inft"),GenCommon.replaceTemplateContent("InftServiceTemplate",inftReplaceMap));
+            GenCommon.createFile(true,
+                    GenProperties.inftServiceFileName,
+                    GenProperties.servicePackageOutPath.concat(".inft"),
+                    GenCommon.replaceTemplateContent("InftServiceTemplate",GenCommon.createReplaceMap()));
             //创建实现文件
-            GenCommon.createFile(true,GenProperties.implServiceFileName,GenProperties.servicePackageOutPath.concat(".impl"),GenCommon.replaceTemplateContent("ImplServiceTemplate",implReplaceMap));
+            GenCommon.createFile(true,
+                    GenProperties.implServiceFileName,
+                    GenProperties.servicePackageOutPath.concat(".impl"),
+                    GenCommon.replaceTemplateContent("ImplServiceTemplate",GenCommon.createReplaceMap()));
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -1,9 +1,9 @@
-package ${packageName};
+package ${servicePackageOutPath}.inft;
 
 import java.util.*;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSONObject;
-${importList}
+import ${entityFullPath}
 
 /**
  * I${entityName}Service service接口类

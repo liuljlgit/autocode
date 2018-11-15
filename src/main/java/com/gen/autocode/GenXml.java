@@ -30,7 +30,10 @@ public class GenXml {
             replaceMap.put("${batchSetList}",createSetList("obj."));
 
             //创建文件
-            GenCommon.createFile(false,GenProperties.xmlFileName,GenProperties.xmlPackageOutPath,GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));
+            GenCommon.createFile(false,
+                    GenProperties.xmlFileName,
+                    GenProperties.xmlPackageOutPath,
+                    GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));
         }catch(Exception e){
             e.printStackTrace();
         }

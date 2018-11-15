@@ -1,9 +1,9 @@
-package ${packageName};
+package ${redisPackageOutPath}.inft;
 
 import java.util.*;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSONObject;
-${importList}
+import ${entityFullPath}
 
 /**
  * 缓存接口类 I${entityName}Redis

@@ -17,17 +17,14 @@ public class GenResp {
      */
     public GenResp() {
         try{
-            //导入列表
-            Set<String> importList = new HashSet<>();
-            importList.add(GenProperties.entityPackageOutPath+"."+GenProperties.entityName+";");
-            //resp模板内容替换
-            Map<String, String> respReplaceMap = GenCommon.createReplaceMap();
-            respReplaceMap.put("${packageName}",GenProperties.respPackageOutPath);
-            respReplaceMap.put("${returnProp}",createReturnProp());
-            //导入列表请在最后设置
-            respReplaceMap.put("${importList}", GenCommon.changeImportSetToString(importList));
+            //设置模板替换内容
+            Map<String, String> replaceMap = GenCommon.createReplaceMap();
+            replaceMap.put("${returnProp}",createReturnProp());
             //创建接口文件
-            GenCommon.createFile(true,GenProperties.entityName.concat("Resp"),GenProperties.respPackageOutPath,GenCommon.replaceTemplateContent("RespTemplate",respReplaceMap));
+            GenCommon.createFile(true,
+                    GenProperties.respFileName,
+                    GenProperties.respPackageOutPath,
+                    GenCommon.replaceTemplateContent("RespTemplate",replaceMap));
         }catch(Exception e){
             e.printStackTrace();
         }
