@@ -127,6 +127,8 @@ public class GenCommon {
             ClassPathResource resource;
             if(GenProperties.isTableView){
                 resource = new ClassPathResource("view_template/"+templateFileName);
+            }else if(!GenProperties.useCache){
+                resource = new ClassPathResource("no_cache_template/"+templateFileName);
             }else{
                 resource = new ClassPathResource("template/"+templateFileName);
             }

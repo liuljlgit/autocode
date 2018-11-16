@@ -32,7 +32,7 @@ public class GenProperties {
     /**
      * 是否不使用缓存
      */
-    public static Boolean isNoUseCache = Boolean.FALSE;
+    public static Boolean useCache = Boolean.FALSE;
 
     /**
      * 作者名称
