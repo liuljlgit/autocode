@@ -3,7 +3,7 @@ package ${servicePackageOutPath}.inft;
 import java.util.*;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSONObject;
-import ${entityFullPath}
+import ${entityFullPath};
 
 /**
  * I${entityName}Service service接口类

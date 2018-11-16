@@ -2,7 +2,7 @@ package ${respPackageOutPath};
 
 import com.alibaba.fastjson.annotation.JSONType;
 import com.cloud.common.utils.CommonUtil;
-import ${entityFullPath}
+import ${entityFullPath};
 
 @JSONType(includes = {
     ${returnProp}

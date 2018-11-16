@@ -3,7 +3,7 @@ package ${redisPackageOutPath}.inft;
 import java.util.*;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSONObject;
-import ${entityFullPath}
+import ${entityFullPath};
 
 /**
  * 缓存接口类 I${entityName}Redis

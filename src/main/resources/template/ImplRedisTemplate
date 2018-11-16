@@ -12,9 +12,9 @@ import com.cloud.common.utils.CommonUtil;
 import com.cloud.common.complexquery.QueryExample;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import ${entityFullPath}
-import ${inftRedisFullPath}
-import ${inftDaoFullPath}
+import ${entityFullPath};
+import ${inftRedisFullPath};
+import ${inftDaoFullPath};
 
 /**
  * 缓存实现类 ${entityName}RedisImpl
