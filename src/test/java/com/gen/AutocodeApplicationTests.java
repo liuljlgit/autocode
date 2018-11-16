@@ -1,4 +1,4 @@
-package com.lijun;
+package com.gen;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
