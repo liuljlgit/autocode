@@ -1,0 +1,303 @@
+package ${servicePackageOutPath}.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.cloud.common.complexquery.QueryExample;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.*;
+import org.springframework.util.CollectionUtils;
+import com.cloud.common.constant.IConst;
+import org.springframework.cache.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.redis.core.RedisTemplate;
+import java.util.stream.Collectors;
+import com.alibaba.fastjson.JSONObject;
+import ${inftServiceFullPath};
+import ${inftDaoFullPath};
+import ${entityFullPath};
+
+/**
+ * I${entityName}Service service接口类
+ * @author lijun
+ */
+@Service("${implServiceName}")
+public class ${entityName}ServiceImpl implements ${inftServiceName}{
+
+    private static final Logger logger = LoggerFactory.getLogger(${entityName}ServiceImpl.class);
+
+    @Autowired
+    private ${inftDaoName} ${implDaoName};
+
+    /**
+     * 根据主键获取对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
+        if(Objects.isNull(${entityId})){
+            throw new Exception("请输入要获取的数据的ID");
+        }
+        ${entityName} ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(${entityId});
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("没有符合条件的记录！") ;
+        }
+        return ${entityObj};
+    }
+
+    /**
+     * 普通查询获取单个结果
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} loadSingle${entityName}(${entityName} ${entityObj}) throws Exception {
+        List<${entityName}> list = find${entityName}List(${entityObj});
+        if(!CollectionUtils.isEmpty(list)){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 复杂查询获取单个结果
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} loadSingle${entityName}Example(QueryExample queryExample) throws Exception {
+        List<${entityName}> list = find${entityName}ListExample(queryExample);
+        if(!CollectionUtils.isEmpty(list)){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 新增对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("插入对象不能为空");
+        }
+        return ${implDaoName}.insert${entityName}(${entityObj});
+    }
+
+    /**
+     * 批量新增对象
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("插入对象不能为空");
+        }
+        ${implDaoName}.insert${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 更新对象
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("更新对象不能为空");
+        }
+        return ${implDaoName}.update${entityName}(${entityObj});
+    }
+
+    /**
+     * 批量更新
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("更新对象不能为空");
+        }
+        ${implDaoName}.update${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 删除对象
+     * @param ${entityId}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
+        if(Objects.isNull(${entityId})){
+            throw new Exception("请输入要删除的数据的ID");
+        }
+        return ${implDaoName}.delete${entityName}ByKey(${entityId});
+    }
+
+    /**
+     * 批量删除对象
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            throw new Exception("请输入要删除的数据的ID列表");
+        }
+        ${implDaoName}.delete${entityName}List(${entityObj}List);
+    }
+
+    /**
+     * 查询记录总数
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${entityObj}Dao.get${entityName}Count(${entityObj});
+    }
+
+    /**
+     * 分页查询列表
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public JSONObject get${entityName}ListByPage(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
+            throw new Exception("分页请求入参异常");
+        }
+        JSONObject resp = new JSONObject();
+        ${entityObj}.setTotal(get${entityName}Count(${entityObj}).intValue());
+        resp.put("total",${entityObj}.getTotal());
+        resp.put("totalPage",${entityObj}.getTotalPage());
+        resp.put("list",find${entityName}List(${entityObj}));
+        return resp;
+    }
+
+    /**
+     * 查询列表
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception{
+        return ${entityObj}Dao.get${entityName}List(${entityObj});
+    }
+
+    /**
+     * 查询总记录数 Example
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long get${entityName}CountExample(QueryExample queryExample) throws Exception {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("请求参数不能为空");
+        }
+        return ${entityObj}Dao.get${entityName}CountExample(queryExample);
+    }
+
+    /**
+     * 分页查询列表 Example
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public JSONObject get${entityName}ListExampleByPage(QueryExample queryExample) throws Exception {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(queryExample.getPage()) || Objects.isNull(queryExample.getPageSize()) || IConst.PAGE_NO_USE.equals(queryExample.getPage())){
+            throw new Exception("分页请求入参异常");
+        }
+        JSONObject resp = new JSONObject();
+        queryExample.setTotal(get${entityName}CountExample(queryExample).intValue());
+        resp.put("total",queryExample.getTotal());
+        resp.put("totalPage",queryExample.getTotalPage());
+        resp.put("list",find${entityName}ListExample(queryExample));
+        return resp;
+    }
+
+    /**
+     * 获取列表 Example
+     * @param queryExample
+     * @return
+     */
+    @Override
+    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) {
+        return ${entityObj}Dao.get${entityName}ListExample(queryExample);
+    }
+
+    /**
+     * 保存记录
+     * @param ${entityObj}
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void save${entityName}(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+           throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            insert${entityName}(${entityObj});
+        }else{
+            update${entityName}(${entityObj});
+        }
+    }
+
+    /**
+     * 批量保存记录
+     * @param ${entityObj}List
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+        if(CollectionUtils.isEmpty(${entityObj}List)){
+            return ;
+        }
+        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
+        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
+        if(!CollectionUtils.isEmpty(insertList)){
+            insertList = insertList.stream().map(e->{
+                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                return e;
+            }).collect(Collectors.toList());
+            insert${entityName}List(insertList);
+        }
+        if(!CollectionUtils.isEmpty(updateList)){
+            update${entityName}List(updateList);
+        }
+    }
+}
