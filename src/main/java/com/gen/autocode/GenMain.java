@@ -21,13 +21,13 @@ public class GenMain {
     public static void main(String[] args){
         String tablenames = GenProperties.tablenames;
         Arrays.stream(tablenames.split(",")).forEach(e->{
-            initGenProperties(e);         //初始化配置
-            new GenEntity();       //生成实体类
-            new GenXml();          //生成XML
-            new GenDao();          //生成DAO
-            new GenService();      //生成SERVICE
-            new GenCtrl();         //生成Controller
-            new GenResp();         //生成resp对象文件
+            initGenProperties(e);       //初始化配置
+            new GenEntity();            //生成实体类
+            new GenXml();               //生成XML
+            new GenDao();               //生成DAO
+            new GenService();           //生成SERVICE
+            new GenCtrl();              //生成Controller
+            new GenResp();              //生成resp对象文件
             if(!GenProperties.isTableView && GenProperties.useCache){
                 new GenRedis();        //生成Redis对象文件
             }
