@@ -22,7 +22,7 @@ public class GenProperties {
     /**
      * 表名，使用逗号分隔
      */
-    public static String tablenames = "daily_amount";
+    public static String tablenames = "medium_contract";
 
     /**
      * 是否是视图
@@ -32,7 +32,7 @@ public class GenProperties {
     /**
      * 是否不使用缓存
      */
-    public static Boolean useCache = Boolean.TRUE;
+    public static Boolean useCache = Boolean.FALSE;
 
     /**
      * 作者名称

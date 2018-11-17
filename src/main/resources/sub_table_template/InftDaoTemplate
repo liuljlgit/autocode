@@ -31,7 +31,7 @@ public interface I${entityName}Dao {
      * 批量新增对象
      * @param list
      */
-    void insert${entityName}List(List<${entityName}> list);
+    void insert${entityName}List(@Param("list") List<${entityName}> list,@Param("tname") String tablename);
 
     /**
      * 更新对象
@@ -51,40 +51,12 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
+    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId},@Param("tname") String tablename);
 
     /**
      * 批量删除对象
      * @param list
      */
-    void delete${entityName}List(List<${entityName}> list);
-
-    /**
-     * 查询记录总数
-     * @param ${entityObj}
-     * @return
-     */
-    Long get${entityName}Count(${entityName} ${entityObj});
-
-    /**
-     * 分页查询列表
-     * @param ${entityObj}
-     * @return
-     */
-    List<${entityName}> get${entityName}List(${entityName} ${entityObj});
-
-    /**
-     * 查询记录总数
-     * @param queryExample
-     * @return
-     */
-     Long get${entityName}CountExample(QueryExample queryExample);
-
-    /**
-     * 分页查询列表
-     * @param queryExample
-     * @return
-     */
-     List<${entityName}> get${entityName}ListExample(QueryExample queryExample);
+    void delete${entityName}List(@Param("list") List<${entityName}> list,@Param("tname") String tablename);
 
 }

@@ -38,31 +38,6 @@ public class ${entityName}Ctrl extends BaseController {
    }
 
   /**
-   * ${entityName} 根据实体对象查询列表
-   * @return
-   * @throws Exception
-   */
-   @PostMapping(value = "/${entityObj}/list")
-   public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
-       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       JSONObject resp = ${implServiceName}.get${entityName}ListByPage(${entityObj});
-       return formatResponseParams(EXEC_OK,resp);
-   }
-
-   /**
-    * 复杂查询
-    * @return
-    * @throws Exception
-    */
-   @PostMapping(value = "/${entityObj}/criteria/list")
-   public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
-       ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       QueryExample queryExample = new QueryExample();
-       JSONObject resp = ${entityObj}Service.get${entityName}ListExampleByPage(queryExample);
-       return formatResponseParams(EXEC_OK, resp);
-   }
-
-  /**
    * ${entityName} 新增或者修改记录，根据主键判断，主键为空则新增，否则修改。
    * @return
    * @throws Exception
@@ -79,12 +54,12 @@ public class ${entityName}Ctrl extends BaseController {
     * @return
     * @throws Exception
     */
-    @DeleteMapping(value = "/${entityObj}/{${entityId}}")
-    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
+    @DeleteMapping(value = "/${entityObj}/{${entityId}}/{key}")
+    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId},@PathVariable(value="key") Long key) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new Exception("入参请求异常") ;
         }
-        ${implServiceName}.delete${entityName}ByKey(${entityId});
+        ${implServiceName}.delete${entityName}ByKey(${entityId},key);
         return formatResponseParams(EXEC_OK,null);
     }
 
