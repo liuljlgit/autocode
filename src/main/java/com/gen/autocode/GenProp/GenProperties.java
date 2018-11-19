@@ -72,7 +72,7 @@ public class GenProperties {
     /**
      * entity路径配置
      */
-    public static String templatePath = "template";
+    public static String templatePath = "cache_template";
 
     /**
      * 当前表名
