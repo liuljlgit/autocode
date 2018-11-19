@@ -60,7 +60,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("插入对象不能为空");
+            return 0;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
             ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
@@ -80,7 +80,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("插入对象不能为空");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
@@ -110,7 +110,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("更新对象不能为空");
+            return 0;
         }
 
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
@@ -131,7 +131,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("更新对象不能为空");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
@@ -170,7 +170,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("请输入要删除的数据的ID列表");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
@@ -196,7 +196,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-           throw new Exception("请求参数不能为空");
+           return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
             ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));

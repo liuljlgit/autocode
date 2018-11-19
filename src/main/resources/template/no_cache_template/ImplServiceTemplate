@@ -287,7 +287,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-           throw new Exception("请求参数不能为空");
+           return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
             ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
