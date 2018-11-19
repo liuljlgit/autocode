@@ -100,7 +100,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("插入对象不能为空");
+            return 0;
+        }
+        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
         }
         Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
         ${entityObj}Redis.clearAll${entityName}();
@@ -116,7 +119,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("插入对象不能为空");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
+            }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
         ${entityObj}Redis.clearAll${entityName}();
@@ -132,7 +140,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("更新对象不能为空");
+            return 0;
+        }
+        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            throw new Exception("更新主键不能为空");
         }
         Integer result = ${implDaoName}.update${entityName}(${entityObj});
         ${entityObj}Redis.clearAll${entityName}();
@@ -148,7 +159,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("更新对象不能为空");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                throw new Exception("更新主键不能为空");
+            }
         }
         ${implDaoName}.update${entityName}List(${entityObj}List);
         ${entityObj}Redis.clearAll${entityName}();
@@ -180,7 +196,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("请输入要删除的数据的ID列表");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                throw new Exception("删除主键不能为空");
+            }
         }
         ${implDaoName}.delete${entityName}List(${entityObj}List);
         ${entityObj}Redis.clearAll${entityName}();
