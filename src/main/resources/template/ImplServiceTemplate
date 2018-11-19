@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONObject;
-import ${inftServiceFullPath}
-import ${inftDaoFullPath}
+import ${inftServiceFullPath};
+import ${inftDaoFullPath};
 import ${entityFullPath};
-import ${inftRedisFullPath}
+import ${inftRedisFullPath};
 
 /**
  * I${entityName}Service service接口类

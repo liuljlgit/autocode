@@ -25,12 +25,7 @@ public class GenProperties {
     public static String tablenames = "medium_contract";
 
     /**
-     * 是否是视图
-     */
-    public static Boolean isTableView = Boolean.FALSE;
-
-    /**
-     * 是否不使用缓存
+     * 是否使用缓存
      */
     public static Boolean useCache = Boolean.FALSE;
 
@@ -73,6 +68,11 @@ public class GenProperties {
      * resp对象路径配置
      */
     public static String respPackageOutPath = "com.gen.test.webentity";
+
+    /**
+     * entity路径配置
+     */
+    public static String templatePath = "template";
 
     /**
      * 当前表名

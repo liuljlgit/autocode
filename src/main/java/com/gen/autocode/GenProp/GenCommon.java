@@ -3,6 +3,7 @@ package com.gen.autocode.GenProp;
 import com.cloud.common.utils.HumpUtil;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.util.*;
@@ -124,15 +125,7 @@ public class GenCommon {
     public static String replaceTemplateContent(String templateFileName,Map<String,String> replaceMap){
         try{
             StringBuffer sb = new StringBuffer();
-            ClassPathResource resource;
-            if(GenProperties.isTableView){
-                resource = new ClassPathResource("view_template/"+templateFileName);
-            }else if(!GenProperties.useCache){
-                //resource = new ClassPathResource("no_cache_template/"+templateFileName);
-                resource = new ClassPathResource("sub_table_template/"+templateFileName);
-            }else{
-                resource = new ClassPathResource("template/"+templateFileName);
-            }
+            ClassPathResource resource = new ClassPathResource(GenProperties.templatePath + "/" + templateFileName) ;
             InputStream inputStream = resource.getInputStream();
             IOUtils.readLines(inputStream).forEach(e->{
                 for(Map.Entry<String, String> data : replaceMap.entrySet()){
@@ -195,12 +188,10 @@ public class GenCommon {
         replaceMap.put("${servicePackageOutPath}", GenProperties.servicePackageOutPath);
         replaceMap.put("${redisPackageOutPath}", GenProperties.redisPackageOutPath);
         replaceMap.put("${respPackageOutPath}", GenProperties.respPackageOutPath);
-        if(!GenProperties.isTableView){
-            replaceMap.put("${tableId}",getTableId());
-            replaceMap.put("${entityId}",getEntityId());
-            replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
-            replaceMap.put("${entityIdType}",getEntityIdType());
-        }
+        replaceMap.put("${tableId}",getTableId());
+        replaceMap.put("${entityId}",getEntityId());
+        replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
+        replaceMap.put("${entityIdType}",getEntityIdType());
         return replaceMap;
     }
 
@@ -209,7 +200,11 @@ public class GenCommon {
      */
     public static String getTableId(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getTableColumName()).collect(Collectors.toList());
-        return list.get(0);
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }else{
+            return list.get(0);
+        }
     }
 
     /**
@@ -217,7 +212,11 @@ public class GenCommon {
      */
     public static String getEntityId(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
-        return list.get(0);
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }else{
+            return list.get(0);
+        }
     }
 
     /**
@@ -225,7 +224,11 @@ public class GenCommon {
      */
     public static String getEntityIdUpperFirst(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
-        return HumpUtil.toUpperCaseFirstOne(list.get(0));
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }else{
+            return HumpUtil.toUpperCaseFirstOne(list.get(0));
+        }
     }
 
     /**
@@ -233,7 +236,11 @@ public class GenCommon {
      */
     public static String getEntityIdType(){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityType()).collect(Collectors.toList());
-        return list.get(0);
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }else{
+            return list.get(0);
+        }
     }
 
     /**
