@@ -7,9 +7,9 @@ import com.cloud.common.webcomm.ReqEntity;
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
-import ${inftServiceFullPath}
-import ${entityFullPath}
-import ${respFullPath}
+import ${inftServiceFullPath};
+import ${entityFullPath};
+import ${respFullPath};
 
 /**
  * ${entityName}Ctrl 控制层方法

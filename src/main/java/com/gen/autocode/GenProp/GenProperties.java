@@ -22,17 +22,12 @@ public class GenProperties {
     /**
      * 表名，使用逗号分隔
      */
-    public static String tablenames = "daily_amount";
+    public static String tablenames = "medium_contract";
 
     /**
-     * 是否是视图
+     * 是否使用缓存
      */
-    public static Boolean isTableView = Boolean.FALSE;
-
-    /**
-     * 是否不使用缓存
-     */
-    public static Boolean isNoUseCache = Boolean.FALSE;
+    public static Boolean useCache = Boolean.FALSE;
 
     /**
      * 作者名称
@@ -73,6 +68,11 @@ public class GenProperties {
      * resp对象路径配置
      */
     public static String respPackageOutPath = "com.gen.test.webentity";
+
+    /**
+     * entity路径配置
+     */
+    public static String templatePath = "template/cache_template";
 
     /**
      * 当前表名

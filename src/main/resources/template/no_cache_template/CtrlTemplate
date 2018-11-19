@@ -7,9 +7,9 @@ import com.cloud.common.webcomm.ReqEntity;
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
-import ${inftServiceFullPath}
-import ${entityFullPath}
-import ${respFullPath}
+import ${inftServiceFullPath};
+import ${entityFullPath};
+import ${respFullPath};
 
 /**
  * ${entityName}Ctrl 控制层方法
@@ -45,7 +45,7 @@ public class ${entityName}Ctrl extends BaseController {
    @PostMapping(value = "/${entityObj}/list")
    public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       JSONObject resp = ${implServiceName}.get${entityName}ListByPage(${entityObj},true);
+       JSONObject resp = ${implServiceName}.get${entityName}ListByPage(${entityObj});
        return formatResponseParams(EXEC_OK,resp);
    }
 
@@ -58,7 +58,7 @@ public class ${entityName}Ctrl extends BaseController {
    public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        QueryExample queryExample = new QueryExample();
-       JSONObject resp = ${entityObj}Service.get${entityName}ListExampleByPage(queryExample,true);
+       JSONObject resp = ${entityObj}Service.get${entityName}ListExampleByPage(queryExample);
        return formatResponseParams(EXEC_OK, resp);
    }
 
