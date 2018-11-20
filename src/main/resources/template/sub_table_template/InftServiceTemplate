@@ -17,7 +17,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId},Long keyToHash) throws Exception;
+    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception;
 
     /**
      * 普通查询获取单个结果
@@ -33,7 +33,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    ${entityName} loadSingle${entityName}Example(QueryExample queryExample,Long keyToHash) throws Exception;
+    ${entityName} loadSingle${entityName}Example(QueryExample queryExample,String keyToHash) throws Exception;
 
     /**
      * 新增对象
@@ -71,7 +71,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Integer delete${entityName}ByKey(${entityIdType} ${entityId},Long keyToHash) throws Exception;
+    Integer delete${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception;
 
     /**
      * 批量删除对象
@@ -110,7 +110,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Long get${entityName}CountExample(QueryExample queryExample,Long keyToHash) throws Exception;
+    Long get${entityName}CountExample(QueryExample queryExample,String keyToHash) throws Exception;
 
     /**
      * 分页查询列表 Example
@@ -118,14 +118,14 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,Long keyToHash) throws Exception;
+    JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,String keyToHash) throws Exception;
 
     /**
      * 获取列表 Example
      * @param queryExample
      * @return
      */
-    List<${entityName}>  find${entityName}ListExample(QueryExample queryExample,Long keyToHash) throws Exception;
+    List<${entityName}>  find${entityName}ListExample(QueryExample queryExample,String keyToHash) throws Exception;
 
     /**
      * 保存记录
