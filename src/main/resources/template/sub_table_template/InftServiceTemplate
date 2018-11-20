@@ -141,4 +141,23 @@ public interface I${entityName}Service {
      */
      void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 
+    /**
+     * 得到当前数据库中的表名列表
+     * 此方法应该搭配缓存,否则还是用手动的方式配置表吧
+     * @return
+     */
+    List<String> getTableNameList() throws Exception;
+
+    /**
+     * 获取系统中所有进行分表的key列表进行数据迁移
+     * @return
+     */
+    List<String> getKeyToHashList() throws Exception;
+
+    /**
+     * 数据迁移:增加新的数据表后,部分数据需重新定位表
+     * @throws Exception
+     */
+    void dataMigration() throws Exception;
+
 }

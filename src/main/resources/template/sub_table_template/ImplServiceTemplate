@@ -372,4 +372,34 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
     }
 
+    /**
+     * 得到当前数据库中的表名列表
+     * 此方法应该搭配缓存,否则还是用手动的方式配置表吧
+     * @return
+     */
+    @Override
+    public List<String> getTableNameList() throws Exception{
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 获取系统中所有进行分表的key列表进行数据迁移
+     * @return
+     */
+    @Override
+    public List<String> getKeyToHashList() throws Exception{
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 数据迁移:增加新的数据表后,部分数据需重新定位表
+     * @throws Exception
+     */
+    @Override
+    @Transactional
+    public void dataMigration() throws Exception {
+        //dosomething
+    }
+
+
 }
