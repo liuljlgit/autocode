@@ -192,6 +192,14 @@ public class GenCommon {
         replaceMap.put("${entityId}",getEntityId());
         replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
         replaceMap.put("${entityIdType}",getEntityIdType());
+        //如果没有使用缓存,设定id策略
+        if(!GenProperties.useCache){
+            if("String".equals(getEntityIdType())){
+                replaceMap.put("${noCacheGenId}", "String.valueOf(IDUtil.genLongId())");
+            }else{
+                replaceMap.put("${noCacheGenId}", "IDUtil.genLongId()");
+            }
+        }
         return replaceMap;
     }
 

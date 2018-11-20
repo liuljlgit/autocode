@@ -7,6 +7,7 @@ import com.cloud.common.exception.BusiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+import com.cloud.common.utils.IDUtil;
 import org.springframework.util.CollectionUtils;
 import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
@@ -63,7 +64,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return 0;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
         }
         if(Objects.isNull(${entityObj}.getTname())){
             ${entityObj}.setTname(HashUtil.hashTableName("medium_contract", 5, null));
@@ -85,7 +86,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
             if(Objects.isNull(e.get${upperFirstEntityId}())){
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
             }
             if(Objects.isNull(e.getTname())){
                 e.setTname(HashUtil.hashTableName("${tablename}", 5, null));
@@ -199,7 +200,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
            return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -221,7 +222,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);

@@ -6,6 +6,7 @@ import com.cloud.common.complexquery.QueryExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+import com.cloud.common.utils.IDUtil;
 import org.springframework.util.CollectionUtils;
 import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
@@ -90,7 +91,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return 0;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
         }
         return ${implDaoName}.insert${entityName}(${entityObj});
     }
@@ -108,7 +109,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         for (${entityName} ${entityObj} : ${entityObj}List) {
             if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-                ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
             }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
@@ -290,7 +291,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
            return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -312,7 +313,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);
