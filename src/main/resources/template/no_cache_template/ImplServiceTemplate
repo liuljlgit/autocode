@@ -230,6 +230,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     public List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("查询参数不能为空");
+        }
         return ${entityObj}Dao.get${entityName}List(${entityObj});
     }
 
@@ -242,7 +245,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}CountExample(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         return ${entityObj}Dao.get${entityName}CountExample(queryExample);
     }
@@ -276,6 +279,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("查询参数不能为空");
+        }
         return ${entityObj}Dao.get${entityName}ListExample(queryExample);
     }
 

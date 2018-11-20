@@ -68,7 +68,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception{
         if(Objects.isNull(${entityObj})){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         Long count = ${entityObj}Dao.get${entityName}Count(${entityObj});
         return count;
@@ -83,7 +83,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject get${entityName}ListByPage(${entityName} ${entityObj}) throws Exception{
         if(Objects.isNull(${entityObj})){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
             throw new Exception("分页请求入参异常");
@@ -104,6 +104,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     public List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("查询参数不能为空");
+        }
         return ${entityObj}Dao.get${entityName}List(${entityObj});
     }
 
@@ -116,7 +119,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}CountExample(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         return ${entityObj}Dao.get${entityName}CountExample(queryExample);
     }
@@ -130,7 +133,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject get${entityName}ListExampleByPage(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         if(Objects.isNull(queryExample.getPage()) || Objects.isNull(queryExample.getPageSize()) || IConst.PAGE_NO_USE.equals(queryExample.getPage())){
             throw new Exception("分页请求入参异常");
@@ -151,7 +154,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         return ${entityObj}Dao.get${entityName}ListExample(queryExample);
     }

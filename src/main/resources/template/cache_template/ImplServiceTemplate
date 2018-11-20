@@ -217,7 +217,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         Long count;
         if(useCache){
@@ -245,7 +245,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject get${entityName}ListByPage(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
             throw new Exception("分页请求入参异常");
@@ -295,7 +295,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}CountExample(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         Long count;
         if(useCache){
@@ -323,7 +323,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         if(Objects.isNull(queryExample.getPage()) || Objects.isNull(queryExample.getPageSize()) || IConst.PAGE_NO_USE.equals(queryExample.getPage())){
             throw new Exception("分页请求入参异常");
