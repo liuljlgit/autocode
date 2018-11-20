@@ -59,4 +59,32 @@ public interface I${entityName}Dao {
      */
     void delete${entityName}List(@Param("list") List<${entityName}> list,@Param("tname") String tablename);
 
+    /**
+     * 查询记录总数
+     * @param ${entityObj}
+     * @return
+     */
+    Long get${entityName}Count(${entityName} ${entityObj});
+
+    /**
+     * 分页查询列表
+     * @param ${entityObj}
+     * @return
+     */
+    List<${entityName}> get${entityName}List(${entityName} ${entityObj});
+
+    /**
+     * 查询记录总数
+     * @param queryExample
+     * @return
+     */
+     Long get${entityName}CountExample(@Param("query") QueryExample queryExample,@Param("tname") String tablename);
+
+    /**
+     * 分页查询列表
+     * @param queryExample
+     * @return
+     */
+     List<${entityName}> get${entityName}ListExample(@Param("query") QueryExample queryExample,@Param("tname") String tablename);
+
 }

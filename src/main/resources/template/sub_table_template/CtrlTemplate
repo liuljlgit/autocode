@@ -26,12 +26,12 @@ public class ${entityName}Ctrl extends BaseController {
    * @return
    * @throws Exception
    */
-   @GetMapping(value = "/${entityObj}/{${entityId}}/{key}")
-   public String get${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId},@PathVariable(value="key") Long key) throws Exception {
+   @GetMapping(value = "/${entityObj}/{${entityId}}/{keyToHash}")
+   public String get${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId},@PathVariable(value="keyToHash") Long keyToHash) throws Exception {
       if(Objects.isNull(${entityId})){
          throw new Exception("请输入要获取的数据的ID") ;
       }
-      ${entityName} ${entityObj} = ${implServiceName}.load${entityName}ByKey(${entityId},key);
+      ${entityName} ${entityObj} = ${implServiceName}.load${entityName}ByKey(${entityId},keyToHash);
       JSONObject resp = new JSONObject();
       resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
       return formatResponseParams(EXEC_OK,resp);
@@ -54,12 +54,12 @@ public class ${entityName}Ctrl extends BaseController {
     * @return
     * @throws Exception
     */
-    @DeleteMapping(value = "/${entityObj}/{${entityId}}/{key}")
-    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId},@PathVariable(value="key") Long key) throws  Exception{
+    @DeleteMapping(value = "/${entityObj}/{${entityId}}/{keyToHash}")
+    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId},@PathVariable(value="keyToHash") Long keyToHash) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new Exception("入参请求异常") ;
         }
-        ${implServiceName}.delete${entityName}ByKey(${entityId},key);
+        ${implServiceName}.delete${entityName}ByKey(${entityId},keyToHash);
         return formatResponseParams(EXEC_OK,null);
     }
 
