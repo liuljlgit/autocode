@@ -27,7 +27,7 @@ public class GenXml {
             replaceMap.put("${entityPropList}",createTableColumList((byte)2));
             replaceMap.put("${batchEntityPropList}",createTableColumList((byte)3));
             replaceMap.put("${setList}",createSetList(""));
-            replaceMap.put("${batchSetList}",createSetList("obj."));
+            replaceMap.put("${batchSetList}",createSetList("item."));
 
             //创建文件
             GenCommon.createFile(false,

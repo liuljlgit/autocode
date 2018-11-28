@@ -92,10 +92,10 @@ ${whereSqlList}
 
     <!--批量更新对象-->
     <update id="update${entityName}List">
-        <foreach collection="list" separator=";" item="obj">
+        <foreach collection="list" separator=";" item="item">
             update ${tablename} ${batchSetList}
             <where>
-                AND ${tableId}=#{obj.${entityId}}
+                AND ${tableId}=#{item.${entityId}}
             </where>
         </foreach>
     </update>
