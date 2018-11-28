@@ -25,7 +25,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    ${entityName} loadSingle${entityName}(${entityName} ${entityObj}) throws Exception;
+    ${entityName} selectOne${entityName}(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 复杂查询获取单个结果
@@ -33,7 +33,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    ${entityName} loadSingle${entityName}Example(QueryExample queryExample,String keyToHash) throws Exception;
+    ${entityName} selectOne${entityName}Example(QueryExample queryExample,String keyToHash) throws Exception;
 
     /**
      * 新增对象

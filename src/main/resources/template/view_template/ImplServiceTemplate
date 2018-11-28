@@ -36,7 +36,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public ${entityName} loadSingle${entityName}(${entityName} ${entityObj}) throws Exception {
+    public ${entityName} selectOne${entityName}(${entityName} ${entityObj}) throws Exception {
         List<${entityName}> list = find${entityName}List(${entityObj});
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
@@ -51,7 +51,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public ${entityName} loadSingle${entityName}Example(QueryExample queryExample) throws Exception {
+    public ${entityName} selectOne${entityName}Example(QueryExample queryExample) throws Exception {
         List<${entityName}> list = find${entityName}ListExample(queryExample);
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
