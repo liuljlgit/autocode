@@ -27,7 +27,7 @@ public class ${entityName}Ctrl extends BaseController {
    * @throws Exception
    */
    @GetMapping(value = "/${entityObj}/{${entityId}}")
-   public String get${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws Exception {
+   public String load${entityName}ByKey(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws Exception {
       if(Objects.isNull(${entityId})){
          throw new Exception("请输入要获取的数据的ID") ;
       }
@@ -38,12 +38,47 @@ public class ${entityName}Ctrl extends BaseController {
    }
 
   /**
+   * ${entityName} 根据条件获取单个数据
+   * @return
+   * @throws Exception
+   */
+  @PostMapping(value = "/${entityObj}/selectone")
+  public String selectOne${entityName}(@RequestBody ReqEntity reqEntity) throws Exception {
+      ${entityName} ${entityObj}Req = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
+      ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}(${entityObj}Req);
+      if(Objects.isNull(${entityObj})){
+          throw new Exception("没有符合条件的记录");
+      }
+      JSONObject resp = new JSONObject();
+      resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
+      return formatResponseParams(EXEC_OK,resp);
+  }
+
+  /**
+   * ${entityName} 根据条件获取单个数据
+   * @return
+   * @throws Exception
+   */
+  @PostMapping(value = "/${entityObj}/criteria/selectone")
+  public String selectOne${entityName}Example(@RequestBody ReqEntity reqEntity) throws Exception {
+      ${entityName} ${entityObj}Req = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
+      QueryExample queryExample = new QueryExample();
+      ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}Example(queryExample);
+      if(Objects.isNull(${entityObj})){
+          throw new Exception("没有符合条件的记录");
+      }
+      JSONObject resp = new JSONObject();
+      resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
+      return formatResponseParams(EXEC_OK,resp);
+  }
+
+  /**
    * ${entityName} 根据实体对象查询列表
    * @return
    * @throws Exception
    */
    @PostMapping(value = "/${entityObj}/list")
-   public String get${entityName}List(@RequestBody ReqEntity reqEntity) throws Exception {
+   public String get${entityName}ListByPage(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        JSONObject resp = ${implServiceName}.get${entityName}ListByPage(${entityObj});
        return formatResponseParams(EXEC_OK,resp);
@@ -55,7 +90,7 @@ public class ${entityName}Ctrl extends BaseController {
     * @throws Exception
     */
    @PostMapping(value = "/${entityObj}/criteria/list")
-   public String get${entityName}ListByExample(@RequestBody ReqEntity reqEntity) throws Exception {
+   public String get${entityName}ListExampleByPage(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        QueryExample queryExample = new QueryExample();
        JSONObject resp = ${entityObj}Service.get${entityName}ListExampleByPage(queryExample);
@@ -80,7 +115,7 @@ public class ${entityName}Ctrl extends BaseController {
     * @throws Exception
     */
     @DeleteMapping(value = "/${entityObj}/{${entityId}}")
-    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
+    public String delete${entityName}ByKey(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new Exception("入参请求异常") ;
         }

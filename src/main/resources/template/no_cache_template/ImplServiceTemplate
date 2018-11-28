@@ -278,7 +278,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @return
      */
     @Override
-    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) {
+    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
             throw new Exception("查询参数不能为空");
         }
