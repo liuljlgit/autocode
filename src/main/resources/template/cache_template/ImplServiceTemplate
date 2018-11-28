@@ -54,7 +54,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             throw new Exception("没有符合条件的记录！") ;
         }
-        ${entityObj}Redis.set${entityName}2Redis(${entityObj},0L);
+        ${entityObj}Redis.set${entityName}2Redis(${entityObj},IConst.MINUTE_15_EXPIRE);
         return ${entityObj};
     }
 
@@ -228,7 +228,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             logger.info("===> fetch count value from database");
             count = ${entityObj}Dao.get${entityName}Count(${entityObj});
-            ${entityObj}Redis.set${entityName}Count2Redis(${entityObj},count,0L);
+            ${entityObj}Redis.set${entityName}Count2Redis(${entityObj},count,IConst.MINUTE_15_EXPIRE);
         }else{
             count = ${entityObj}Dao.get${entityName}Count(${entityObj});
         }
@@ -276,7 +276,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             logger.info("===> fetch page list from database");
             list = ${entityObj}Dao.get${entityName}List(${entityObj});
-            ${entityObj}Redis.set${entityName}List2Redis(${entityObj},new ArrayList<>(list),IConst.DEFAULT_EXPIRE_TIME);
+            ${entityObj}Redis.set${entityName}List2Redis(${entityObj},new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
             return list;
         }else{
             logger.info("===> fetch page list from database");
@@ -306,7 +306,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             logger.info("===> fetch count value from database");
             count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
-            ${entityObj}Redis.set${entityName}ExampleCount2Redis(queryExample,count,0L);
+            ${entityObj}Redis.set${entityName}ExampleCount2Redis(queryExample,count,IConst.MINUTE_15_EXPIRE);
         }else{
             count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
         }
@@ -353,7 +353,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             logger.info("===> fetch page list from database");
             list = ${entityObj}Dao.get${entityName}ListExample(queryExample);
-            ${entityObj}Redis.set${entityName}ExampleList2Redis(queryExample,new ArrayList<>(list),IConst.DEFAULT_EXPIRE_TIME);
+            ${entityObj}Redis.set${entityName}ExampleList2Redis(queryExample,new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
             return list;
         }else{
             logger.info("===> fetch page list from database");
