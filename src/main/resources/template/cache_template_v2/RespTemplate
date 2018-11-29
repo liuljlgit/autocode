@@ -1,0 +1,22 @@
+package ${respPackageOutPath};
+
+import com.alibaba.fastjson.annotation.JSONType;
+import com.cloud.common.utils.CommonUtil;
+import ${entityFullPath};
+
+@JSONType(includes = {
+    ${returnProp}
+})
+public class ${entityName}Resp extends ${entityName}{
+
+	public ${entityName}Resp(${entityName} ${entityObj}){
+		CommonUtil.copyPropertiesIgnoreNull(${entityObj},this);
+	}
+
+    /*@Override
+    @JSONField(format = DateUtil.DEFAUL_FORMAT)
+    public Date getDateTime() {
+        return super.getDateTime();
+    }*/
+
+}

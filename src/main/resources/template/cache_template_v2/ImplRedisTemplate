@@ -1,0 +1,238 @@
+package ${redisPackageOutPath}.impl;
+
+import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PostConstruct;
+import org.springframework.data.redis.core.RedisCallback;
+import com.cloud.common.redis.BaseRedis;
+import com.cloud.common.utils.CommonUtil;
+import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import ${entityFullPath};
+import ${inftRedisFullPath};
+import ${inftDaoFullPath};
+
+/**
+ * 缓存实现类 ${entityName}RedisImpl
+ * 我们从v1版本中知道会有以下的优缺点:
+ * 这个版本的缺陷点:频繁的删除（增、删、改就得删除所有）查询存储重复,比如一个分页查询。查询出来的结果会有重复的记录。造成内存压力
+ * 改进办法：把查询中靶的数据存储到内存(ClassName:主键)中,同时使用（SET:ClassName）的set结构存储当前系统有哪些中标的记录（问题？如何保证这两个结构记录的同步性，redis的通知机制？）。
+ * 改进优点:分页查询只需要存储id,把分页查询查到的记录存储到成(ClassName::主键结构)。增、删、改只需要修改对应的记录，然后清除分页查询的id即可。（问题?如何保证再次排序。分页存储id需是有序性的）
+ *
+ * v2版本我们来改进以上的问题
+ * @author lijun
+ */
+@Repository("${entityObj}Redis")
+public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> implements I${entityName}Redis{
+
+    private static final Logger logger = LoggerFactory.getLogger(${entityName}RedisImpl.class);
+
+    @Autowired
+    private I${entityName}Dao ${entityObj}Dao;
+
+    public final static String PRE_KEY = ${entityName}.class.getSimpleName();
+    private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
+    private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
+    private final static String PAGE_QUERY_${entityNameUpperCase}_KEY = "PAGE_QUERY:".concat(PRE_KEY);
+    private final static String PAGE_COUNT_${entityNameUpperCase}_KEY = "PAGE_COUNT:".concat(PRE_KEY);
+    private final static String CUSTOM_${entityNameUpperCase}_KEY = "CUSTOM:".concat(PRE_KEY);
+    private final static Long START_${entityNameUpperCase}ID = 1000000L;
+
+    /**
+     * 获取${entityName}的ID
+     * @return
+     */
+    @Override
+    public Long get${entityName}Id(){
+        redisTemplate.setEnableTransactionSupport(false);
+        return redisTemplate.execute((RedisCallback<Long>) connection->{
+            if ( !connection.exists(SEQ_${entityNameUpperCase}_KEY.getBytes())){
+                Long id = ${entityObj}Dao.selectMax${entityName}Id();
+                id = ( null == id || id == 0) ?  START_${entityNameUpperCase}ID +  Long.valueOf("1") : ++ id;
+                if ( connection.setNX(SEQ_${entityNameUpperCase}_KEY.getBytes(), String.valueOf(id).getBytes())){
+                    return  id;
+                }
+            }
+            return connection.incr(redisTemplate.getStringSerializer().serialize(SEQ_${entityNameUpperCase}_KEY));
+        });
+    }
+
+    /**
+     * 在Spring容器初始化的时候，初始化该实体ID的最大值。
+     * @return
+     */
+    @PostConstruct
+    @Override
+    public void initMax${entityName}Id(){
+        redisTemplate.execute((RedisCallback<Long>) connection->{
+            Long id = 0L;
+            if ( !connection.exists(SEQ_${entityNameUpperCase}_KEY.getBytes())){
+                id = ${entityObj}Dao.selectMax${entityName}Id();
+                if ( null == id || id == 0){
+                    id = START_${entityNameUpperCase}ID;
+                }
+                connection.setNX(SEQ_${entityNameUpperCase}_KEY.getBytes(), String.valueOf(id).getBytes());
+            }
+            return id;
+        });
+    }
+
+    /**
+     * 得到redis的key值
+     * @return
+     * @throws Exception
+     */
+    public String get${entityName}Key(final ${entityIdType} ${entityId}){
+        return PRE_KEY.concat(":").concat(String.valueOf(${entityId}));
+    }
+
+    /**
+     * 把值存储到redis中
+     * 1.Key-Value对象
+     * 2.把key存储到一个set中,方便删除操作
+     */
+    @Override
+    public String set${entityName}2Redis(${entityName} ${entityObj}, long expire){
+        String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
+        sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
+        set(primaryKey, ${entityObj}, expire);
+        return primaryKey ;
+    }
+
+    /**
+     * 从缓存中得到值
+     * @param ${entityId}
+     * @return
+     */
+    @Override
+    public ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId}){
+        String primaryKey = get${entityName}Key(${entityId});
+        ${entityName} ${entityObj} = get(primaryKey,${entityName}.class);
+        return ${entityObj};
+    }
+
+    /**
+     * 存储分页数量
+     * @param ${entityObj}
+     * @param count
+     * @param expire
+     * @return
+     */
+    @Override
+    public String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
+        return rsKey ;
+    }
+
+    /**
+     * 获取分页数量
+     * @param ${entityObj}
+     * @return
+     */
+    @Override
+    public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
+    }
+
+    /**
+     * 存储分页列表
+     * @param ${entityObj}
+     * @param list
+     * @param expire
+     * @return
+     */
+    @Override
+    public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> list, long expire){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
+        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
+        return rsKey ;
+    }
+
+    /**
+     * 获取分页列表
+     * @param ${entityObj}
+     * @return
+     */
+    @Override
+    public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
+        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
+        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        return list;
+    }
+
+    /**
+     * Example 存储分页数量
+     * @param queryExample
+     * @param count
+     * @param expire
+     * @return
+     */
+    @Override
+    public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
+        return rsKey ;
+    }
+
+    /**
+     * Example 获取分页数量
+     * @param queryExample
+     * @return
+     */
+    @Override
+    public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
+        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        return count;
+    }
+
+    /**
+     * Example 存储分页列表
+     * @param queryExample
+     * @param list
+     * @param expire
+     * @return
+     */
+    @Override
+    public String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
+        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
+        return rsKey ;
+    }
+
+    /**
+     * Example 获取分页列表
+     * @param queryExample
+     * @return
+     */
+    @Override
+    public List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample){
+        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
+        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        return list;
+    }
+
+    /**
+     * 删除redis中相关值
+     */
+    @Override
+    public void clearAll${entityName}() {
+        @SuppressWarnings("unchecked")
+        List<String> listKey = (List<String>)smembers(SET_${entityNameUpperCase}_KEY) ;
+        listKey.add(SET_${entityNameUpperCase}_KEY) ;
+        if(listKey.size() > 0){
+            delete(listKey) ;
+        }
+        delete(PAGE_QUERY_${entityNameUpperCase}_KEY,true);
+        delete(PAGE_COUNT_${entityNameUpperCase}_KEY,true);
+        delete(CUSTOM_${entityNameUpperCase}_KEY,true);
+    }
+
+}

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${inftDaoFullPath}">
+    <resultMap id="BaseResultMap" type="${entityFullPath}">
+${resultMapResultList}
+    </resultMap>
+
+    <sql id="where_sql">
+        and 1=1
+${whereSqlList}
+        <if test="inSql != null and inSql.size()>0">
+            <foreach collection="inSql" item="intervalEntity" separator=" ">
+                and ${intervalEntity.name} in
+                <foreach collection="intervalEntity.list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="notInSql != null and notInSql.size()>0">
+            <foreach collection="notInSql" item="intervalEntity" separator=" ">
+                and ${intervalEntity.name} not in
+                <foreach collection="intervalEntity.list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause">
+      <foreach collection="criterias" item="criteria" separator=" ">
+        <if test="criteria.valid">
+            ${criteria.opt}
+            <trim prefix="(" prefixOverrides="and|or" suffix=")">
+                <foreach collection="criteria.criterions" item="criterion">
+                  <choose>
+                    <when test="criterion.noValue">
+                        ${criterion.condition}
+                    </when>
+                    <when test="criterion.oneValue">
+                        ${criterion.condition} #{criterion.value1}
+                    </when>
+                    <when test="criterion.secondValue">
+                        ${criterion.condition} #{criterion.value1} and #{criterion.value2}
+                    </when>
+                    <when test="criterion.listValue">
+                        ${criterion.condition}
+                      <foreach collection="criterion.list" item="listItem" open="(" close=")" separator=",">
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+            </trim>
+        </if>
+      </foreach>
+   </sql>
+
+    <sql id="Base_Column_List">
+        ${tableColumList}
+     </sql>
+
+     <!--获取最大的主键-->
+    <select id="selectMax${entityName}Id" resultType="java.lang.Long">
+        select IFNULL(max(${tableId}), 0) from `${tablename}`
+    </select>
+
+    <!--根据主键获取对象-->
+    <select id="load${entityName}ByKey" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            AND ${tableId}=#{${entityId}}
+        </where>
+    </select>
+
+    <!--插入对象-->
+    <insert id="insert${entityName}">
+        insert into ${tablename}(${tableColumList})
+        values(${entityPropList})
+    </insert>
+
+    <!--批量插入对象-->
+    <insert id="insert${entityName}List">
+        insert into ${tablename}(${tableColumList})
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (${batchEntityPropList})
+        </foreach>
+    </insert>
+
+    <!--更新对象-->
+    <update id="update${entityName}">
+        update ${tablename} ${setList}
+        <where>
+            AND ${tableId}=#{${entityId}}
+        </where>
+    </update>
+
+    <!--批量更新对象-->
+    <update id="update${entityName}List">
+        <foreach collection="list" separator=";" item="item">
+            update ${tablename} ${batchSetList}
+            <where>
+                AND ${tableId}=#{item.${entityId}}
+            </where>
+        </foreach>
+    </update>
+
+    <!--查询总数-->
+    <select id="get${entityName}Count" resultType="java.lang.Long">
+        select count(*) from ${tablename}
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </select>
+
+    <!--查询和分页查询,区别在于page和pageSize是否为空-->
+    <select id="get${entityName}List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            <include refid="where_sql" />
+        </where>
+        <if test="page!=null and pageSize!=null and page!=-1" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderByClause!=null and orderByClause!=''">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--复杂查询获取总数-->
+    <select id="get${entityName}CountByExample" resultType="java.lang.Long">
+        select count(*) from ${tablename}
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+    </select>
+
+    <!--复杂查询查询列表-->
+    <select id="get${entityName}ListByExample" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+        <if test="page!=null and pageSize!=null and page!=-1" >
+            limit #{index},#{pageSize}
+        </if>
+        <if test="orderByClause!=null and orderByClause!=''">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--根据主键删除对象-->
+    <delete id="delete${entityName}ByKey">
+        delete from ${tablename}
+        <where>
+            AND ${tableId} = #{${entityId}}
+        </where>
+    </delete>
+
+    <!-- 批量删除对象 -->
+    <delete id="delete${entityName}List">
+        delete from ${tablename}
+        <where>
+            ${tableId} in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item.${entityId}}
+            </foreach>
+        </where>
+    </delete>
+</mapper>
