@@ -262,7 +262,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     public void deleteHashSetByPage(${entityName} ${entityObj}) {
         String hsetKey = CommonUtil.createRedisKey(${entityObj},true,false);
         hdel(PAGE_RESULT_${entityNameUpperCase}_KEY,hsetKey,true);
-        hdel(PAGE_RESULT_${entityNameUpperCase}_KEY,hsetKey,true);
+        hdel(PAGE_COUNT_${entityNameUpperCase}_KEY,hsetKey,true);
     }
 
     /**
@@ -276,7 +276,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 根据主键删除 simulElecDistri对象
+     * 根据主键删除${entityObj}对象
      * @return
      */
     @Override
