@@ -89,7 +89,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception;
+    Long getTotal${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表
@@ -98,7 +98,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ListByPage(${entityName} ${entityObj},Boolean useCache) throws Exception;
+    JSONObject get${entityName}PageList(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 查询列表
@@ -116,7 +116,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Long get${entityName}CountExample(QueryExample queryExample,Boolean useCache) throws Exception;
+    Long getTotal${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表 Example
@@ -125,7 +125,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,Boolean useCache) throws Exception;
+    JSONObject get${entityName}ExamplePageList(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
      * 获取列表 Example
@@ -133,7 +133,7 @@ public interface I${entityName}Service {
      * @param useCache
      * @return
      */
-    List<${entityName}>  find${entityName}ListExample(QueryExample queryExample, Boolean useCache) throws Exception;
+    List<${entityName}>  find${entityName}ExampleList(QueryExample queryExample, Boolean useCache) throws Exception;
 
     /**
      * 保存记录

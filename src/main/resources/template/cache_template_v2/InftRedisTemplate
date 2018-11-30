@@ -35,14 +35,14 @@ public interface I${entityName}Redis {
      * 1.Key-Value对象
      * 2.把key存储到一个set中,方便删除操作
      */
-    String set${entityName}2Redis(${entityName} ${entityObj}, long expire);
+    String set${entityName}(${entityName} ${entityObj}, long expire);
 
     /**
      * 从缓存中得到值
      * @param ${entityId}
      * @return
      */
-    ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId});
+    ${entityName} get${entityName}(final ${entityIdType} ${entityId});
 
     /**
      * 存储分页数量
@@ -51,30 +51,30 @@ public interface I${entityName}Redis {
      * @param expire
      * @return
      */
-    String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire);
+    String setTotal${entityName}(${entityName} ${entityObj}, Long count, long expire);
 
     /**
      * 获取分页数量
      * @param ${entityObj}
      * @return
      */
-    Long get${entityName}CountFromRedis(${entityName} ${entityObj});
+    Long getTotal${entityName}(${entityName} ${entityObj});
 
     /**
      * 存储分页列表
      * @param ${entityObj}
-     * @param ${entityObj}List
+     * @param list
      * @param expire
      * @return
      */
-    String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> ${entityObj}List, long expire);
+    String set${entityName}List(${entityName} ${entityObj}, List<${entityName}> list, long expire);
 
     /**
      * 获取分页列表
      * @param ${entityObj}
      * @return
      */
-    List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj});
+    JSONObject get${entityName}List(${entityName} ${entityObj});
 
     /**
      * Example 存储分页数量
@@ -83,14 +83,14 @@ public interface I${entityName}Redis {
      * @param expire
      * @return
      */
-    String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire);
+    String setTotal${entityName}Example(QueryExample queryExample, Long count, long expire);
 
     /**
      * Example 获取分页数量
      * @param queryExample
      * @return
      */
-    Long get${entityName}ExampleCountFromRedis(QueryExample queryExample);
+    Long getTotal${entityName}Example(QueryExample queryExample);
 
     /**
      * Example 存储分页列表
@@ -99,17 +99,37 @@ public interface I${entityName}Redis {
      * @param expire
      * @return
      */
-    String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire);
+    String set${entityName}ExampleList(QueryExample queryExample, ArrayList<${entityName}> list, long expire);
 
     /**
      * Example 获取分页列表
      * @param queryExample
      * @return
      */
-    List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample);
+    List<${entityName}> get${entityName}ExampleList(QueryExample queryExample);
 
     /**
-     * 删除redis中相关值
+     * 删除redis中与这个类相关的所有值
+     * 注意:慎用！！！！
      */
     void clearAll${entityName}();
+
+    /**
+     * 根据条件删除分页查询结果
+     * 注意:慎用！！！！
+     * @param ${entityObj}
+     */
+    void deleteHashSetByPage(${entityName} ${entityObj});
+
+    /**
+     * 删除所有分页查询结果
+     * 注意:慎用！！！！
+     */
+    void deleteAllHashSetByPage();
+
+    /**
+     * 根据主键删除 simulElecDistri对象
+     * @return
+     */
+    void delete${entityName}(${entityIdType} ${entityId}) ;
 }

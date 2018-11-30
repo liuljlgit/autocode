@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.cloud.common.constant.IConst;
 import com.cloud.common.redis.BaseRedis;
 import com.cloud.common.utils.CommonUtil;
 import com.cloud.common.complexquery.QueryExample;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import java.util.stream.Collectors;
 import ${entityFullPath};
 import ${inftRedisFullPath};
 import ${inftDaoFullPath};
@@ -37,9 +40,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     public final static String PRE_KEY = ${entityName}.class.getSimpleName();
     private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
     private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
-    private final static String PAGE_QUERY_${entityNameUpperCase}_KEY = "PAGE_QUERY:".concat(PRE_KEY);
-    private final static String PAGE_COUNT_${entityNameUpperCase}_KEY = "PAGE_COUNT:".concat(PRE_KEY);
-    private final static String CUSTOM_${entityNameUpperCase}_KEY = "CUSTOM:".concat(PRE_KEY);
+    private final static String PAGE_RESULT_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat("RESULT");
+    private final static String PAGE_COUNT_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat("COUNT");
     private final static Long START_${entityNameUpperCase}ID = 1000000L;
 
     /**
@@ -96,7 +98,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * 2.把key存储到一个set中,方便删除操作
      */
     @Override
-    public String set${entityName}2Redis(${entityName} ${entityObj}, long expire){
+    public String set${entityName}(${entityName} ${entityObj}, long expire){
         String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
         sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
         set(primaryKey, ${entityObj}, expire);
@@ -109,7 +111,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public ${entityName} get${entityName}ByKey(final ${entityIdType} ${entityId}){
+    public ${entityName} get${entityName}(final ${entityIdType} ${entityId}){
         String primaryKey = get${entityName}Key(${entityId});
         ${entityName} ${entityObj} = get(primaryKey,${entityName}.class);
         return ${entityObj};
@@ -123,7 +125,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public String set${entityName}Count2Redis(${entityName} ${entityObj}, Long count, long expire){
+    public String setTotal${entityName}(${entityName} ${entityObj}, Long count, long expire){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
         hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
         return rsKey ;
@@ -135,7 +137,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public Long get${entityName}CountFromRedis(${entityName} ${entityObj}){
+    public Long getTotal${entityName}(${entityName} ${entityObj}){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
         Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
         return count;
@@ -149,9 +151,14 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public String set${entityName}List2Redis(${entityName} ${entityObj}, ArrayList<${entityName}> list, long expire){
+    public String set${entityName}List(${entityName} ${entityObj}, List<${entityName}> list, long expire){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
-        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
+        JSONArray ids = new JSONArray();
+        list.stream().forEach(e->{
+            ids.add(e.get${upperFirstEntityId}());
+            set${entityName}(e, IConst.MINUTE_15_EXPIRE);
+        });
+        hset(PAGE_RESULT_DAILYAMOUNT_KEY,rsKey,ids.toJSONString(),expire);
         return rsKey ;
     }
 
@@ -161,10 +168,22 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public List<${entityName}> get${entityName}ListFromRedis(${entityName} ${entityObj}){
+    public JSONObject get${entityName}List(${entityName} ${entityObj}){
         String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
-        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
-        return list;
+        String hsetValue = hget(PAGE_RESULT_DAILYAMOUNT_KEY, rsKey, String.class);
+        if(Objects.isNull(hsetValue)){
+            return null;
+        }
+        //获取分页查询在redis中存储的id列表
+        List<Long> ids = JSONArray.parseArray(hsetValue, Long.class);
+        List<String> listKeys = ids.stream().map(e -> get${entityName}Key(e)).collect(Collectors.toList());
+        //根据key列表从redis中获取值
+        List<${entityName}> ${entityObj}s = listKeys.size() > 0 ? mget(listKeys, ${entityName}.class) : Collections.emptyList() ;
+        //返回结果列表,这个列表还需要进行处理
+        return new JSONObject(){{
+           put("ids",JSON.toJSONString(ids));
+           put("${entityObj}s",JSON.toJSONString(${entityObj}s));
+        }};
     }
 
     /**
@@ -175,7 +194,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public String set${entityName}ExampleCount2Redis(QueryExample queryExample, Long count, long expire){
+    public String setTotal${entityName}Example(QueryExample queryExample, Long count, long expire){
         String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
         hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
         return rsKey ;
@@ -187,7 +206,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public Long get${entityName}ExampleCountFromRedis(QueryExample queryExample){
+    public Long getTotal${entityName}Example(QueryExample queryExample){
         String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
         Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
         return count;
@@ -201,9 +220,9 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public String set${entityName}ExampleList2Redis(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
+    public String set${entityName}ExampleList(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
         String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
-        hset(PAGE_QUERY_${entityNameUpperCase}_KEY,rsKey,list,expire);
+        hset(PAGE_RESULT_${entityNameUpperCase}_KEY,rsKey,list,expire);
         return rsKey ;
     }
 
@@ -213,14 +232,15 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      * @return
      */
     @Override
-    public List<${entityName}> get${entityName}ExampleListFromRedis(QueryExample queryExample){
+    public List<${entityName}> get${entityName}ExampleList(QueryExample queryExample){
         String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
-        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_QUERY_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
+        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_RESULT_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
         return list;
     }
 
     /**
-     * 删除redis中相关值
+     * 删除redis中与这个类相关的所有值
+     * 注意:慎用！！！！
      */
     @Override
     public void clearAll${entityName}() {
@@ -230,9 +250,42 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         if(listKey.size() > 0){
             delete(listKey) ;
         }
-        delete(PAGE_QUERY_${entityNameUpperCase}_KEY,true);
+        deleteAllHashSetByPage();
+    }
+
+    /**
+     * 根据条件删除分页查询结果
+     * 注意:慎用！！！！
+     * @param ${entityObj}
+     */
+    @Override
+    public void deleteHashSetByPage(${entityName} ${entityObj}) {
+        String hsetKey = CommonUtil.createRedisKey(${entityObj},true,false);
+        hdel(PAGE_RESULT_${entityNameUpperCase}_KEY,hsetKey,true);
+        hdel(PAGE_RESULT_${entityNameUpperCase}_KEY,hsetKey,true);
+    }
+
+    /**
+     * 删除所有分页查询结果
+     * 注意:慎用！！！！
+     */
+    @Override
+    public void deleteAllHashSetByPage() {
+        delete(PAGE_RESULT_${entityNameUpperCase}_KEY,true);
         delete(PAGE_COUNT_${entityNameUpperCase}_KEY,true);
-        delete(CUSTOM_${entityNameUpperCase}_KEY,true);
+    }
+
+    /**
+     * 根据主键删除 simulElecDistri对象
+     * @return
+     */
+    @Override
+    public void delete${entityName}(${entityIdType} ${entityId}) {
+        String primaryKey = get${entityName}Key(${entityId});
+        List<String> key2Del = new ArrayList<>() ;
+        key2Del.add(primaryKey) ;
+        delete(key2Del) ;
+        delete(SET_${entityNameUpperCase}_KEY,true);
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import ${inftServiceFullPath};
 import ${inftDaoFullPath};
 import ${entityFullPath};
@@ -44,7 +45,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("请输入要获取的数据的ID");
         }
         ${entityName} ${entityObj};
-        ${entityObj} = ${entityObj}Redis.get${entityName}ByKey(${entityId});
+        ${entityObj} = ${entityObj}Redis.get${entityName}(${entityId});
         if(Objects.nonNull(${entityObj})){
             logger.info("===> fetch ${entityId} = "+${entityId}+" entity from redis");
             return ${entityObj};
@@ -54,7 +55,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             throw new Exception("没有符合条件的记录！") ;
         }
-        ${entityObj}Redis.set${entityName}2Redis(${entityObj},IConst.MINUTE_15_EXPIRE);
+        ${entityObj}Redis.set${entityName}(${entityObj},IConst.MINUTE_15_EXPIRE);
         return ${entityObj};
     }
 
@@ -83,7 +84,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     public ${entityName} selectOne${entityName}Example(QueryExample queryExample, Boolean useCache) throws Exception {
-        List<${entityName}> list = find${entityName}ListExample(queryExample, useCache);
+        List<${entityName}> list = find${entityName}ExampleList(queryExample, useCache);
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
         }
@@ -215,20 +216,20 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public Long get${entityName}Count(${entityName} ${entityObj},Boolean useCache) throws Exception{
+    public Long getTotal${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("查询参数不能为空");
         }
         Long count;
         if(useCache){
-            count = ${entityObj}Redis.get${entityName}CountFromRedis(${entityObj});
+            count = ${entityObj}Redis.getTotal${entityName}(${entityObj});
             if(Objects.nonNull(count)){
                 logger.info("===> fetch count = "+count+" entity from redis");
                 return count;
             }
             logger.info("===> fetch count value from database");
             count = ${entityObj}Dao.get${entityName}Count(${entityObj});
-            ${entityObj}Redis.set${entityName}Count2Redis(${entityObj},count,IConst.MINUTE_15_EXPIRE);
+            ${entityObj}Redis.setTotal${entityName}(${entityObj},count,IConst.MINUTE_15_EXPIRE);
         }else{
             count = ${entityObj}Dao.get${entityName}Count(${entityObj});
         }
@@ -243,7 +244,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public JSONObject get${entityName}ListByPage(${entityName} ${entityObj},Boolean useCache) throws Exception{
+    public JSONObject get${entityName}PageList(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
             throw new Exception("查询参数不能为空");
         }
@@ -251,7 +252,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("分页请求入参异常");
         }
         JSONObject resp = new JSONObject();
-        ${entityObj}.setTotal(get${entityName}Count(${entityObj}, useCache).intValue());
+        ${entityObj}.setTotal(getTotal${entityName}(${entityObj}, useCache).intValue());
         resp.put("total",${entityObj}.getTotal());
         resp.put("totalPage",${entityObj}.getTotalPage());
         resp.put("list",find${entityName}List(${entityObj}, useCache));
@@ -269,15 +270,40 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     public List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception{
         List<${entityName}> list;
         if(useCache){
-            list = ${entityObj}Redis.get${entityName}ListFromRedis(${entityObj});
-            if(Objects.nonNull(list)){
-                logger.info("===> fetch page list from redis");
+            JSONObject redisResult = ${entityObj}Redis.get${entityName}List(${entityObj});
+            if(Objects.isNull(redisResult)){
+                logger.info("===> fetch page list from database");
+                list = ${entityObj}Dao.get${entityName}List(${entityObj});
+                ${entityObj}Redis.set${entityName}List(${entityObj},list,IConst.MINUTE_15_EXPIRE);
                 return list;
             }
-            logger.info("===> fetch page list from database");
-            list = ${entityObj}Dao.get${entityName}List(${entityObj});
-            ${entityObj}Redis.set${entityName}List2Redis(${entityObj},new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
-            return list;
+            logger.info("===> fetch page list from redis");
+            List<Long> ids = JSON.parseArray(redisResult.getString("ids"), Long.class);
+            List<${entityName}> ${entityObj}s = JSON.parseArray(redisResult.getString("${entityObj}s"), ${entityName}.class);
+            //如果没有值过期,直接返回值,如果有值过期，那么需要重新获取
+            if(!${entityObj}s.contains(null)){
+                return ${entityObj}s;
+            }
+            //把已经过期的值重新获取到redis缓存中。如果数据库由于某种原因丢失了数据,那么删除缓存,并且重新从数据库中获取值。
+            List<${entityName}> listForBack = new ArrayList<>() ;
+            Map<Long, ${entityName}> notNullList = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
+            for(Long ${entityId} : ids){
+                if(notNullList.containsKey(${entityId})){
+                    listForBack.add(notNullList.get(${entityId}));
+                }else{
+                    //一次次获取,以后优化成按照id列表获取
+                    ${entityName} item = load${entityName}ByKey(${entityId});
+                    if(Objects.isNull(item)){
+                        //如果数据库中有不存在的值,那个重新从数据库中获取值，设置到redis中去
+                        logger.info("===> fetch page list from database");
+                        list = ${entityObj}Dao.get${entityName}List(${entityObj});
+                        ${entityObj}Redis.set${entityName}List(${entityObj},list,IConst.MINUTE_15_EXPIRE);
+                    }else{
+                        listForBack.add(item);
+                    }
+                }
+            }
+            return listForBack;
         }else{
             logger.info("===> fetch page list from database");
             list = ${entityObj}Dao.get${entityName}List(${entityObj});
@@ -293,20 +319,20 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public Long get${entityName}CountExample(QueryExample queryExample,Boolean useCache) throws Exception {
+    public Long getTotal${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
             throw new Exception("查询参数不能为空");
         }
         Long count;
         if(useCache){
-            count = ${entityObj}Redis.get${entityName}ExampleCountFromRedis(queryExample);
+            count = ${entityObj}Redis.getTotal${entityName}Example(queryExample);
             if(Objects.nonNull(count)){
                 logger.info("===> fetch count = "+count+" entity from redis");
                 return count;
             }
             logger.info("===> fetch count value from database");
             count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
-            ${entityObj}Redis.set${entityName}ExampleCount2Redis(queryExample,count,IConst.MINUTE_15_EXPIRE);
+            ${entityObj}Redis.setTotal${entityName}Example(queryExample,count,IConst.MINUTE_15_EXPIRE);
         }else{
             count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
         }
@@ -321,7 +347,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,Boolean useCache) throws Exception {
+    public JSONObject get${entityName}ExamplePageList(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
             throw new Exception("查询参数不能为空");
         }
@@ -329,10 +355,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("分页请求入参异常");
         }
         JSONObject resp = new JSONObject();
-        queryExample.setTotal(get${entityName}CountExample(queryExample, useCache).intValue());
+        queryExample.setTotal(getTotal${entityName}Example(queryExample, useCache).intValue());
         resp.put("total",queryExample.getTotal());
         resp.put("totalPage",queryExample.getTotalPage());
-        resp.put("list",find${entityName}ListExample(queryExample,useCache));
+        resp.put("list",find${entityName}ExampleList(queryExample,useCache));
         return resp;
     }
 
@@ -343,17 +369,17 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @return
      */
     @Override
-    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample, Boolean useCache) {
+    public List<${entityName}>  find${entityName}ExampleList(QueryExample queryExample, Boolean useCache) {
         List<${entityName}> list;
         if(useCache){
-            list = ${entityObj}Redis.get${entityName}ExampleListFromRedis(queryExample);
+            list = ${entityObj}Redis.get${entityName}ExampleList(queryExample);
             if(Objects.nonNull(list)){
                 logger.info("===> fetch page list from redis");
                 return list;
             }
             logger.info("===> fetch page list from database");
             list = ${entityObj}Dao.get${entityName}ListExample(queryExample);
-            ${entityObj}Redis.set${entityName}ExampleList2Redis(queryExample,new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
+            ${entityObj}Redis.set${entityName}ExampleList(queryExample,new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
             return list;
         }else{
             logger.info("===> fetch page list from database");
