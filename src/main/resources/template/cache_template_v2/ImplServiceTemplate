@@ -61,30 +61,14 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 普通查询获取单个结果
-     * @param ${entityObj}
+     * @param t
      * @param useCache
      * @return
      * @throws Exception
      */
     @Override
-    public ${entityName} selectOne${entityName}(${entityName} ${entityObj}, Boolean useCache) throws Exception {
-        List<${entityName}> list = find${entityName}List(${entityObj}, useCache);
-        if(!CollectionUtils.isEmpty(list)){
-            return list.get(0);
-        }
-        return null;
-    }
-
-    /**
-     * 复杂查询获取单个结果
-     * @param queryExample
-     * @param useCache
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public ${entityName} selectOne${entityName}Example(QueryExample queryExample, Boolean useCache) throws Exception {
-        List<${entityName}> list = find${entityName}ExampleList(queryExample, useCache);
+    public <T> ${entityName} selectOne${entityName}(T t, Boolean useCache) throws Exception {
+        List<${entityName}> list = find${entityName}List(t, useCache);
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
         }
@@ -107,7 +91,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
         }
         Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
-        ${entityObj}Redis.clearAll${entityName}();
+        ${entityObj}Redis.deleteAllHashSetByPage();
         return result;
     }
 
@@ -128,7 +112,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
-        ${entityObj}Redis.clearAll${entityName}();
+        ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
     /**
@@ -147,28 +131,30 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("更新主键不能为空");
         }
         Integer result = ${implDaoName}.update${entityName}(${entityObj});
-        ${entityObj}Redis.clearAll${entityName}();
+        ${entityObj}Redis.deleteAllHashSetByPage();
+        ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
         return result;
     }
 
     /**
      * 批量更新
-     * @param ${entityObj}List
+     * @param list
      * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
-        if(CollectionUtils.isEmpty(${entityObj}List)){
+    public void update${entityName}List(List<${entityName}> list) throws Exception {
+        if(CollectionUtils.isEmpty(list)){
             return ;
         }
-        for (${entityName} ${entityObj} : ${entityObj}List) {
+        for (${entityName} ${entityObj} : list) {
             if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
                 throw new Exception("更新主键不能为空");
             }
+            ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
         }
-        ${implDaoName}.update${entityName}List(${entityObj}List);
-        ${entityObj}Redis.clearAll${entityName}();
+        ${implDaoName}.update${entityName}List(list);
+        ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
     /**
@@ -184,97 +170,95 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("请输入要删除的数据的ID");
         }
         Integer result = ${implDaoName}.delete${entityName}ByKey(${entityId});
-        ${entityObj}Redis.clearAll${entityName}();
+        ${entityObj}Redis.deleteAllHashSetByPage();
+        ${entityObj}Redis.delete${entityName}(${entityId});
         return result;
     }
 
     /**
      * 批量删除对象
-     * @param ${entityObj}List
+     * @param list
      * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
-        if(CollectionUtils.isEmpty(${entityObj}List)){
+    public void delete${entityName}List(List<${entityName}> list) throws Exception {
+        if(CollectionUtils.isEmpty(list)){
             return ;
         }
-        for (${entityName} ${entityObj} : ${entityObj}List) {
+        for (${entityName} ${entityObj} : list) {
             if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
                 throw new Exception("删除主键不能为空");
             }
+            ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
         }
-        ${implDaoName}.delete${entityName}List(${entityObj}List);
-        ${entityObj}Redis.clearAll${entityName}();
+        ${implDaoName}.delete${entityName}List(list);
+        ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
     /**
      * 查询记录总数
-     * @param ${entityObj}
+     * @param t
      * @param useCache
      * @return
      * @throws Exception
      */
     @Override
-    public Long getTotal${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception{
-        if(Objects.isNull(${entityObj})){
+    public <T> Long getTotal${entityName}(T t,Boolean useCache) throws Exception {
+        if(Objects.isNull(t)){
             throw new Exception("查询参数不能为空");
         }
         Long count;
         if(useCache){
-            count = ${entityObj}Redis.getTotal${entityName}(${entityObj});
+            count = ${entityObj}Redis.getTotal${entityName}(t);
             if(Objects.nonNull(count)){
                 logger.info("===> fetch count = "+count+" entity from redis");
                 return count;
             }
             logger.info("===> fetch count value from database");
-            count = ${entityObj}Dao.get${entityName}Count(${entityObj});
-            ${entityObj}Redis.setTotal${entityName}(${entityObj},count,IConst.MINUTE_15_EXPIRE);
+            count = geTotal${entityName}(t);
+            ${entityObj}Redis.setTotal${entityName}(t,count,IConst.MINUTE_15_EXPIRE);
         }else{
-            count = ${entityObj}Dao.get${entityName}Count(${entityObj});
+            count = geTotal${entityName}(t);
         }
         return count;
     }
 
     /**
-     * 分页查询列表
-     * @param ${entityObj}
-     * @param useCache
+     * 从dao中查询总记录数
+     * @param t
+     * @param <T>
      * @return
      * @throws Exception
      */
-    @Override
-    public JSONObject get${entityName}PageList(${entityName} ${entityObj},Boolean useCache) throws Exception{
-        if(Objects.isNull(${entityObj})){
-            throw new Exception("查询参数不能为空");
+    private <T> Long geTotal${entityName}(T t) throws Exception {
+        Long count;
+        if(t instanceof ${entityName}){
+            count = ${entityObj}Dao.get${entityName}Count((${entityName}) t);
+        }else if(t instanceof QueryExample){
+            count = ${entityObj}Dao.get${entityName}CountExample((QueryExample) t);
+        }else{
+            throw new Exception("选择类型不正确");
         }
-        if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
-            throw new Exception("分页请求入参异常");
-        }
-        JSONObject resp = new JSONObject();
-        ${entityObj}.setTotal(getTotal${entityName}(${entityObj}, useCache).intValue());
-        resp.put("total",${entityObj}.getTotal());
-        resp.put("totalPage",${entityObj}.getTotalPage());
-        resp.put("list",find${entityName}List(${entityObj}, useCache));
-        return resp;
+        return count;
     }
 
     /**
      * 查询列表
-     * @param ${entityObj}
+     * @param t
      * @param useCache
      * @return
      * @throws Exception
      */
     @Override
-    public List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception{
+    public <T> List<${entityName}> find${entityName}List(T t, Boolean useCache) throws Exception {
         List<${entityName}> list;
         if(useCache){
-            JSONObject redisResult = ${entityObj}Redis.get${entityName}List(${entityObj});
+            JSONObject redisResult = ${entityObj}Redis.get${entityName}List(t);
             if(Objects.isNull(redisResult)){
                 logger.info("===> fetch page list from database");
-                list = ${entityObj}Dao.get${entityName}List(${entityObj});
-                ${entityObj}Redis.set${entityName}List(${entityObj},list,IConst.MINUTE_15_EXPIRE);
+                list = find${entityName}List(t);
+                ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
                 return list;
             }
             logger.info("===> fetch page list from redis");
@@ -296,8 +280,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                     if(Objects.isNull(item)){
                         //如果数据库中有不存在的值,那个重新从数据库中获取值，设置到redis中去
                         logger.info("===> fetch page list from database");
-                        list = ${entityObj}Dao.get${entityName}List(${entityObj});
-                        ${entityObj}Redis.set${entityName}List(${entityObj},list,IConst.MINUTE_15_EXPIRE);
+                        list = find${entityName}List(t);
+                        ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
                     }else{
                         listForBack.add(item);
                     }
@@ -306,37 +290,51 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return listForBack;
         }else{
             logger.info("===> fetch page list from database");
-            list = ${entityObj}Dao.get${entityName}List(${entityObj});
+            list = find${entityName}List(t);
             return list;
         }
     }
 
     /**
-     * 查询总记录数 Example
-     * @param queryExample
+     * 从dao中查询列表
+     * @param t
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    private <T> List<${entityName}> find${entityName}List(T t) throws Exception {
+        List<${entityName}> list;
+        if(t instanceof ${entityName}){
+            list = ${entityObj}Dao.get${entityName}List((${entityName}) t);
+        }else if(t instanceof QueryExample){
+            list = ${entityObj}Dao.get${entityName}ListExample((QueryExample) t);
+        }else{
+            throw new Exception("选择类型不正确");
+        }
+        return list;
+    }
+
+    /**
+     * 分页查询列表
+     * @param ${entityObj}
      * @param useCache
      * @return
      * @throws Exception
      */
     @Override
-    public Long getTotal${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception {
-        if(Objects.isNull(queryExample)){
+    public JSONObject getPage${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception{
+        if(Objects.isNull(${entityObj})){
             throw new Exception("查询参数不能为空");
         }
-        Long count;
-        if(useCache){
-            count = ${entityObj}Redis.getTotal${entityName}Example(queryExample);
-            if(Objects.nonNull(count)){
-                logger.info("===> fetch count = "+count+" entity from redis");
-                return count;
-            }
-            logger.info("===> fetch count value from database");
-            count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
-            ${entityObj}Redis.setTotal${entityName}Example(queryExample,count,IConst.MINUTE_15_EXPIRE);
-        }else{
-            count = ${entityObj}Dao.get${entityName}CountExample(queryExample);
+        if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
+            throw new Exception("分页请求入参异常");
         }
-        return count;
+        JSONObject resp = new JSONObject();
+        ${entityObj}.setTotal(getTotal${entityName}(${entityObj}, useCache).intValue());
+        resp.put("total",${entityObj}.getTotal());
+        resp.put("totalPage",${entityObj}.getTotalPage());
+        resp.put("list",find${entityName}List(${entityObj}, useCache));
+        return resp;
     }
 
     /**
@@ -347,7 +345,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public JSONObject get${entityName}ExamplePageList(QueryExample queryExample,Boolean useCache) throws Exception {
+    public JSONObject getPage${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
             throw new Exception("查询参数不能为空");
         }
@@ -355,37 +353,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             throw new Exception("分页请求入参异常");
         }
         JSONObject resp = new JSONObject();
-        queryExample.setTotal(getTotal${entityName}Example(queryExample, useCache).intValue());
-        resp.put("total",queryExample.getTotal());
+        queryExample.setTotal(getTotal${entityName}(queryExample, useCache).intValue());
         resp.put("totalPage",queryExample.getTotalPage());
-        resp.put("list",find${entityName}ExampleList(queryExample,useCache));
+        resp.put("total",queryExample.getTotal());
+        resp.put("list",find${entityName}List(queryExample,useCache));
         return resp;
-    }
-
-    /**
-     * 获取列表 Example
-     * @param queryExample
-     * @param useCache
-     * @return
-     */
-    @Override
-    public List<${entityName}>  find${entityName}ExampleList(QueryExample queryExample, Boolean useCache) {
-        List<${entityName}> list;
-        if(useCache){
-            list = ${entityObj}Redis.get${entityName}ExampleList(queryExample);
-            if(Objects.nonNull(list)){
-                logger.info("===> fetch page list from redis");
-                return list;
-            }
-            logger.info("===> fetch page list from database");
-            list = ${entityObj}Dao.get${entityName}ListExample(queryExample);
-            ${entityObj}Redis.set${entityName}ExampleList(queryExample,new ArrayList<>(list),IConst.MINUTE_15_EXPIRE);
-            return list;
-        }else{
-            logger.info("===> fetch page list from database");
-            list = ${entityObj}Dao.get${entityName}ListExample(queryExample);
-            return list;
-        }
     }
 
     /**

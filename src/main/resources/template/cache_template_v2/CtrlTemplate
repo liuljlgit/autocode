@@ -63,7 +63,7 @@ public class ${entityName}Ctrl extends BaseController {
    public String selectOne${entityName}Example(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj}Req = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        QueryExample queryExample = new QueryExample();
-       ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}Example(queryExample,true);
+       ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}(queryExample,true);
        if(Objects.isNull(${entityObj})){
            throw new Exception("没有符合条件的记录");
        }
@@ -80,7 +80,7 @@ public class ${entityName}Ctrl extends BaseController {
    @PostMapping(value = "/${entityObj}/list")
    public String get${entityName}ListByPage(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       JSONObject resp = ${implServiceName}.get${entityName}PageList(${entityObj},true);
+       JSONObject resp = ${implServiceName}.getPage${entityName}(${entityObj},true);
        return formatResponseParams(EXEC_OK,resp);
    }
 
@@ -93,7 +93,7 @@ public class ${entityName}Ctrl extends BaseController {
    public String get${entityName}ListExampleByPage(@RequestBody ReqEntity reqEntity) throws Exception {
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        QueryExample queryExample = new QueryExample();
-       JSONObject resp = ${entityObj}Service.get${entityName}ExamplePageList(queryExample,true);
+       JSONObject resp = ${entityObj}Service.getPage${entityName}Example(queryExample,true);
        return formatResponseParams(EXEC_OK, resp);
    }
 

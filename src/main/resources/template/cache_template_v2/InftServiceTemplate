@@ -21,21 +21,12 @@ public interface I${entityName}Service {
 
     /**
      * 普通查询获取单个结果
-     * @param ${entityObj}
+     * @param t
      * @param useCache
      * @return
      * @throws Exception
      */
-    ${entityName} selectOne${entityName}(${entityName} ${entityObj}, Boolean useCache) throws Exception;
-
-    /**
-     * 复杂查询获取单个结果
-     * @param queryExample
-     * @param useCache
-     * @return
-     * @throws Exception
-     */
-    ${entityName} selectOne${entityName}Example(QueryExample queryExample, Boolean useCache) throws Exception;
+    <T> ${entityName} selectOne${entityName}(T t, Boolean useCache) throws Exception;
 
     /**
      * 新增对象
@@ -84,12 +75,21 @@ public interface I${entityName}Service {
 
     /**
      * 查询记录总数
-     * @param ${entityObj}
+     * @param t
      * @param useCache
      * @return
      * @throws Exception
      */
-    Long getTotal${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception;
+    <T> Long getTotal${entityName}(T t,Boolean useCache) throws Exception;
+
+    /**
+     * 查询列表
+     * @param t
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    <T> List<${entityName}> find${entityName}List(T t, Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表
@@ -98,25 +98,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}PageList(${entityName} ${entityObj},Boolean useCache) throws Exception;
-
-    /**
-     * 查询列表
-     * @param ${entityObj}
-     * @param useCache
-     * @return
-     * @throws Exception
-     */
-    List<${entityName}> find${entityName}List(${entityName} ${entityObj}, Boolean useCache) throws Exception;
-
-    /**
-     * 查询总记录数 Example
-     * @param queryExample
-     * @param useCache
-     * @return
-     * @throws Exception
-     */
-    Long getTotal${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception;
+    JSONObject getPage${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表 Example
@@ -125,15 +107,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ExamplePageList(QueryExample queryExample,Boolean useCache) throws Exception;
-
-    /**
-     * 获取列表 Example
-     * @param queryExample
-     * @param useCache
-     * @return
-     */
-    List<${entityName}>  find${entityName}ExampleList(QueryExample queryExample, Boolean useCache) throws Exception;
+    JSONObject getPage${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
      * 保存记录

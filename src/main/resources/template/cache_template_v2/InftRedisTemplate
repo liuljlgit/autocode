@@ -24,7 +24,7 @@ public interface I${entityName}Redis {
     void initMax${entityName}Id();
 
     /**
-     * 得到redis的key值
+     * 得到【ClassName:Id】值
      * @return
      * @throws Exception
      */
@@ -46,80 +46,41 @@ public interface I${entityName}Redis {
 
     /**
      * 存储分页数量
-     * @param ${entityObj}
+     * @param t
      * @param count
      * @param expire
      * @return
      */
-    String setTotal${entityName}(${entityName} ${entityObj}, Long count, long expire);
+    <T> String setTotal${entityName}(T t, Long count, long expire) throws Exception;
 
     /**
      * 获取分页数量
-     * @param ${entityObj}
+     * @param t
      * @return
      */
-    Long getTotal${entityName}(${entityName} ${entityObj});
+    <T> Long getTotal${entityName}(T t) throws Exception;
 
     /**
      * 存储分页列表
-     * @param ${entityObj}
+     * @param t
      * @param list
      * @param expire
      * @return
      */
-    String set${entityName}List(${entityName} ${entityObj}, List<${entityName}> list, long expire);
+    <T> String set${entityName}List(T t, List<${entityName}> list, long expire) throws Exception ;
 
     /**
      * 获取分页列表
-     * @param ${entityObj}
+     * @param t
      * @return
      */
-    JSONObject get${entityName}List(${entityName} ${entityObj});
+    <T> JSONObject get${entityName}List(T t) throws Exception ;
 
     /**
-     * Example 存储分页数量
-     * @param queryExample
-     * @param count
-     * @param expire
-     * @return
-     */
-    String setTotal${entityName}Example(QueryExample queryExample, Long count, long expire);
-
-    /**
-     * Example 获取分页数量
-     * @param queryExample
-     * @return
-     */
-    Long getTotal${entityName}Example(QueryExample queryExample);
-
-    /**
-     * Example 存储分页列表
-     * @param queryExample
-     * @param list
-     * @param expire
-     * @return
-     */
-    String set${entityName}ExampleList(QueryExample queryExample, ArrayList<${entityName}> list, long expire);
-
-    /**
-     * Example 获取分页列表
-     * @param queryExample
-     * @return
-     */
-    List<${entityName}> get${entityName}ExampleList(QueryExample queryExample);
-
-    /**
-     * 删除redis中与这个类相关的所有值
+     * 删除所有redis的值
      * 注意:慎用！！！！
      */
     void clearAll${entityName}();
-
-    /**
-     * 根据条件删除分页查询结果
-     * 注意:慎用！！！！
-     * @param ${entityObj}
-     */
-    void deleteHashSetByPage(${entityName} ${entityObj});
 
     /**
      * 删除所有分页查询结果

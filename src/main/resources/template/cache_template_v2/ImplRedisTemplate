@@ -84,12 +84,33 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * 得到redis的key值
+     * 得到【ClassName:Id】值
      * @return
      * @throws Exception
      */
     public String get${entityName}Key(final ${entityIdType} ${entityId}){
         return PRE_KEY.concat(":").concat(String.valueOf(${entityId}));
+    }
+
+    /**
+     * 得到redis的key值
+     * @param t
+     * @param isEncrpt
+     * @param isCountPage
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    private <T> String getRedisKey(T t,Boolean isEncrpt,Boolean isCountPage) throws Exception {
+        String rsKey;
+        if(t instanceof ${entityName}){
+            rsKey = CommonUtil.createRedisKey(t,isEncrpt,isCountPage);
+        } else if(t instanceof QueryExample){
+            rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(t)),isEncrpt,isCountPage);
+        }else{
+            throw new Exception("类型不正确");
+        }
+        return rsKey;
     }
 
     /**
@@ -119,58 +140,58 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
 
     /**
      * 存储分页数量
-     * @param ${entityObj}
+     * @param t
      * @param count
      * @param expire
      * @return
      */
     @Override
-    public String setTotal${entityName}(${entityName} ${entityObj}, Long count, long expire){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+    public <T> String setTotal${entityName}(T t, Long count, long expire) throws Exception {
+        String rsKey = getRedisKey(t,true,true);
         hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
         return rsKey ;
     }
 
     /**
      * 获取分页数量
-     * @param ${entityObj}
+     * @param t
      * @return
      */
     @Override
-    public Long getTotal${entityName}(${entityName} ${entityObj}){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true,true);
+    public <T> Long getTotal${entityName}(T t) throws Exception {
+        String rsKey = getRedisKey(t,true,true);
         Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
         return count;
     }
 
     /**
      * 存储分页列表
-     * @param ${entityObj}
+     * @param t
      * @param list
      * @param expire
      * @return
      */
     @Override
-    public String set${entityName}List(${entityName} ${entityObj}, List<${entityName}> list, long expire){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
+    public <T> String set${entityName}List(T t, List<${entityName}> list, long expire) throws Exception {
+        String rsKey = getRedisKey(t,true,false);
         JSONArray ids = new JSONArray();
         list.stream().forEach(e->{
             ids.add(e.get${upperFirstEntityId}());
             set${entityName}(e, IConst.MINUTE_15_EXPIRE);
         });
-        hset(PAGE_RESULT_DAILYAMOUNT_KEY,rsKey,ids.toJSONString(),expire);
+        hset(PAGE_RESULT_${entityNameUpperCase}_KEY,rsKey,ids.toJSONString(),expire);
         return rsKey ;
     }
 
     /**
      * 获取分页列表
-     * @param ${entityObj}
+     * @param t
      * @return
      */
     @Override
-    public JSONObject get${entityName}List(${entityName} ${entityObj}){
-        String rsKey = CommonUtil.createRedisKey(${entityObj},true,false);
-        String hsetValue = hget(PAGE_RESULT_DAILYAMOUNT_KEY, rsKey, String.class);
+    public <T> JSONObject get${entityName}List(T t) throws Exception {
+        String rsKey = getRedisKey(t,true,false);
+        String hsetValue = hget(PAGE_RESULT_${entityNameUpperCase}_KEY, rsKey, String.class);
         if(Objects.isNull(hsetValue)){
             return null;
         }
@@ -187,59 +208,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
-     * Example 存储分页数量
-     * @param queryExample
-     * @param count
-     * @param expire
-     * @return
-     */
-    @Override
-    public String setTotal${entityName}Example(QueryExample queryExample, Long count, long expire){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
-        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
-        return rsKey ;
-    }
-
-    /**
-     * Example 获取分页数量
-     * @param queryExample
-     * @return
-     */
-    @Override
-    public Long getTotal${entityName}Example(QueryExample queryExample){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,true);
-        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
-        return count;
-    }
-
-    /**
-     * Example 存储分页列表
-     * @param queryExample
-     * @param list
-     * @param expire
-     * @return
-     */
-    @Override
-    public String set${entityName}ExampleList(QueryExample queryExample, ArrayList<${entityName}> list, long expire){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
-        hset(PAGE_RESULT_${entityNameUpperCase}_KEY,rsKey,list,expire);
-        return rsKey ;
-    }
-
-    /**
-     * Example 获取分页列表
-     * @param queryExample
-     * @return
-     */
-    @Override
-    public List<${entityName}> get${entityName}ExampleList(QueryExample queryExample){
-        String rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(queryExample)),true,false);
-        ArrayList<${entityName}> list = (ArrayList<${entityName}>) hget(PAGE_RESULT_${entityNameUpperCase}_KEY, rsKey, ArrayList.class);
-        return list;
-    }
-
-    /**
-     * 删除redis中与这个类相关的所有值
+     * 删除所有redis的值
      * 注意:慎用！！！！
      */
     @Override
@@ -251,18 +220,6 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
             delete(listKey) ;
         }
         deleteAllHashSetByPage();
-    }
-
-    /**
-     * 根据条件删除分页查询结果
-     * 注意:慎用！！！！
-     * @param ${entityObj}
-     */
-    @Override
-    public void deleteHashSetByPage(${entityName} ${entityObj}) {
-        String hsetKey = CommonUtil.createRedisKey(${entityObj},true,false);
-        hdel(PAGE_RESULT_${entityNameUpperCase}_KEY,hsetKey,true);
-        hdel(PAGE_COUNT_${entityNameUpperCase}_KEY,hsetKey,true);
     }
 
     /**
@@ -281,11 +238,10 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public void delete${entityName}(${entityIdType} ${entityId}) {
-        String primaryKey = get${entityName}Key(${entityId});
-        List<String> key2Del = new ArrayList<>() ;
-        key2Del.add(primaryKey) ;
-        delete(key2Del) ;
-        delete(SET_${entityNameUpperCase}_KEY,true);
+        delete(new ArrayList<String>(){{
+            add(get${entityName}Key(${entityId}));
+        }}) ;
+        srem(SET_${entityNameUpperCase}_KEY,get${entityName}Key(${entityId}),true);
     }
 
 }
