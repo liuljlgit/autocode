@@ -38,10 +38,11 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     private I${entityName}Dao ${entityObj}Dao;
 
     public final static String PRE_KEY = ${entityName}.class.getSimpleName();
+    //SET:PRE_KEY结构先不启用
     private final static String SET_${entityNameUpperCase}_KEY = "SET:".concat(PRE_KEY);
     private final static String SEQ_${entityNameUpperCase}_KEY = "SEQ:".concat(PRE_KEY);
-    private final static String PAGE_RESULT_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat("RESULT");
-    private final static String PAGE_COUNT_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat("COUNT");
+    private final static String PAGE_IDS_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat(":").concat("IDS");
+    private final static String PAGE_TOTAL_${entityNameUpperCase}_KEY = "PAGE:".concat(PRE_KEY).concat(":").concat("TOTAL");
     private final static Long START_${entityNameUpperCase}ID = 1000000L;
 
     /**
@@ -121,7 +122,6 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     @Override
     public String set${entityName}(${entityName} ${entityObj}, long expire){
         String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
-        sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
         set(primaryKey, ${entityObj}, expire);
         return primaryKey ;
     }
@@ -148,7 +148,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     @Override
     public <T> String setTotal${entityName}(T t, Long count, long expire) throws Exception {
         String rsKey = getRedisKey(t,true,true);
-        hset(PAGE_COUNT_${entityNameUpperCase}_KEY,rsKey,count,expire);
+        hset(PAGE_TOTAL_${entityNameUpperCase}_KEY,rsKey,count,expire);
         return rsKey ;
     }
 
@@ -160,7 +160,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     @Override
     public <T> Long getTotal${entityName}(T t) throws Exception {
         String rsKey = getRedisKey(t,true,true);
-        Long count = hget(PAGE_COUNT_${entityNameUpperCase}_KEY, rsKey, Long.class);
+        Long count = hget(PAGE_TOTAL_${entityNameUpperCase}_KEY, rsKey, Long.class);
         return count;
     }
 
@@ -177,9 +177,9 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         JSONArray ids = new JSONArray();
         list.stream().forEach(e->{
             ids.add(e.get${upperFirstEntityId}());
-            set${entityName}(e, IConst.MINUTE_15_EXPIRE);
+            set${entityName}(e, expire);
         });
-        hset(PAGE_RESULT_${entityNameUpperCase}_KEY,rsKey,ids.toJSONString(),expire);
+        hset(PAGE_IDS_${entityNameUpperCase}_KEY,rsKey,ids.toJSONString(),expire);
         return rsKey ;
     }
 
@@ -191,7 +191,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     @Override
     public <T> JSONObject get${entityName}List(T t) throws Exception {
         String rsKey = getRedisKey(t,true,false);
-        String hsetValue = hget(PAGE_RESULT_${entityNameUpperCase}_KEY, rsKey, String.class);
+        String hsetValue = hget(PAGE_IDS_${entityNameUpperCase}_KEY, rsKey, String.class);
         if(Objects.isNull(hsetValue)){
             return null;
         }
@@ -213,12 +213,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public void clearAll${entityName}() {
-        @SuppressWarnings("unchecked")
-        List<String> listKey = (List<String>)smembers(SET_${entityNameUpperCase}_KEY) ;
-        listKey.add(SET_${entityNameUpperCase}_KEY) ;
-        if(listKey.size() > 0){
-            delete(listKey) ;
-        }
+        clean(PRE_KEY.concat(":").concat("*"));
         deleteAllHashSetByPage();
     }
 
@@ -228,8 +223,8 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public void deleteAllHashSetByPage() {
-        delete(PAGE_RESULT_${entityNameUpperCase}_KEY,true);
-        delete(PAGE_COUNT_${entityNameUpperCase}_KEY,true);
+        delete(PAGE_IDS_${entityNameUpperCase}_KEY,true);
+        delete(PAGE_TOTAL_${entityNameUpperCase}_KEY,true);
     }
 
     /**
@@ -241,7 +236,6 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         delete(new ArrayList<String>(){{
             add(get${entityName}Key(${entityId}));
         }}) ;
-        srem(SET_${entityNameUpperCase}_KEY,get${entityName}Key(${entityId}),true);
     }
 
 }

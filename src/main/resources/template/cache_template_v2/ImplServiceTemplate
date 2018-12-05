@@ -261,33 +261,45 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
                 return list;
             }
-            logger.info("===> fetch page list from redis");
             List<Long> ids = JSON.parseArray(redisResult.getString("ids"), Long.class);
             List<${entityName}> ${entityObj}s = JSON.parseArray(redisResult.getString("${entityObj}s"), ${entityName}.class);
             //如果没有值过期,直接返回值,如果有值过期，那么需要重新获取
             if(!${entityObj}s.contains(null)){
+                logger.info("===> fetch page list from redis");
+                ${entityObj}Redis.set${entityName}List(t,${entityObj}s,IConst.MINUTE_15_EXPIRE);
                 return ${entityObj}s;
             }
-            //把已经过期的值重新获取到redis缓存中。如果数据库由于某种原因丢失了数据,那么删除缓存,并且重新从数据库中获取值。
-            List<${entityName}> listForBack = new ArrayList<>() ;
+            //把已经过期的值重新获取到redis缓存中。如果数据库由于某种原因丢失了数据,那么删除缓存,并且重新从数据库中获取值,注意list中的列表顺序不能改变。
+            //只有丢失率小于1/3 && 获取数量小于1000条的时候选择重新一条条的去获取记录,否则从数据库中直接查询
             Map<Long, ${entityName}> notNullList = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
-            for(Long ${entityId} : ids){
-                if(notNullList.containsKey(${entityId})){
-                    listForBack.add(notNullList.get(${entityId}));
-                }else{
-                    //一次次获取,以后优化成按照id列表获取
-                    ${entityName} item = load${entityName}ByKey(${entityId});
-                    if(Objects.isNull(item)){
-                        //如果数据库中有不存在的值,那个重新从数据库中获取值，设置到redis中去
-                        logger.info("===> fetch page list from database");
-                        list = find${entityName}List(t);
-                        ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
+            Integer notNullCount = notNullList.size();
+            Integer nullCount = ids.size()-notNullCount;
+            if(notNullCount>=ids.size()*(2/3) && nullCount<1000){
+                logger.info("===> fetch page list from redis");
+                List<${entityName}> listForBack = new ArrayList<>() ;
+                for(Long ${entityId} : ids){
+                    if(notNullList.containsKey(${entityId})){
+                        listForBack.add(notNullList.get(${entityId}));
                     }else{
-                        listForBack.add(item);
+                        ${entityName} item = load${entityName}ByKey(${entityId});
+                        //如果我们在获取记录的期间,这个item被并发删除了,那么我们需重新执行一遍查询。
+                        if(Objects.isNull(item)){
+                            logger.info("===> appear null item,so fetch page list again from database");
+                            list = find${entityName}List(t);
+                            ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
+                            return list;
+                        }else{
+                            listForBack.add(item);
+                        }
                     }
                 }
+                return listForBack;
+            }else{
+                logger.info("===> fetch page list from database");
+                list = find${entityName}List(t);
+                ${entityObj}Redis.set${entityName}List(t,list,IConst.MINUTE_15_EXPIRE);
+                return list;
             }
-            return listForBack;
         }else{
             logger.info("===> fetch page list from database");
             list = find${entityName}List(t);
