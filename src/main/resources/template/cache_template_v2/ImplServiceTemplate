@@ -274,7 +274,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             Map<Long, ${entityName}> notNullList = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
             Integer notNullCount = notNullList.size();
             Integer nullCount = ids.size()-notNullCount;
-            if(notNullCount>=ids.size()*(2/3) && nullCount<1000){
+            if(notNullCount >= ids.size()*(2/3) && nullCount<1000){
                 logger.info("===> fetch page list from redis");
                 List<${entityName}> listForBack = new ArrayList<>() ;
                 for(Long ${entityId} : ids){
