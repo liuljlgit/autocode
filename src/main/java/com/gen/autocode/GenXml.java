@@ -26,8 +26,8 @@ public class GenXml {
             replaceMap.put("${tableColumList}",createTableColumList((byte)1));
             replaceMap.put("${entityPropList}",createTableColumList((byte)2));
             replaceMap.put("${batchEntityPropList}",createTableColumList((byte)3));
-            replaceMap.put("${setList}",createSetList(""));
-            replaceMap.put("${batchSetList}",createSetList("item."));
+            replaceMap.put("${setList}",createSetList());
+            replaceMap.put("${batchSetList}",createBatchSetList());
 
             //创建文件
             GenCommon.createFile(false,
@@ -139,11 +139,41 @@ public class GenXml {
     /**
      * 创建更新对象的setList sql
      */
-    private String createSetList(String prefix){
-        List<String> tableColList = GenProperties.tableColumInfoList.stream().map(e -> {
-            return e.getTableColumName()+" = #{"+prefix+HumpUtil.convertToJava(e.getTableColumName())+"}";
-        }).collect(Collectors.toList());
-        return "set "+String.join(",",tableColList);
+    private String createSetList(){
+        StringBuffer sb = new StringBuffer();
+        List<TableColumInfo> tableColumInfoList = GenProperties.tableColumInfoList;
+        String suf;
+        for(int i=0;i<tableColumInfoList.size();i++){
+            TableColumInfo e = tableColumInfoList.get(i);
+            if(e.getTableColumKey().equals("PRI")){
+                continue;
+            }
+            suf = i==(tableColumInfoList.size()-1) ? "":"\n";
+            sb.append("\t\t\t<if test=\""+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
+                    "\t\t\t\t"+e.getTableColumName()+" = #{"+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
+                    "\t\t\t</if>"+suf);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 创建更新对象的setList sql
+     */
+    private String createBatchSetList(){
+        StringBuffer sb = new StringBuffer();
+        List<TableColumInfo> tableColumInfoList = GenProperties.tableColumInfoList;
+        String suf;
+        for(int i=0;i<tableColumInfoList.size();i++){
+            TableColumInfo e = tableColumInfoList.get(i);
+            if(e.getTableColumKey().equals("PRI")){
+                continue;
+            }
+            suf = i==(tableColumInfoList.size()-1) ? "":"\n";
+            sb.append("\t\t\t\t<if test=\"item."+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
+                    "\t\t\t\t\t"+e.getTableColumName()+" = #{item."+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
+                    "\t\t\t\t</if>"+suf);
+        }
+        return sb.toString();
     }
 
 }
