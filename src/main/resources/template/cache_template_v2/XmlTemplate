@@ -142,7 +142,7 @@ ${batchSetList}
     </select>
 
     <!--复杂查询获取总数-->
-    <select id="get${entityName}CountByExample" resultType="java.lang.Long">
+    <select id="get${entityName}CountExample" resultType="java.lang.Long">
         select count(*) from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
@@ -150,7 +150,7 @@ ${batchSetList}
     </select>
 
     <!--复杂查询查询列表-->
-    <select id="get${entityName}ListByExample" resultMap="BaseResultMap">
+    <select id="get${entityName}ListExample" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
