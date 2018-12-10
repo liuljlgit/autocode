@@ -23,9 +23,9 @@ public class GenXml {
             Map<String,String> replaceMap = GenCommon.createReplaceMap();
             replaceMap.put("${resultMapResultList}",createResultList());
             replaceMap.put("${whereSqlList}",createWhereSqlList());
-            replaceMap.put("${tableColumList}",createTableColumList((byte)1));
-            replaceMap.put("${entityPropList}",createTableColumList((byte)2));
-            replaceMap.put("${batchEntityPropList}",createTableColumList((byte)3));
+            replaceMap.put("${baseColumnList}",createTableColumList((byte)1));
+            replaceMap.put("${BaseObjectList}",createTableColumList((byte)2));
+            replaceMap.put("${BaseItemList}",createTableColumList((byte)3));
             replaceMap.put("${setList}",createSetList());
             replaceMap.put("${batchSetList}",createBatchSetList());
 
@@ -119,21 +119,47 @@ public class GenXml {
      * @Param type=1:tableColumList    type=2:entityPropList
      */
     private String createTableColumList(byte type){
+        StringBuffer sb = new StringBuffer();
         List<String> tableColList = GenProperties.tableColumInfoList.stream().map(e -> e.getTableColumName()).collect(Collectors.toList());
         if(type == 1){
-            return String.join(",",tableColList);
+            for(int i=0;i<tableColList.size();i++){
+                if(i<(tableColList.size()-1)){
+                    sb.append(tableColList.get(i)).append(",");
+                }else{
+                    sb.append(tableColList.get(i));
+                }
+                if(i>0 && (i+1)%5 == 0 && i<(tableColList.size()-1)){
+                    sb.append("\n\t\t");
+                }
+            }
+            return sb.toString();
         }else if(type == 2){
-            List<String> objList = tableColList.stream().map(e -> {
-                return "#{"+ HumpUtil.convertToJava(e)+"}";
-            }).collect(Collectors.toList());
-            return String.join(",",objList);
+            for(int i=0;i<tableColList.size();i++){
+                if(i<(tableColList.size()-1)){
+                    sb.append("#{"+ HumpUtil.convertToJava(tableColList.get(i))+"}").append(",");
+                }else{
+                    sb.append("#{"+ HumpUtil.convertToJava(tableColList.get(i))+"}");
+                }
+                if(i>0 && (i+1)%5 == 0 && i<(tableColList.size()-1)){
+                    sb.append("\n\t\t");
+                }
+            }
+            return sb.toString();
         }else if(type == 3){
-            List<String> objList = tableColList.stream().map(e -> {
-                return "#{item."+HumpUtil.convertToJava(e)+"}";
-            }).collect(Collectors.toList());
-            return String.join(",",objList);
+            for(int i=0;i<tableColList.size();i++){
+                if(i<(tableColList.size()-1)){
+                    sb.append("#{item."+ HumpUtil.convertToJava(tableColList.get(i))+"}").append(",");
+                }else{
+                    sb.append("#{item."+ HumpUtil.convertToJava(tableColList.get(i))+"}");
+                }
+                if(i>0 && (i+1)%5 == 0 && i<(tableColList.size()-1)){
+                    sb.append("\n\t\t");
+                }
+            }
+            return sb.toString();
+        }else{
+            return null;
         }
-        return null;
     }
 
     /**
