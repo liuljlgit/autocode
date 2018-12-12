@@ -1,0 +1,96 @@
+package ${redisPackageOutPath}.inft;
+
+import java.util.*;
+import com.cloud.common.complexquery.QueryExample;
+import com.alibaba.fastjson.JSONObject;
+import ${entityFullPath};
+
+/**
+ * 缓存接口类 I${entityName}Redis
+ * @author lijun
+ */
+public interface I${entityName}Redis {
+
+    /**
+     * 获取${entityName}的ID
+     * @return
+     */
+    Long get${entityName}Id();
+
+    /**
+     * 在Spring容器初始化的时候，初始化该实体ID的最大值。
+     * @return
+     */
+    void initMax${entityName}Id();
+
+    /**
+     * 得到【ClassName:Id】值
+     * @return
+     * @throws Exception
+     */
+    String get${entityName}Key(final ${entityIdType} ${entityId});
+
+    /**
+     * 把值存储到redis中
+     * 1.Key-Value对象
+     * 2.把key存储到一个set中,方便删除操作
+     */
+    String set${entityName}(${entityName} ${entityObj}, long expire);
+
+    /**
+     * 从缓存中得到值
+     * @param ${entityId}
+     * @return
+     */
+    ${entityName} get${entityName}(final ${entityIdType} ${entityId});
+
+    /**
+     * 存储分页数量
+     * @param t
+     * @param count
+     * @param expire
+     * @return
+     */
+    <T> String setTotal${entityName}(T t, Long count, long expire) throws Exception;
+
+    /**
+     * 获取分页数量
+     * @param t
+     * @return
+     */
+    <T> Long getTotal${entityName}(T t) throws Exception;
+
+    /**
+     * 存储分页列表
+     * @param t
+     * @param list
+     * @param expire
+     * @return
+     */
+    <T> String set${entityName}List(T t, List<${entityName}> list, long expire) throws Exception ;
+
+    /**
+     * 获取分页列表
+     * @param t
+     * @return
+     */
+    <T> JSONObject get${entityName}List(T t) throws Exception ;
+
+    /**
+     * 删除所有redis的值
+     * 注意:慎用！！！！
+     */
+    void clearAll${entityName}();
+
+    /**
+     * 删除所有分页查询结果
+     * 注意:慎用！！！！
+     */
+    void deleteAllHashSetByPage();
+
+    /**
+     * 根据主键删除 simulElecDistri对象
+     * @return
+     */
+    void delete${entityName}(${entityIdType} ${entityId}) ;
+}

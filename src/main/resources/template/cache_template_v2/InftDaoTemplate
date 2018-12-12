@@ -18,7 +18,7 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId},@Param("tname") String tablename);
+    ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
      * 新增对象
@@ -31,7 +31,7 @@ public interface I${entityName}Dao {
      * 批量新增对象
      * @param list
      */
-    void insert${entityName}List(@Param("list") List<${entityName}> list,@Param("tname") String tablename);
+    void insert${entityName}List(List<${entityName}> list);
 
     /**
      * 更新对象
@@ -51,13 +51,13 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId},@Param("tname") String tablename);
+    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
 
     /**
      * 批量删除对象
      * @param list
      */
-    void delete${entityName}List(@Param("list") List<${entityName}> list,@Param("tname") String tablename);
+    void delete${entityName}List(List<${entityName}> list);
 
     /**
      * 查询记录总数
@@ -74,17 +74,29 @@ public interface I${entityName}Dao {
     List<${entityName}> get${entityName}List(${entityName} ${entityObj});
 
     /**
+     * 获取表的最大ID
+     * @return
+     */
+     Long selectMax${entityName}Id();
+
+    /**
      * 查询记录总数
      * @param queryExample
      * @return
      */
-     Long get${entityName}CountExample(@Param("query") QueryExample queryExample,@Param("tname") String tablename);
+     Long get${entityName}CountExample(QueryExample queryExample);
 
     /**
      * 分页查询列表
      * @param queryExample
      * @return
      */
-     List<${entityName}> get${entityName}ListExample(@Param("query") QueryExample queryExample,@Param("tname") String tablename);
+     List<${entityName}> get${entityName}ListExample(QueryExample queryExample);
 
+     /**
+      * 根据ID列表从数据库中查询列表
+      * @param list
+      * @return
+      */
+      List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list);
 }

@@ -17,23 +17,16 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception;
+    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 普通查询获取单个结果
-     * @param ${entityObj}
+     * @param t
+     * @param useCache
      * @return
      * @throws Exception
      */
-    ${entityName} selectOne${entityName}(${entityName} ${entityObj}) throws Exception;
-
-    /**
-     * 复杂查询获取单个结果
-     * @param queryExample
-     * @return
-     * @throws Exception
-     */
-    ${entityName} selectOne${entityName}Example(QueryExample queryExample,String keyToHash) throws Exception;
+    <T> ${entityName} selectOne${entityName}(T t, Boolean useCache) throws Exception;
 
     /**
      * 新增对象
@@ -71,7 +64,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Integer delete${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception;
+    Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 批量删除对象
@@ -82,50 +75,47 @@ public interface I${entityName}Service {
 
     /**
      * 查询记录总数
-     * @param ${entityObj}
+     * @param t
+     * @param useCache
      * @return
      * @throws Exception
      */
-    Long get${entityName}Count(${entityName} ${entityObj}) throws Exception;
+    <T> Long getTotal${entityName}(T t,Boolean useCache) throws Exception;
+
+    /**
+     * 查询列表
+     * @param t
+     * @param useCache
+     * @return
+     * @throws Exception
+     */
+    <T> List<${entityName}> find${entityName}List(T t, Boolean useCache) throws Exception;
+
+    /**
+     * 根据ID列表从数据库中查询列表
+     * @param list
+     * @return
+     * @throws Exception
+     */
+    List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list) throws Exception;
 
     /**
      * 分页查询列表
      * @param ${entityObj}
+     * @param useCache
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ListByPage(${entityName} ${entityObj}) throws Exception;
-
-    /**
-     * 查询列表
-     * @param ${entityObj}
-     * @return
-     * @throws Exception
-     */
-    List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception;
-
-    /**
-     * 查询总记录数 Example
-     * @param queryExample
-     * @return
-     * @throws Exception
-     */
-    Long get${entityName}CountExample(QueryExample queryExample,String keyToHash) throws Exception;
+    JSONObject getPage${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表 Example
      * @param queryExample
+     * @param useCache
      * @return
      * @throws Exception
      */
-    JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,String keyToHash) throws Exception;
-
-    /**
-     * 获取列表 Example
-     * @param queryExample
-     * @return
-     */
-    List<${entityName}>  find${entityName}ListExample(QueryExample queryExample,String keyToHash) throws Exception;
+    JSONObject getPage${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception;
 
     /**
      * 保存记录
@@ -140,24 +130,4 @@ public interface I${entityName}Service {
      * @throws Exception
      */
      void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
-
-    /**
-     * 得到当前数据库中的表名列表
-     * 此方法应该搭配缓存,否则还是用手动的方式配置表吧
-     * @return
-     */
-    List<String> getTableNameList() throws Exception;
-
-    /**
-     * 获取系统中所有进行分表的key列表进行数据迁移
-     * @return
-     */
-    List<String> getKeyToHashList() throws Exception;
-
-    /**
-     * 数据迁移:增加新的数据表后,部分数据需重新定位表
-     * @throws Exception
-     */
-    void dataMigration() throws Exception;
-
 }

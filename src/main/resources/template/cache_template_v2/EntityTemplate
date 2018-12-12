@@ -1,0 +1,27 @@
+package ${entityPackageOutPath};
+
+import java.io.Serializable;
+import com.cloud.common.simplequery.IntervalEntity;
+import com.cloud.common.webcomm.PageEntity;
+import java.util.stream.Collectors;
+import org.springframework.util.CollectionUtils;
+import java.util.*;
+${importList}
+
+/**
+ * ${entityName} 实体类
+ * @author lijun
+ */
+public class ${entityName} extends PageEntity implements Serializable {
+${entityColumList}
+	/**
+	 * field comment: 初始化inSql和notInSql
+	 */
+	{
+		inSql = new ArrayList<>();
+		notInSql = new ArrayList<>();
+	}
+
+${entityColumPropName}
+${entityGetSetList}
+}

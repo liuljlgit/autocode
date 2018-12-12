@@ -6,6 +6,7 @@ import com.cloud.common.complexquery.QueryExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+import com.cloud.common.utils.IDUtil;
 import org.springframework.util.CollectionUtils;
 import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
@@ -54,7 +55,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public ${entityName} loadSingle${entityName}(${entityName} ${entityObj}) throws Exception {
+    public ${entityName} selectOne${entityName}(${entityName} ${entityObj}) throws Exception {
         List<${entityName}> list = find${entityName}List(${entityObj});
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
@@ -69,7 +70,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public ${entityName} loadSingle${entityName}Example(QueryExample queryExample) throws Exception {
+    public ${entityName} selectOne${entityName}Example(QueryExample queryExample) throws Exception {
         List<${entityName}> list = find${entityName}ListExample(queryExample);
         if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
@@ -87,7 +88,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("插入对象不能为空");
+            return 0;
+        }
+        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
         }
         return ${implDaoName}.insert${entityName}(${entityObj});
     }
@@ -101,7 +105,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("插入对象不能为空");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+            }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
     }
@@ -116,7 +125,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("更新对象不能为空");
+            return 0;
+        }
+        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            throw new Exception("更新主键不能为空");
         }
         return ${implDaoName}.update${entityName}(${entityObj});
     }
@@ -130,7 +142,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("更新对象不能为空");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                throw new Exception("更新主键不能为空");
+            }
         }
         ${implDaoName}.update${entityName}List(${entityObj}List);
     }
@@ -159,7 +176,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("请输入要删除的数据的ID列表");
+            return ;
+        }
+        for (${entityName} ${entityObj} : ${entityObj}List) {
+            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+                throw new Exception("删除主键不能为空");
+            }
         }
         ${implDaoName}.delete${entityName}List(${entityObj}List);
     }
@@ -208,6 +230,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     public List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("查询参数不能为空");
+        }
         return ${entityObj}Dao.get${entityName}List(${entityObj});
     }
 
@@ -220,7 +245,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public Long get${entityName}CountExample(QueryExample queryExample) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("请求参数不能为空");
+            throw new Exception("查询参数不能为空");
         }
         return ${entityObj}Dao.get${entityName}CountExample(queryExample);
     }
@@ -253,7 +278,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @return
      */
     @Override
-    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) {
+    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample) throws Exception {
+        if(Objects.isNull(queryExample)){
+            throw new Exception("查询参数不能为空");
+        }
         return ${entityObj}Dao.get${entityName}ListExample(queryExample);
     }
 
@@ -266,10 +294,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-           throw new Exception("请求参数不能为空");
+           return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -291,7 +319,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);

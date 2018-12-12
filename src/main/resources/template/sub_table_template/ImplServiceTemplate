@@ -7,6 +7,7 @@ import com.cloud.common.exception.BusiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+import com.cloud.common.utils.IDUtil;
 import org.springframework.util.CollectionUtils;
 import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
@@ -38,16 +39,46 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public ${entityName} load${entityName}ByKey(${entityIdType} ${entityId},Long key) throws Exception {
+    public ${entityName} load${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception {
         if(Objects.isNull(${entityId})){
             throw new Exception("请输入要获取的数据的ID");
         }
-        String tableName = HashUtil.hashTableName("${tablename}", 5, key);
+        String tableName = HashUtil.consistentHashTableName(null, keyToHash);
         ${entityName} ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(${entityId},tableName);
         if(Objects.isNull(${entityObj})){
             throw new Exception("没有符合条件的记录！") ;
         }
         return ${entityObj};
+    }
+
+    /**
+     * 普通查询获取单个结果
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} selectOne${entityName}(${entityName} ${entityObj}) throws Exception {
+        List<${entityName}> list = find${entityName}List(${entityObj});
+        if(!CollectionUtils.isEmpty(list)){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 复杂查询获取单个结果
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ${entityName} selectOne${entityName}Example(QueryExample queryExample,String keyToHash) throws Exception {
+        List<${entityName}> list = find${entityName}ListExample(queryExample,keyToHash);
+        if(!CollectionUtils.isEmpty(list)){
+            return list.get(0);
+        }
+        return null;
     }
 
     /**
@@ -60,13 +91,13 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("插入对象不能为空");
+            return 0;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
         }
         if(Objects.isNull(${entityObj}.getTname())){
-            ${entityObj}.setTname(HashUtil.hashTableName("medium_contract", 5, null));
+            ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
         }
         return ${implDaoName}.insert${entityName}(${entityObj});
     }
@@ -80,15 +111,15 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("插入对象不能为空");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
             if(Objects.isNull(e.get${upperFirstEntityId}())){
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
             }
             if(Objects.isNull(e.getTname())){
-                e.setTname(HashUtil.hashTableName("${tablename}", 5, null));
+                e.setTname(HashUtil.consistentHashTableName(null, null));
             }
         }
         //表名分组
@@ -110,14 +141,14 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer update${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-            throw new Exception("更新对象不能为空");
+            return 0;
         }
 
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
             throw new BusiException("更新主键不能为空");
         }
         if(Objects.isNull(${entityObj}.getTname())){
-            ${entityObj}.setTname(HashUtil.hashTableName("medium_contract", 5, null));
+            ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
         }
         return ${implDaoName}.update${entityName}(${entityObj});
     }
@@ -131,7 +162,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("更新对象不能为空");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
@@ -139,7 +170,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 throw new BusiException("更新主键不能为空");
             }
             if(Objects.isNull(e.getTname())){
-                e.setTname(HashUtil.hashTableName("medium_contract", 5, null));
+                e.setTname(HashUtil.consistentHashTableName(null, null));
             }
         }
         ${implDaoName}.update${entityName}List(${entityObj}List);
@@ -153,11 +184,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer delete${entityName}ByKey(${entityIdType} ${entityId},Long key) throws Exception {
+    public Integer delete${entityName}ByKey(${entityIdType} ${entityId},String keyToHash) throws Exception {
         if(Objects.isNull(${entityId})){
             throw new Exception("请输入要删除的数据的ID");
         }
-        String tableName = HashUtil.hashTableName("${tablename}", 5, key);
+        String tableName = HashUtil.consistentHashTableName(null, keyToHash);
         return ${implDaoName}.delete${entityName}ByKey(${entityId},tableName);
     }
 
@@ -170,12 +201,12 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
-            throw new Exception("请输入要删除的数据的ID列表");
+            return ;
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
             if(Objects.isNull(e.getTname())){
-                e.setTname(HashUtil.hashTableName("${tablename}", 5, null));
+                e.setTname(HashUtil.consistentHashTableName(null, null));
             }
         }
         //表名分组
@@ -188,6 +219,116 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     }
 
     /**
+     * 查询记录总数
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long get${entityName}Count(${entityName} ${entityObj}) throws Exception {
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(${entityObj}.getTname())){
+            ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
+        }
+        return ${entityObj}Dao.get${entityName}Count(${entityObj});
+    }
+
+    /**
+     * 分页查询列表
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public JSONObject get${entityName}ListByPage(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
+            throw new Exception("分页请求入参异常");
+        }
+        if(Objects.isNull(${entityObj}.getTname())){
+            ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
+        }
+        JSONObject resp = new JSONObject();
+        ${entityObj}.setTotal(get${entityName}Count(${entityObj}).intValue());
+        resp.put("total",${entityObj}.getTotal());
+        resp.put("totalPage",${entityObj}.getTotalPage());
+        resp.put("list",find${entityName}List(${entityObj}));
+        return resp;
+    }
+
+    /**
+     * 查询列表
+     * @param ${entityObj}
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<${entityName}> find${entityName}List(${entityName} ${entityObj}) throws Exception{
+        if(Objects.isNull(${entityObj})){
+            throw new Exception("查询参数不能为空");
+        }
+        if(Objects.isNull(${entityObj}.getTname())){
+            ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
+        }
+        return ${entityObj}Dao.get${entityName}List(${entityObj});
+    }
+
+    /**
+     * 查询总记录数 Example
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long get${entityName}CountExample(QueryExample queryExample,String keyToHash) throws Exception {
+        if(Objects.isNull(queryExample) || Objects.isNull(keyToHash)){
+            throw new Exception("查询参数不能为空");
+        }
+        String tablename = HashUtil.consistentHashTableName(null, keyToHash);
+        return ${entityObj}Dao.get${entityName}CountExample(queryExample,tablename);
+    }
+
+    /**
+     * 分页查询列表 Example
+     * @param queryExample
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public JSONObject get${entityName}ListExampleByPage(QueryExample queryExample,String keyToHash) throws Exception {
+        if(Objects.isNull(queryExample) || Objects.isNull(keyToHash)){
+            throw new Exception("请求参数不能为空");
+        }
+        if(Objects.isNull(queryExample.getPage()) || Objects.isNull(queryExample.getPageSize()) || IConst.PAGE_NO_USE.equals(queryExample.getPage())){
+            throw new Exception("分页请求入参异常");
+        }
+        JSONObject resp = new JSONObject();
+        queryExample.setTotal(get${entityName}CountExample(queryExample,keyToHash).intValue());
+        resp.put("total",queryExample.getTotal());
+        resp.put("totalPage",queryExample.getTotalPage());
+        resp.put("list",find${entityName}ListExample(queryExample,keyToHash));
+        return resp;
+    }
+
+    /**
+     * 获取列表 Example
+     * @param queryExample
+     * @return
+     */
+    @Override
+    public List<${entityName}>  find${entityName}ListExample(QueryExample queryExample,String keyToHash) throws Exception {
+        if(Objects.isNull(queryExample) || Objects.isNull(keyToHash)){
+            throw new Exception("查询参数不能为空");
+        }
+        String tablename = HashUtil.consistentHashTableName(null, keyToHash);
+        return ${entityObj}Dao.get${entityName}ListExample(queryExample,tablename);
+    }
+
+    /**
      * 保存记录
      * @param ${entityObj}
      * @throws Exception
@@ -196,10 +337,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
-           throw new Exception("请求参数不能为空");
+           return ;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -221,7 +362,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(UUID.randomUUID().toString().replace("-",""));
+                e.set${upperFirstEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);
@@ -230,5 +371,35 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             update${entityName}List(updateList);
         }
     }
+
+    /**
+     * 得到当前数据库中的表名列表
+     * 此方法应该搭配缓存,否则还是用手动的方式配置表吧
+     * @return
+     */
+    @Override
+    public List<String> getTableNameList() throws Exception{
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 获取系统中所有进行分表的key列表进行数据迁移
+     * @return
+     */
+    @Override
+    public List<String> getKeyToHashList() throws Exception{
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 数据迁移:增加新的数据表后,部分数据需重新定位表
+     * @throws Exception
+     */
+    @Override
+    @Transactional
+    public void dataMigration() throws Exception {
+        //dosomething
+    }
+
 
 }

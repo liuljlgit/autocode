@@ -56,8 +56,16 @@ ${whereSqlList}
    </sql>
 
     <sql id="Base_Column_List">
-        ${tableColumList}
-     </sql>
+        ${baseColumnList}
+    </sql>
+
+    <sql id="Base_Object_List">
+        ${BaseObjectList}
+    </sql>
+
+    <sql id="Base_Item_List">
+        ${BaseItemList}
+    </sql>
 
      <!--获取最大的主键-->
     <select id="selectMax${entityName}Id" resultType="java.lang.Long">
@@ -74,22 +82,25 @@ ${whereSqlList}
 
     <!--插入对象-->
     <insert id="insert${entityName}">
-        insert into ${tablename}(${tableColumList})
-        values(${entityPropList})
+        insert into ${tablename}(<include refid="Base_Column_List" />)
+        values(<include refid="Base_Object_List" />)
     </insert>
 
     <!--批量插入对象-->
     <insert id="insert${entityName}List">
-        insert into ${tablename}(${tableColumList})
+        insert into ${tablename}(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" index="index" item="item" separator=",">
-            (${batchEntityPropList})
+            (<include refid="Base_Item_List" />)
         </foreach>
     </insert>
 
     <!--更新对象-->
     <update id="update${entityName}">
-        update ${tablename} ${setList}
+        update ${tablename}
+        <set>
+${setList}
+        </set>
         <where>
             AND ${tableId}=#{${entityId}}
         </where>
@@ -97,10 +108,13 @@ ${whereSqlList}
 
     <!--批量更新对象-->
     <update id="update${entityName}List">
-        <foreach collection="list" separator=";" item="obj">
-            update ${tablename} ${batchSetList}
+        <foreach collection="list" separator=";" item="item">
+            update ${tablename}
+            <set>
+${batchSetList}
+            </set>
             <where>
-                AND ${tableId}=#{obj.${entityId}}
+                AND ${tableId}=#{item.${entityId}}
             </where>
         </foreach>
     </update>
@@ -128,7 +142,7 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询获取总数-->
-    <select id="get${entityName}CountByExample" resultType="java.lang.Long">
+    <select id="get${entityName}CountExample" resultType="java.lang.Long">
         select count(*) from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
@@ -136,7 +150,7 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询查询列表-->
-    <select id="get${entityName}ListByExample" resultMap="BaseResultMap">
+    <select id="get${entityName}ListExample" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
@@ -153,7 +167,7 @@ ${whereSqlList}
     <delete id="delete${entityName}ByKey">
         delete from ${tablename}
         <where>
-            AND ${tableId}=#{${entityId}}
+            AND ${tableId} = #{${entityId}}
         </where>
     </delete>
 
@@ -161,9 +175,22 @@ ${whereSqlList}
     <delete id="delete${entityName}List">
         delete from ${tablename}
         <where>
-            <foreach collection="list" separator="or" item="obj">
-                ${tableId}=#{obj.${entityId}}
+            ${tableId} in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item.${entityId}}
             </foreach>
         </where>
     </delete>
+
+    <!--根据ID列表获取记录列表-->
+    <select id="find${entityName}ListByIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            ${tableId} in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
 </mapper>

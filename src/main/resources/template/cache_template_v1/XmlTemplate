@@ -59,6 +59,11 @@ ${whereSqlList}
         ${tableColumList}
      </sql>
 
+     <!--获取最大的主键-->
+    <select id="selectMax${entityName}Id" resultType="java.lang.Long">
+        select IFNULL(max(${tableId}), 0) from `${tablename}`
+    </select>
+
     <!--根据主键获取对象-->
     <select id="load${entityName}ByKey" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
@@ -148,7 +153,7 @@ ${whereSqlList}
     <delete id="delete${entityName}ByKey">
         delete from ${tablename}
         <where>
-            AND ${tableId}=#{${entityId}}
+            AND ${tableId} = #{${entityId}}
         </where>
     </delete>
 
