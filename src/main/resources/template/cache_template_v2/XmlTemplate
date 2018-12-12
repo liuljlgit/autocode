@@ -181,4 +181,16 @@ ${batchSetList}
             </foreach>
         </where>
     </delete>
+
+    <!--根据ID列表获取记录列表-->
+    <select id="find${entityName}ListByIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            ${tableId} in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
 </mapper>

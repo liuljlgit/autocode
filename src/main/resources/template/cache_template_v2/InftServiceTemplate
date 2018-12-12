@@ -92,6 +92,14 @@ public interface I${entityName}Service {
     <T> List<${entityName}> find${entityName}List(T t, Boolean useCache) throws Exception;
 
     /**
+     * 根据ID列表从数据库中查询列表
+     * @param list
+     * @return
+     * @throws Exception
+     */
+    List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list) throws Exception;
+
+    /**
      * 分页查询列表
      * @param ${entityObj}
      * @param useCache

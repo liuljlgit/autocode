@@ -92,4 +92,11 @@ public interface I${entityName}Dao {
      * @return
      */
      List<${entityName}> get${entityName}ListExample(QueryExample queryExample);
+
+     /**
+      * 根据ID列表从数据库中查询列表
+      * @param list
+      * @return
+      */
+      List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list);
 }
