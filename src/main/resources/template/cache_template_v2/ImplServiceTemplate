@@ -273,7 +273,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             //把已经过期的ID拿出来再一次性的去数据库里面获取出来并转成一个Map
             Map<${entityIdType}, ${entityName}> notNullMap = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
             List<${entityIdType}> nullIds = ids.stream().filter(e->!notNullMap.containsKey(e)).collect(Collectors.toList());
-            Map<${entityIdType},${entityName}> nullMap = find${entityName}ListByIds(nullIds).stream().collect(Collectors.toMap(e->e.get${upperFirstEntityId}(),e->e));
+            Map<${entityIdType},${entityName}> nullMap = find${entityName}ListByIds(nullIds,false).stream().collect(Collectors.toMap(e->e.get${upperFirstEntityId}(),e->e));
             if(nullIds.size() != nullMap.size()){
                 logger.info("===> fetch page list from database");
                 list = find${entityName}List(t);
@@ -286,6 +286,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                         listForBack.add(notNullMap.get(ids.get(i)));
                     }else if(nullMap.containsKey(ids.get(i))){
                         listForBack.add(nullMap.get(ids.get(i)));
+                        ${entityObj}Redis.set${entityName}(nullMap.get(ids.get(i)),IConst.MINUTE_15_EXPIRE);
                     }else{
                         logger.info("===> fetch page list from database");
                         list = find${entityName}List(t);
@@ -328,11 +329,29 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      * @throws Exception
      */
     @Override
-    public List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list) throws Exception {
+    public List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list,Boolean useCache) throws Exception {
         if(CollectionUtils.isEmpty(list)){
             return Collections.EMPTY_LIST;
         }
-        return ${entityObj}Dao.find${entityName}ListByIds(list);
+        List<${entityName}> resList;
+        if(useCache){
+            resList = ${entityObj}Redis.get${entityName}ListByIds(list);
+            Map<${entityIdType}, ${entityName}> ${entityObj}Map = resList.stream().collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
+            List<${entityIdType}> nullList = list.stream().filter(e -> !${entityObj}Map.containsKey(e)).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(nullList)){
+                return resList;
+            }else{
+                List<${entityName}> nullObjList = ${entityObj}Dao.find${entityName}ListByIds(nullList);
+                for(${entityName} e : nullObjList){
+                    ${entityObj}Redis.set${entityName}(e,IConst.MINUTE_15_EXPIRE);
+                }
+                resList.addAll(nullObjList);
+                return resList;
+            }
+        }else{
+            resList = ${entityObj}Dao.find${entityName}ListByIds(list);
+            return resList;
+        }
     }
 
     /**

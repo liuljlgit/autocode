@@ -97,7 +97,7 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list) throws Exception;
+    List<${entityName}> find${entityName}ListByIds(List<${entityIdType}> list,Boolean useCache) throws Exception;
 
     /**
      * 分页查询列表

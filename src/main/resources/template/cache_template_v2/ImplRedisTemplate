@@ -208,6 +208,19 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
     }
 
     /**
+     * 根据id列表获取列表
+     * @param list
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<${entityName}> get${entityName}ListByIds(List<${entityIdType}> list) throws Exception {
+        List<String> listKeys = list.stream().map(e -> get${entityName}Key(e)).collect(Collectors.toList());
+        List<${entityName}> ${entityObj}s = listKeys.size() > 0 ? mget(listKeys, ${entityName}.class) : Collections.emptyList() ;
+        return ${entityObj}s;
+    }
+
+    /**
      * 删除所有redis的值
      * 注意:慎用！！！！
      */
