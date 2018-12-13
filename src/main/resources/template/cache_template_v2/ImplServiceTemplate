@@ -18,6 +18,7 @@ import ${inftServiceFullPath};
 import ${inftDaoFullPath};
 import ${entityFullPath};
 import ${inftRedisFullPath};
+import ${respFullPath};
 
 /**
  * I${entityName}Service service接口类
@@ -353,7 +354,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         ${entityObj}.setTotal(getTotal${entityName}(${entityObj}, useCache).intValue());
         resp.put("total",${entityObj}.getTotal());
         resp.put("totalPage",${entityObj}.getTotalPage());
-        resp.put("list",find${entityName}List(${entityObj}, useCache));
+        resp.put("list",find${entityName}List(${entityObj}, useCache).stream().map(e-> new ${entityName}Resp(e)).collect(Collectors.toList()));
         return resp;
     }
 
@@ -376,7 +377,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         queryExample.setTotal(getTotal${entityName}(queryExample, useCache).intValue());
         resp.put("totalPage",queryExample.getTotalPage());
         resp.put("total",queryExample.getTotal());
-        resp.put("list",find${entityName}List(queryExample,useCache));
+        resp.put("list",find${entityName}List(queryExample,useCache).stream().map(e-> new ${entityName}Resp(e)).collect(Collectors.toList()));
         return resp;
     }
 
