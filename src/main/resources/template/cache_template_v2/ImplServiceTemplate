@@ -11,6 +11,7 @@ import com.cloud.common.constant.IConst;
 import org.springframework.cache.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
+import com.cloud.common.exception.BusiException;
 import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSON;
@@ -43,7 +44,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public ${entityName} load${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
         if(Objects.isNull(${entityId})){
-            throw new Exception("请输入要获取的数据的ID");
+            throw new BusiException("请输入要获取的数据的ID");
         }
         ${entityName} ${entityObj};
         ${entityObj} = ${entityObj}Redis.get${entityName}(${entityId});
@@ -54,7 +55,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         logger.info("===> fetch ${entityId} = "+${entityId}+" entity from database");
         ${entityObj} = ${entityObj}Dao.load${entityName}ByKey(${entityId});
         if(Objects.isNull(${entityObj})){
-            throw new Exception("没有符合条件的记录！") ;
+            throw new BusiException("没有符合条件的记录！") ;
         }
         ${entityObj}Redis.set${entityName}(${entityObj},IConst.MINUTE_15_EXPIRE);
         return ${entityObj};
@@ -129,7 +130,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return 0;
         }
         if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            throw new Exception("更新主键不能为空");
+            throw new BusiException("更新主键不能为空");
         }
         Integer result = ${implDaoName}.update${entityName}(${entityObj});
         ${entityObj}Redis.deleteAllHashSetByPage();
@@ -150,7 +151,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         for (${entityName} ${entityObj} : list) {
             if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-                throw new Exception("更新主键不能为空");
+                throw new BusiException("更新主键不能为空");
             }
             ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
         }
@@ -168,7 +169,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Transactional(rollbackFor = Exception.class)
     public Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
         if(Objects.isNull(${entityId})){
-            throw new Exception("请输入要删除的数据的ID");
+            throw new BusiException("请输入要删除的数据的ID");
         }
         Integer result = ${implDaoName}.delete${entityName}ByKey(${entityId});
         ${entityObj}Redis.deleteAllHashSetByPage();
@@ -189,7 +190,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         for (${entityName} ${entityObj} : list) {
             if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-                throw new Exception("删除主键不能为空");
+                throw new BusiException("删除主键不能为空");
             }
             ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
         }
@@ -207,7 +208,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public <T> Long getTotal${entityName}(T t,Boolean useCache) throws Exception {
         if(Objects.isNull(t)){
-            throw new Exception("查询参数不能为空");
+            throw new BusiException("查询参数不能为空");
         }
         Long count;
         if(useCache){
@@ -239,7 +240,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }else if(t instanceof QueryExample){
             count = ${entityObj}Dao.get${entityName}CountExample((QueryExample) t);
         }else{
-            throw new Exception("选择类型不正确");
+            throw new BusiException("选择类型不正确");
         }
         return count;
     }
@@ -317,7 +318,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }else if(t instanceof QueryExample){
             list = ${entityObj}Dao.get${entityName}ListExample((QueryExample) t);
         }else{
-            throw new Exception("选择类型不正确");
+            throw new BusiException("选择类型不正确");
         }
         return list;
     }
@@ -364,10 +365,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject getPage${entityName}(${entityName} ${entityObj},Boolean useCache) throws Exception{
         if(Objects.isNull(${entityObj})){
-            throw new Exception("查询参数不能为空");
+            throw new BusiException("查询参数不能为空");
         }
         if(Objects.isNull(${entityObj}.getPage()) || Objects.isNull(${entityObj}.getPageSize()) || IConst.PAGE_NO_USE.equals(${entityObj}.getPage())){
-            throw new Exception("分页请求入参异常");
+            throw new BusiException("分页请求入参异常");
         }
         JSONObject resp = new JSONObject();
         ${entityObj}.setTotal(getTotal${entityName}(${entityObj}, useCache).intValue());
@@ -387,10 +388,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     @Override
     public JSONObject getPage${entityName}Example(QueryExample queryExample,Boolean useCache) throws Exception {
         if(Objects.isNull(queryExample)){
-            throw new Exception("查询参数不能为空");
+            throw new BusiException("查询参数不能为空");
         }
         if(Objects.isNull(queryExample.getPage()) || Objects.isNull(queryExample.getPageSize()) || IConst.PAGE_NO_USE.equals(queryExample.getPage())){
-            throw new Exception("分页请求入参异常");
+            throw new BusiException("分页请求入参异常");
         }
         JSONObject resp = new JSONObject();
         queryExample.setTotal(getTotal${entityName}(queryExample, useCache).intValue());

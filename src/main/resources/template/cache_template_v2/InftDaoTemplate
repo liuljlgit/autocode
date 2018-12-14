@@ -18,7 +18,7 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    ${entityName} load${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
+    ${entityName} load${entityName}ByKey(${entityIdType} ${entityId});
 
     /**
      * 新增对象
@@ -51,7 +51,7 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    Integer delete${entityName}ByKey(@Param("${entityId}") ${entityIdType} ${entityId});
+    Integer delete${entityName}ByKey(${entityIdType} ${entityId});
 
     /**
      * 批量删除对象

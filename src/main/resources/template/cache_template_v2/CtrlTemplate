@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.cloud.common.base.BaseController;
 import com.cloud.common.webcomm.ReqEntity;
+import com.cloud.common.exception.BusiException;
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.common.complexquery.QueryExample;
 import java.util.*;
@@ -29,7 +30,7 @@ public class ${entityName}Ctrl extends BaseController {
    @GetMapping(value = "/${entityObj}/{${entityId}}")
    public String load${entityName}ByKey(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws Exception {
       if(Objects.isNull(${entityId})){
-         throw new Exception("请输入要获取的数据的ID") ;
+         throw new BusiException("请输入要获取的数据的ID") ;
       }
       ${entityName} ${entityObj} = ${implServiceName}.load${entityName}ByKey(${entityId});
       JSONObject resp = new JSONObject();
@@ -47,7 +48,7 @@ public class ${entityName}Ctrl extends BaseController {
        ${entityName} ${entityObj}Req = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
        ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}(${entityObj}Req,true);
        if(Objects.isNull(${entityObj})){
-           throw new Exception("没有符合条件的记录");
+           throw new BusiException("没有符合条件的记录");
        }
        JSONObject resp = new JSONObject();
        resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
@@ -65,7 +66,7 @@ public class ${entityName}Ctrl extends BaseController {
        QueryExample queryExample = new QueryExample();
        ${entityName} ${entityObj} = ${entityObj}Service.selectOne${entityName}(queryExample,true);
        if(Objects.isNull(${entityObj})){
-           throw new Exception("没有符合条件的记录");
+           throw new BusiException("没有符合条件的记录");
        }
        JSONObject resp = new JSONObject();
        resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
@@ -117,7 +118,7 @@ public class ${entityName}Ctrl extends BaseController {
     @DeleteMapping(value = "/${entityObj}/{${entityId}}")
     public String delete${entityName}ByKey(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
         if(Objects.isNull(${entityId})){
-           throw new Exception("入参请求异常") ;
+           throw new BusiException("入参请求异常") ;
         }
         ${implServiceName}.delete${entityName}ByKey(${entityId});
         return formatResponseParams(EXEC_OK,null);
