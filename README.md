@@ -1,10 +1,13 @@
 一、概述
+====
 autocode是自动代码生成工具，只需一键就能生成包括controller,service,dao,xml,redis等文件。使项目可高效开发，项目集成了复杂查询和简单查询，都使用redis进行缓存存储。使用此项目，只需一键生成代码，后续的业务逻辑我们就不再需要写sql文件，只需调用系统封装好的函数进行高效开发。
 
-一、表设计原则
+二、表设计原则
+====
 表的主键类型需为BIGINT类型
 
-二、使用流程
+三、使用流程
+====
 a)下载frame-util仓库,使用mvn install生成jar包
 b)下载autocode仓库,使用mvn install生成jar包
 c)新生成一个项目,在pom.xml中导入jar包，代码如下：
@@ -39,4 +42,5 @@ d)运行Test,生成代码
     }
     
 三、总结
+====
 我们只需要先生成frame-util的jar包，然后再生成autocode的jar包。在我们的项目中加入依赖即可。使用缓存时GenProperties.useCache必须配置未TRUE，否则必须配置为FALSE,我们有五种模板可供选择。其中cache_template_v2是cache_template_v1的升级,改变了其中的缓存结构，其余模板分别为不使用缓存模板、分表模板和视图模板。
