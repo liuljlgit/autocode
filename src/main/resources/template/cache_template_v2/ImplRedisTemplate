@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import org.springframework.data.redis.core.RedisCallback;
+import com.cloud.common.exception.BusiException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -109,7 +110,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         } else if(t instanceof QueryExample){
             rsKey = CommonUtil.createExampleRedisKey(JSONObject.parseObject(JSON.toJSONString(t)),isEncrpt,isCountPage);
         }else{
-            throw new Exception("类型不正确");
+            throw new BusiException("类型不正确");
         }
         return rsKey;
     }
@@ -205,6 +206,19 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
            put("ids",JSON.toJSONString(ids));
            put("${entityObj}s",JSON.toJSONString(${entityObj}s));
         }};
+    }
+
+    /**
+     * 根据id列表获取列表
+     * @param list
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<${entityName}> get${entityName}ListByIds(List<${entityIdType}> list) throws Exception {
+        List<String> listKeys = list.stream().map(e -> get${entityName}Key(e)).collect(Collectors.toList());
+        List<${entityName}> ${entityObj}s = listKeys.size() > 0 ? mget(listKeys, ${entityName}.class) : Collections.emptyList() ;
+        return ${entityObj}s;
     }
 
     /**
