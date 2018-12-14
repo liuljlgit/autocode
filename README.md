@@ -10,7 +10,7 @@ autocode是自动代码生成工具，只需一键就能生成包括controller,s
 ====
 
 a）克隆frame-util仓库,使用mvn install生成jar包<br>
-b） 克隆autocode仓库,使用mvn install生成jar包<br>
+b）克隆autocode仓库,使用mvn install生成jar包<br>
 c）新生成一个项目,在pom.xml中导入jar包<br>
 ```
     <dependency>
