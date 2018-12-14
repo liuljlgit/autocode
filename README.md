@@ -17,7 +17,7 @@ c)新生成一个项目,在pom.xml中导入jar包，代码如下：
 	<version>0.0.1-SNAPSHOT</version>
    </dependency>
 d)运行Test,生成代码
-` ``
+` ``Java
     @Test
     public void autocode() {
       //数据库配置
