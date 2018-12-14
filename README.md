@@ -11,7 +11,7 @@ autocode是自动代码生成工具，只需一键就能生成包括controller,s
 
 a) 下载frame-util仓库,使用mvn install生成jar包<br>
 b) 下载autocode仓库,使用mvn install生成jar包<br>
-c) 新生成一个项目,在pom.xml中导入jar包，代码如下：<br>
+c) 新生成一个项目,在pom.xml中导入jar包<br>
 ```
     <dependency>
 	<groupId>com.gen</groupId>
@@ -19,7 +19,7 @@ c) 新生成一个项目,在pom.xml中导入jar包，代码如下：<br>
 	<version>0.0.1-SNAPSHOT</version>
    </dependency>
 ```
-d)运行Test,生成代码<br>
+d)在新生成的项目中,运行下面的Test方法,其中的配置需按照自己项目路径配置,路径不存在会自动生成<br>
 ```
     @Test
     public void autocode() {
