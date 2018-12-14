@@ -17,7 +17,6 @@ c)新生成一个项目,在pom.xml中导入jar包，代码如下：
 	<version>0.0.1-SNAPSHOT</version>
    </dependency>
 d)运行Test,生成代码
-` ``Java
     @Test
     public void autocode() {
       //数据库配置
@@ -41,7 +40,6 @@ d)运行Test,生成代码
       //运行代码生成
       GenMain.main(null);
     }
-` ``
 四、总结
 ====
 我们只需要先生成frame-util的jar包，然后再生成autocode的jar包。在我们的项目中加入依赖即可。使用缓存时GenProperties.useCache必须配置未TRUE，否则必须配置为FALSE,我们有五种模板可供选择。其中cache_template_v2是cache_template_v1的升级,改变了其中的缓存结构，其余模板分别为不使用缓存模板、分表模板和视图模板。
