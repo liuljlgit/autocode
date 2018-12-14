@@ -24,7 +24,7 @@ d)运行Test,生成代码
       //表配置:可配置表或者视图（视图仅用来查询,视图不生成缓存，没有主键，只生成查询方法）
       GenProperties.tablenames = "daily_amount,load_time";
       GenProperties.useCache = Boolean.TRUE;
-      //包路径配置
+      //包路径配置 
       GenProperties.entityPackageOutPath = "com.gen.autocodecall.test.entity";
       GenProperties.daoPackageOutPath = "com.gen.autocodecall.test.dao";
       GenProperties.servicePackageOutPath = "com.gen.autocodecall.test.service";
