@@ -46,17 +46,19 @@ public interface I${entityName}Service {
     /**
      * 更新对象
      * @param ${entityObj}
+     * @param isFullUpdate
      * @return
      * @throws Exception
      */
-    Integer update${entityName}(${entityName} ${entityObj}) throws Exception;
+    Integer update${entityName}(${entityName} ${entityObj},Boolean isFullUpdate) throws Exception;
 
     /**
      * 批量更新
      * @param ${entityObj}List
+     * @param isFullUpdate
      * @throws Exception
      */
-    void update${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+    void update${entityName}List(List<${entityName}> ${entityObj}List,Boolean isFullUpdate) throws Exception;
 
     /**
      * 删除对象
@@ -120,14 +122,16 @@ public interface I${entityName}Service {
     /**
      * 保存记录
      * @param ${entityObj}
+     * @param isFullUpdate
      * @throws Exception
      */
-     void save${entityName}(${entityName} ${entityObj}) throws Exception;
+     void save${entityName}(${entityName} ${entityObj},Boolean isFullUpdate) throws Exception;
 
     /**
      * 批量保存记录
      * @param ${entityObj}List
+     * @param isFullUpdate
      * @throws Exception
      */
-     void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+     void save${entityName}List(List<${entityName}> ${entityObj}List,Boolean isFullUpdate) throws Exception;
 }

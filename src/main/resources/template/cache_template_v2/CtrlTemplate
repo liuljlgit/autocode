@@ -106,7 +106,7 @@ public class ${entityName}Ctrl extends BaseController {
    @PostMapping(value = "/${entityObj}")
    public String save${entityName}(@RequestBody ReqEntity reqEntity) throws  Exception{
        ${entityName} ${entityObj} = JSONObject.parseObject(reqEntity.getReqBody().toJSONString(), ${entityName}.class);
-       ${implServiceName}.save${entityName}(${entityObj});
+       ${implServiceName}.save${entityName}(${entityObj},false);
        return formatResponseParams(EXEC_OK,null);
    }
 

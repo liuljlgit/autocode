@@ -119,6 +119,30 @@ ${batchSetList}
         </foreach>
     </update>
 
+    <!--更新对象:全更新-->
+    <update id="fullUpdate${entityName}">
+        update ${tablename}
+        <set>
+${fullSetList}
+        </set>
+        <where>
+            AND ${tableId}=#{${entityId}}
+        </where>
+    </update>
+
+    <!--批量更新对象:全更新-->
+    <update id="fullUpdate${entityName}List">
+        <foreach collection="list" separator=";" item="item">
+            update ${tablename}
+            <set>
+${fullBatchSetList}
+            </set>
+            <where>
+                AND ${tableId}=#{item.${entityId}}
+            </where>
+        </foreach>
+    </update>
+
     <!--查询总数-->
     <select id="get${entityName}Count" resultType="java.lang.Long">
         select count(*) from ${tablename}

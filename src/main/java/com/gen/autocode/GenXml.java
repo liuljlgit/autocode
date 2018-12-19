@@ -26,8 +26,10 @@ public class GenXml {
             replaceMap.put("${baseColumnList}",createTableColumList((byte)1));
             replaceMap.put("${BaseObjectList}",createTableColumList((byte)2));
             replaceMap.put("${BaseItemList}",createTableColumList((byte)3));
-            replaceMap.put("${setList}",createSetList());
-            replaceMap.put("${batchSetList}",createBatchSetList());
+            replaceMap.put("${setList}",createSetList(1));
+            replaceMap.put("${batchSetList}",createBatchSetList(1));
+            replaceMap.put("${fullSetList}",createSetList(2));
+            replaceMap.put("${fullBatchSetList}",createBatchSetList(2));
 
             //自动生成xml文件
             GenCommon.createFile(false,
@@ -171,7 +173,7 @@ public class GenXml {
     /**
      * 创建更新对象的setList sql
      */
-    private String createSetList(){
+    private String createSetList(Integer type){
         StringBuffer sb = new StringBuffer();
         List<TableColumInfo> tableColumInfoList = GenProperties.tableColumInfoList;
         String suf;
@@ -181,9 +183,13 @@ public class GenXml {
                 continue;
             }
             suf = i==(tableColumInfoList.size()-1) ? "":"\n";
-            sb.append("\t\t\t<if test=\""+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
-                    "\t\t\t\t"+e.getTableColumName()+" = #{"+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
-                    "\t\t\t</if>"+suf);
+            if(type == 1){
+                sb.append("\t\t\t<if test=\""+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
+                        "\t\t\t\t"+e.getTableColumName()+" = #{"+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
+                        "\t\t\t</if>"+suf);
+            }else{
+                sb.append("\t\t\t"+e.getTableColumName()+" = #{"+HumpUtil.convertToJava(e.getTableColumName())+"},"+suf);
+            }
         }
         return sb.toString();
     }
@@ -191,7 +197,7 @@ public class GenXml {
     /**
      * 创建更新对象的setList sql
      */
-    private String createBatchSetList(){
+    private String createBatchSetList(Integer type){
         StringBuffer sb = new StringBuffer();
         List<TableColumInfo> tableColumInfoList = GenProperties.tableColumInfoList;
         String suf;
@@ -201,9 +207,13 @@ public class GenXml {
                 continue;
             }
             suf = i==(tableColumInfoList.size()-1) ? "":"\n";
-            sb.append("\t\t\t\t<if test=\"item."+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
-                    "\t\t\t\t\t"+e.getTableColumName()+" = #{item."+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
-                    "\t\t\t\t</if>"+suf);
+            if(type == 1){
+                sb.append("\t\t\t\t<if test=\"item."+HumpUtil.convertToJava(e.getTableColumName())+" != null\">\n" +
+                        "\t\t\t\t\t"+e.getTableColumName()+" = #{item."+HumpUtil.convertToJava(e.getTableColumName())+"},\n" +
+                        "\t\t\t\t</if>"+suf);
+            }else{
+                sb.append("\t\t\t\t"+e.getTableColumName()+" = #{item."+HumpUtil.convertToJava(e.getTableColumName())+"}," + suf);
+            }
         }
         return sb.toString();
     }
