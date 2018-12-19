@@ -29,11 +29,17 @@ public class GenXml {
             replaceMap.put("${setList}",createSetList());
             replaceMap.put("${batchSetList}",createBatchSetList());
 
-            //创建文件
+            //自动生成xml文件
             GenCommon.createFile(false,
                     GenProperties.xmlFileName,
                     GenProperties.xmlPackageOutPath,
                     GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));
+
+            //自定义xml文件
+            GenCommon.createFile(false,
+                    GenProperties.xmlFileName,
+                    GenProperties.customXmlPackageOutPath,
+                    GenCommon.replaceTemplateContent("CustomXmlTemplate",replaceMap));
         }catch(Exception e){
             e.printStackTrace();
         }

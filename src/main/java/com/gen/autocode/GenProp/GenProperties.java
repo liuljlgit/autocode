@@ -27,7 +27,7 @@ public class GenProperties {
     /**
      * 是否使用缓存
      */
-    public static Boolean useCache = Boolean.FALSE;
+    public static Boolean useCache = Boolean.TRUE;
 
     /**
      * 作者名称
@@ -42,7 +42,12 @@ public class GenProperties {
     /**
      * xml路径配置
      */
-    public static String xmlPackageOutPath = "mybatis.test";
+    public static String xmlPackageOutPath = "mybatis.mapper.auto.test";
+
+    /**
+     * xml路径配置
+     */
+    public static String customXmlPackageOutPath = "mybatis.mapper.custom.test";
 
     /**
      * dao路径配置
@@ -72,7 +77,7 @@ public class GenProperties {
     /**
      * entity路径配置
      */
-    public static String templatePath = "template/cache_template_v1";
+    public static String templatePath = "template/cache_template_v2";
 
     /**
      * 当前表名
