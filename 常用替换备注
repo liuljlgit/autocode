@@ -1,5 +1,6 @@
 DailyAmount     ${entityName}
 dailyAmount     ${entityObj}
-Long(主键类型)   ${entityIdType}
 daId            ${entityId}
-DaId            ${upperFirstEntityId}
+Long(主键类型)   ${entityIdType}
+setDaId         ${setEntityId}
+getDaId         ${getEntityId}

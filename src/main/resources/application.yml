@@ -24,13 +24,6 @@ spring:
         max-idle: 8
         min-idle: 0
 
-#mybatis配置
-mybatis:
-  type-aliases-package: com.gen.**.entity
-  mapper-locations: classpath:mybatis/test/*.xml
-  config-location: classpath:mybatis/mybatis-config.xml
-
-
 #打印sql
 debug : true
 logging:

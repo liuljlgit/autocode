@@ -1,4 +1,4 @@
-package com.gen.autocode.GenProp;
+package com.gen.autocode.common;
 
 import com.gen.autocode.entity.TableColumInfo;
 

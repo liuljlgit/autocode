@@ -1,8 +1,8 @@
-package com.gen.autocode;
+package com.gen.autocode.engine;
 
 
-import com.gen.autocode.GenProp.GenCommon;
-import com.gen.autocode.GenProp.GenProperties;
+import com.gen.autocode.common.GenCommon;
+import com.gen.autocode.common.GenProperties;
 
 /**
  * 自动生成controller

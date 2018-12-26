@@ -1,4 +1,4 @@
-package com.gen.autocode.GenProp;
+package com.gen.autocode.common;
 
 import com.cloud.common.utils.HumpUtil;
 import org.apache.commons.io.IOUtils;

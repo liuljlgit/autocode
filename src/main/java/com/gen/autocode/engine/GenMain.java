@@ -1,8 +1,8 @@
-package com.gen.autocode;
+package com.gen.autocode.engine;
 
 import com.cloud.common.utils.HumpUtil;
-import com.gen.autocode.GenProp.GenCommon;
-import com.gen.autocode.GenProp.GenProperties;
+import com.gen.autocode.common.GenCommon;
+import com.gen.autocode.common.GenProperties;
 import com.gen.autocode.entity.TableColumInfo;
 
 import java.sql.Connection;
