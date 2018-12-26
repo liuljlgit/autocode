@@ -38,10 +38,9 @@ d）在新生成的项目中,运行下面的Test方法,其中的配置需按照�
       GenProperties.redisPackageOutPath = "com.gen.autocodecall.test.cache";
       GenProperties.controllerPackageOutPath = "com.gen.autocodecall.test.controller";
       GenProperties.respPackageOutPath = "com.gen.autocodecall.test.webentity";
-      GenProperties.xmlPackageOutPath = "mybatis.mapper.test.auto";
-      GenProperties.customXmlPackageOutPath = "mybatis.mapper.test.custom";
-      //有一下的模板可供选择。cache_template_v1、cache_template_v2、no_cache_template、sub_table_template、view_template
-      GenProperties.templatePath = "template/cache_template_v2";
+      GenProperties.xmlPackageOutPath = "mybatis.mapper.test";
+      //有一下的模板可供选择。cache_template、no_cache_template、sub_table_template、view_template
+      GenProperties.templatePath = "template/cache_template";
       //运行代码生成
       GenMain.main(null);
     }
