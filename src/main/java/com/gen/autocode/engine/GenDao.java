@@ -17,7 +17,7 @@ public class GenDao {
             //创建接口文件
             GenCommon.createFile(true,
                     GenProperties.inftDaoFileName,
-                    GenProperties.daoPackageOutPath.concat(".inft"),
+                    GenProperties.daoPackageOutPath,
                     GenCommon.replaceTemplateContent("InftDaoTemplate",GenCommon.createReplaceMap()));
 
         }catch(Exception e){

@@ -174,7 +174,6 @@ public class GenCommon {
         replaceMap.put("${entityFullPath}",GenProperties.entityFullPath);
         replaceMap.put("${ctrlFullPath}", GenProperties.ctrlFullPath);
         replaceMap.put("${inftDaoFullPath}", GenProperties.inftDaoFullPath);
-        replaceMap.put("${implDaoFullPath}", GenProperties.implDaoFullPath);
         replaceMap.put("${inftServiceFullPath}", GenProperties.inftServiceFullPath);
         replaceMap.put("${implServiceFullPath}", GenProperties.implServiceFullPath);
         replaceMap.put("${inftRedisFullPath}", GenProperties.inftRedisFullPath);

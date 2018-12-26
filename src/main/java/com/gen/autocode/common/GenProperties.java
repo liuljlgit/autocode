@@ -2,7 +2,6 @@ package com.gen.autocode.common;
 
 import com.gen.autocode.entity.TableColumInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +81,7 @@ public class GenProperties {
     /**
      * 表的列信息
      */
-    public static List<TableColumInfo> tableColumInfoList = new ArrayList<>();
+    public static List<TableColumInfo> tableColumInfoList;
 
     /**
      * 实体类名称
@@ -123,11 +122,6 @@ public class GenProperties {
      * dao实现类名称
      */
     public static String implDaoFileName;
-
-    /**
-     * dao实现类全路径
-     */
-    public static String implDaoFullPath;
 
     /**
      * service接口名称

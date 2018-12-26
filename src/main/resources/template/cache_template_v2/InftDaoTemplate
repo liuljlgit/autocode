@@ -1,4 +1,4 @@
-package ${daoPackageOutPath}.inft;
+package ${daoPackageOutPath};
 
 import java.util.*;
 import org.apache.ibatis.annotations.Param;
