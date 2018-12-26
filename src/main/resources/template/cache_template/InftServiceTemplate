@@ -125,7 +125,7 @@ public interface I${entityName}Service {
      * @param isFullUpdate
      * @throws Exception
      */
-     void save${entityName}(${entityName} ${entityObj},Boolean isFullUpdate) throws Exception;
+     void save${entityName}(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 批量保存记录
@@ -133,5 +133,5 @@ public interface I${entityName}Service {
      * @param isFullUpdate
      * @throws Exception
      */
-     void save${entityName}List(List<${entityName}> ${entityObj}List,Boolean isFullUpdate) throws Exception;
+     void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 }

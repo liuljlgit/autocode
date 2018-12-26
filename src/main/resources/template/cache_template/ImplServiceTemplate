@@ -420,7 +420,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save${entityName}(${entityName} ${entityObj},Boolean isFullUpdate) throws Exception {
+    public void save${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
            return ;
         }
@@ -440,7 +440,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save${entityName}List(List<${entityName}> ${entityObj}List,Boolean isFullUpdate) throws Exception {
+    public void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
