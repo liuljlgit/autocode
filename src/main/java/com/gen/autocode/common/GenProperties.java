@@ -119,11 +119,6 @@ public class GenProperties {
     public static String inftDaoFullPath;
 
     /**
-     * dao实现类名称
-     */
-    public static String implDaoFileName;
-
-    /**
      * service接口名称
      */
     public static String inftServiceFileName;

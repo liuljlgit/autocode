@@ -28,7 +28,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     private static final Logger logger = LoggerFactory.getLogger(${entityName}ServiceImpl.class);
 
     @Autowired
-    private ${inftDaoName} ${implDaoName};
+    private I${entityName}Dao ${entityObj}Dao;
 
     /**
      * 根据主键获取对象
@@ -93,7 +93,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj}.${getEntityId}())){
             ${entityObj}.${setEntityId}(${noCacheGenId});
         }
-        return ${implDaoName}.insert${entityName}(${entityObj});
+        return ${entityObj}Dao.insert${entityName}(${entityObj});
     }
 
     /**
@@ -112,7 +112,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 ${entityObj}.${setEntityId}(${noCacheGenId});
             }
         }
-        ${implDaoName}.insert${entityName}List(${entityObj}List);
+        ${entityObj}Dao.insert${entityName}List(${entityObj}List);
     }
 
     /**
@@ -130,7 +130,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj}.${getEntityId}())){
             throw new Exception("更新主键不能为空");
         }
-        return ${implDaoName}.update${entityName}(${entityObj});
+        return ${entityObj}Dao.update${entityName}(${entityObj});
     }
 
     /**
@@ -149,7 +149,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 throw new Exception("更新主键不能为空");
             }
         }
-        ${implDaoName}.update${entityName}List(${entityObj}List);
+        ${entityObj}Dao.update${entityName}List(${entityObj}List);
     }
 
     /**
@@ -164,7 +164,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityId})){
             throw new Exception("请输入要删除的数据的ID");
         }
-        return ${implDaoName}.delete${entityName}ByKey(${entityId});
+        return ${entityObj}Dao.delete${entityName}ByKey(${entityId});
     }
 
     /**
@@ -183,7 +183,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 throw new Exception("删除主键不能为空");
             }
         }
-        ${implDaoName}.delete${entityName}List(${entityObj}List);
+        ${entityObj}Dao.delete${entityName}List(${entityObj}List);
     }
 
     /**

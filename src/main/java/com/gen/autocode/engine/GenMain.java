@@ -69,7 +69,6 @@ public class GenMain {
             //dao层
             GenProperties.inftDaoFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Dao");
             GenProperties.inftDaoFullPath = GenProperties.daoPackageOutPath.concat(".").concat(GenProperties.inftDaoFileName);
-            GenProperties.implDaoFileName = HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Dao");
             //service层
             GenProperties.inftServiceFileName = "I"+HumpUtil.toUpperCaseFirstOne(HumpUtil.convertToJava(tablename)).concat("Service");
             GenProperties.inftServiceFullPath = GenProperties.servicePackageOutPath.concat(".inft.").concat(GenProperties.inftServiceFileName);

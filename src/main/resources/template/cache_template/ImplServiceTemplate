@@ -31,7 +31,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     private static final Logger logger = LoggerFactory.getLogger(${entityName}ServiceImpl.class);
 
     @Autowired
-    private ${inftDaoName} ${implDaoName};
+    private I${entityName}Dao ${entityObj}Dao;
     @Autowired
     private I${entityName}Redis ${entityObj}Redis;
 
@@ -92,7 +92,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj}.${getEntityId}())){
             ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
         }
-        Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
+        Integer result =  ${entityObj}Dao.insert${entityName}(${entityObj});
         ${entityObj}Redis.deleteAllHashSetByPage();
         return result;
     }
@@ -113,7 +113,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
             }
         }
-        ${implDaoName}.insert${entityName}List(${entityObj}List);
+        ${entityObj}Dao.insert${entityName}List(${entityObj}List);
         ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
@@ -135,9 +135,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         Integer result;
         if(isFullUpdate){
-            result = ${implDaoName}.fullUpdate${entityName}(${entityObj});
+            result = ${entityObj}Dao.fullUpdate${entityName}(${entityObj});
         } else {
-            result = ${implDaoName}.update${entityName}(${entityObj});
+            result = ${entityObj}Dao.update${entityName}(${entityObj});
         }
         ${entityObj}Redis.deleteAllHashSetByPage();
         ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
@@ -163,9 +163,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
         }
         if(isFullUpdate){
-            ${implDaoName}.fullUpdate${entityName}List(list);
+            ${entityObj}Dao.fullUpdate${entityName}List(list);
         } else {
-            ${implDaoName}.update${entityName}List(list);
+            ${entityObj}Dao.update${entityName}List(list);
         }
         ${entityObj}Redis.deleteAllHashSetByPage();
     }
@@ -182,7 +182,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityId})){
             throw new BusiException("请输入要删除的数据的ID");
         }
-        Integer result = ${implDaoName}.delete${entityName}ByKey(${entityId});
+        Integer result = ${entityObj}Dao.delete${entityName}ByKey(${entityId});
         ${entityObj}Redis.deleteAllHashSetByPage();
         ${entityObj}Redis.delete${entityName}(${entityId});
         return result;
@@ -205,7 +205,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             }
             ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
         }
-        ${implDaoName}.delete${entityName}List(list);
+        ${entityObj}Dao.delete${entityName}List(list);
         ${entityObj}Redis.deleteAllHashSetByPage();
     }
 

@@ -20,7 +20,7 @@ import ${respFullPath};
 public class ${entityName}Ctrl extends BaseController {
 
     @Autowired
-    private ${inftServiceName} ${implServiceName};
+    private I${entityName}Service ${entityObj}Service;
 
    /**
    * ${entityName} 根据主键获取单个数据

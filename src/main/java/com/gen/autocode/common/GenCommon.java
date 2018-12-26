@@ -166,8 +166,7 @@ public class GenCommon {
         replaceMap.put("${entityObj}",GenProperties.objName);
         replaceMap.put("${inftServiceName}",GenProperties.inftServiceFileName);
         replaceMap.put("${implServiceName}", HumpUtil.toLowerCaseFirstOne(GenProperties.inftServiceFileName.substring(1,GenProperties.inftServiceFileName.length())));
-        replaceMap.put("${inftDaoName}", GenProperties.inftDaoFileName);
-        replaceMap.put("${implDaoName}", HumpUtil.toLowerCaseFirstOne(GenProperties.implDaoFileName));
+        replaceMap.put("I${entityName}Dao", GenProperties.inftDaoFileName);
         replaceMap.put("${respFileName}", GenProperties.respFileName);
         replaceMap.put("${tablename}",GenProperties.tablename);
         //替换导入路径
