@@ -415,7 +415,6 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
     /**
      * 保存记录
      * @param ${entityObj}
-     * @param isFullUpdate
      * @throws Exception
      */
     @Override
@@ -428,14 +427,13 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
             insert${entityName}(${entityObj});
         }else{
-            update${entityName}(${entityObj},isFullUpdate);
+            update${entityName}(${entityObj},false);
         }
     }
 
     /**
      * 批量保存记录
      * @param ${entityObj}List
-     * @param isFullUpdate
      * @throws Exception
      */
     @Override
@@ -454,7 +452,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             insert${entityName}List(insertList);
         }
         if(!CollectionUtils.isEmpty(updateList)){
-            update${entityName}List(updateList,isFullUpdate);
+            update${entityName}List(updateList,false);
         }
     }
 }
