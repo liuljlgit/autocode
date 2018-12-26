@@ -190,8 +190,9 @@ public class GenCommon {
         replaceMap.put("${respPackageOutPath}", GenProperties.respPackageOutPath);
         replaceMap.put("${tableId}",getTableId());
         replaceMap.put("${entityId}",getEntityId());
-        replaceMap.put("${upperFirstEntityId}",getEntityIdUpperFirst());
         replaceMap.put("${entityIdType}",getEntityIdType());
+        replaceMap.put("${getEntityId}",getEntityIdMethod("get"));
+        replaceMap.put("${setEntityId}",getEntityIdMethod("set"));
         //如果没有使用缓存,设定id策略
         if(!GenProperties.useCache){
             if("String".equals(getEntityIdType())){
@@ -230,12 +231,12 @@ public class GenCommon {
     /**
      * 得到entityId,对应表中的id主键。首字母大写，方便得到get函数
      */
-    public static String getEntityIdUpperFirst(){
+    public static String getEntityIdMethod(String prefix){
         List<String> list = GenProperties.tableColumInfoList.stream().filter(e -> e.getTableColumKey().equals("PRI")).map(e -> e.getEntityPropName()).collect(Collectors.toList());
         if(CollectionUtils.isEmpty(list)){
             return "";
         }else{
-            return HumpUtil.toUpperCaseFirstOne(list.get(0));
+            return prefix+HumpUtil.toUpperCaseFirstOne(list.get(0));
         }
     }
 

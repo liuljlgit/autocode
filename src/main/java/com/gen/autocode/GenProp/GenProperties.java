@@ -14,20 +14,20 @@ public class GenProperties {
     /**
      * 数据库配置
      */
-    public static String URL = "jdbc:mysql://192.168.1.135:3306/test";
-    public static String NAME = "root";
-    public static String PASS = "root";
-    public static String DRIVER = "com.mysql.jdbc.Driver";
+    public static String URL;
+    public static String NAME;
+    public static String PASS;
+    public static String DRIVER;
 
     /**
      * 表名，使用逗号分隔
      */
-    public static String tablenames = "medium_contract";
+    public static String tablenames;
 
     /**
      * 是否使用缓存
      */
-    public static Boolean useCache = Boolean.TRUE;
+    public static Boolean useCache;
 
     /**
      * 作者名称
@@ -37,47 +37,42 @@ public class GenProperties {
     /**
      * entity路径配置
      */
-    public static String entityPackageOutPath = "com.gen.test.entity";
+    public static String entityPackageOutPath;
 
     /**
      * xml路径配置
      */
-    public static String xmlPackageOutPath = "mybatis.mapper.auto.test";
-
-    /**
-     * xml路径配置
-     */
-    public static String customXmlPackageOutPath = "mybatis.mapper.custom.test";
+    public static String xmlPackageOutPath;
 
     /**
      * dao路径配置
      */
-    public static String daoPackageOutPath = "com.gen.test.dao";
+    public static String daoPackageOutPath;
 
     /**
      * service路径配置
      */
-    public static String servicePackageOutPath = "com.gen.test.service";
+    public static String servicePackageOutPath;
 
     /**
      * redis路径配置
      */
-    public static String redisPackageOutPath = "com.gen.test.cache";
+    public static String redisPackageOutPath;
 
     /**
      * controller路径配置
      */
-    public static String controllerPackageOutPath = "com.gen.test.controller";
+    public static String controllerPackageOutPath;
 
     /**
      * resp对象路径配置
      */
-    public static String respPackageOutPath = "com.gen.test.webentity";
+    public static String respPackageOutPath;
 
     /**
      * entity路径配置
      */
-    public static String templatePath = "template/cache_template_v2";
+    public static String templatePath;
 
     /**
      * 当前表名

@@ -36,12 +36,6 @@ public class GenXml {
                     GenProperties.xmlFileName,
                     GenProperties.xmlPackageOutPath,
                     GenCommon.replaceTemplateContent("XmlTemplate",replaceMap));
-
-            //自定义xml文件
-            GenCommon.createFile(false,
-                    GenProperties.xmlFileName,
-                    GenProperties.customXmlPackageOutPath,
-                    GenCommon.replaceTemplateContent("CustomXmlTemplate",replaceMap));
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -94,7 +94,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public String set${entityName}2Redis(${entityName} ${entityObj}, long expire){
-        String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
+        String primaryKey = get${entityName}Key(${entityObj}.${getEntityId}());
         sadd(SET_${entityNameUpperCase}_KEY, primaryKey);
         set(primaryKey, ${entityObj}, expire);
         return primaryKey ;

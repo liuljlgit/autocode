@@ -89,8 +89,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             return 0;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
         }
         Integer result =  ${implDaoName}.insert${entityName}(${entityObj});
         ${entityObj}Redis.deleteAllHashSetByPage();
@@ -109,8 +109,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : ${entityObj}List) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-                ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
+                ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
             }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
@@ -130,7 +130,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             return 0;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
             throw new BusiException("更新主键不能为空");
         }
         Integer result;
@@ -140,7 +140,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             result = ${implDaoName}.update${entityName}(${entityObj});
         }
         ${entityObj}Redis.deleteAllHashSetByPage();
-        ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
+        ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
         return result;
     }
 
@@ -157,10 +157,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : list) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
                 throw new BusiException("更新主键不能为空");
             }
-            ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
+            ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
         }
         if(isFullUpdate){
             ${implDaoName}.fullUpdate${entityName}List(list);
@@ -200,10 +200,10 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : list) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
                 throw new BusiException("删除主键不能为空");
             }
-            ${entityObj}Redis.delete${entityName}(${entityObj}.get${upperFirstEntityId}());
+            ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
         }
         ${implDaoName}.delete${entityName}List(list);
         ${entityObj}Redis.deleteAllHashSetByPage();
@@ -283,9 +283,9 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 return ${entityObj}s;
             }
             //把已经过期的ID拿出来再一次性的去数据库里面获取出来并转成一个Map
-            Map<${entityIdType}, ${entityName}> notNullMap = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
+            Map<${entityIdType}, ${entityName}> notNullMap = ${entityObj}s.stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toMap(e -> e.${getEntityId}(), e -> e));
             List<${entityIdType}> nullIds = ids.stream().filter(e->!notNullMap.containsKey(e)).collect(Collectors.toList());
-            Map<${entityIdType},${entityName}> nullMap = find${entityName}ListByIds(nullIds,false).stream().collect(Collectors.toMap(e->e.get${upperFirstEntityId}(),e->e));
+            Map<${entityIdType},${entityName}> nullMap = find${entityName}ListByIds(nullIds,false).stream().collect(Collectors.toMap(e->e.${getEntityId}(),e->e));
             if(nullIds.size() != nullMap.size()){
                 logger.info("===> fetch page list from database");
                 list = find${entityName}List(t);
@@ -348,7 +348,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         List<${entityName}> resList;
         if(useCache){
             resList = ${entityObj}Redis.get${entityName}ListByIds(list);
-            Map<${entityIdType}, ${entityName}> ${entityObj}Map = resList.stream().collect(Collectors.toMap(e -> e.get${upperFirstEntityId}(), e -> e));
+            Map<${entityIdType}, ${entityName}> ${entityObj}Map = resList.stream().collect(Collectors.toMap(e -> e.${getEntityId}(), e -> e));
             List<${entityIdType}> nullList = list.stream().filter(e -> !${entityObj}Map.containsKey(e)).collect(Collectors.toList());
             if(CollectionUtils.isEmpty(nullList)){
                 return resList;
@@ -424,8 +424,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
            return ;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj},isFullUpdate);
@@ -444,11 +444,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
-        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
-        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
+        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
+        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(${entityObj}Redis.get${entityName}Id());
+                e.${setEntityId}(${entityObj}Redis.get${entityName}Id());
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);

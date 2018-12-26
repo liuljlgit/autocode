@@ -93,8 +93,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             return 0;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${noCacheGenId});
         }
         if(Objects.isNull(${entityObj}.getTname())){
             ${entityObj}.setTname(HashUtil.consistentHashTableName(null, null));
@@ -115,8 +115,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
-            if(Objects.isNull(e.get${upperFirstEntityId}())){
-                e.set${upperFirstEntityId}(${noCacheGenId});
+            if(Objects.isNull(e.${getEntityId}())){
+                e.${setEntityId}(${noCacheGenId});
             }
             if(Objects.isNull(e.getTname())){
                 e.setTname(HashUtil.consistentHashTableName(null, null));
@@ -144,7 +144,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return 0;
         }
 
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
             throw new BusiException("更新主键不能为空");
         }
         if(Objects.isNull(${entityObj}.getTname())){
@@ -166,7 +166,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         //设置表名称
         for (${entityName} e : ${entityObj}List) {
-            if(Objects.isNull(e.get${upperFirstEntityId}())){
+            if(Objects.isNull(e.${getEntityId}())){
                 throw new BusiException("更新主键不能为空");
             }
             if(Objects.isNull(e.getTname())){
@@ -339,8 +339,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
            return ;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -358,11 +358,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
-        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
-        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
+        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
+        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(${noCacheGenId});
+                e.${setEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);

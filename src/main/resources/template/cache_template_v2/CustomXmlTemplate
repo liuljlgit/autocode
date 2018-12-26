@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${inftDaoFullPath}">
-    <!-- 自定义sql写在这个文件中,主要可以用来写连表的一些查询操作,同时只支持查询操作,禁止进行增、删、改操作！！！-->
-
-</mapper>

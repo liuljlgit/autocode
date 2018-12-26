@@ -122,7 +122,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
      */
     @Override
     public String set${entityName}(${entityName} ${entityObj}, long expire){
-        String primaryKey = get${entityName}Key(${entityObj}.get${upperFirstEntityId}());
+        String primaryKey = get${entityName}Key(${entityObj}.${getEntityId}());
         set(primaryKey, ${entityObj}, expire);
         return primaryKey ;
     }
@@ -177,7 +177,7 @@ public class ${entityName}RedisImpl extends BaseRedis<String, ${entityName}> imp
         String rsKey = getRedisKey(t,true,false);
         JSONArray ids = new JSONArray();
         list.stream().forEach(e->{
-            ids.add(e.get${upperFirstEntityId}());
+            ids.add(e.${getEntityId}());
             set${entityName}(e, expire);
         });
         hset(PAGE_IDS_${entityNameUpperCase}_KEY,rsKey,ids.toJSONString(),expire);

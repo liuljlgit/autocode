@@ -90,8 +90,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             return 0;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${noCacheGenId});
         }
         return ${implDaoName}.insert${entityName}(${entityObj});
     }
@@ -108,8 +108,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : ${entityObj}List) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-                ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
+                ${entityObj}.${setEntityId}(${noCacheGenId});
             }
         }
         ${implDaoName}.insert${entityName}List(${entityObj}List);
@@ -127,7 +127,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
             return 0;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
             throw new Exception("更新主键不能为空");
         }
         return ${implDaoName}.update${entityName}(${entityObj});
@@ -145,7 +145,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : ${entityObj}List) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
                 throw new Exception("更新主键不能为空");
             }
         }
@@ -179,7 +179,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
             return ;
         }
         for (${entityName} ${entityObj} : ${entityObj}List) {
-            if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
+            if(Objects.isNull(${entityObj}.${getEntityId}())){
                 throw new Exception("删除主键不能为空");
             }
         }
@@ -296,8 +296,8 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(Objects.isNull(${entityObj})){
            return ;
         }
-        if(Objects.isNull(${entityObj}.get${upperFirstEntityId}())){
-            ${entityObj}.set${upperFirstEntityId}(${noCacheGenId});
+        if(Objects.isNull(${entityObj}.${getEntityId}())){
+            ${entityObj}.${setEntityId}(${noCacheGenId});
             insert${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj});
@@ -315,11 +315,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
-        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
-        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.get${upperFirstEntityId}())).collect(Collectors.toList());
+        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
+        List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(insertList)){
             insertList = insertList.stream().map(e->{
-                e.set${upperFirstEntityId}(${noCacheGenId});
+                e.${setEntityId}(${noCacheGenId});
                 return e;
             }).collect(Collectors.toList());
             insert${entityName}List(insertList);
