@@ -109,7 +109,9 @@ public class GenCommon {
                 || sqlType.equalsIgnoreCase("text")){
             result.add("String");
             result.add("java.lang.String;");
-        }else if(sqlType.equalsIgnoreCase("datetime") || sqlType.equalsIgnoreCase("timestamp") || sqlType.equalsIgnoreCase("date")){
+        }else if(sqlType.equalsIgnoreCase("datetime") || sqlType.equalsIgnoreCase("timestamp")
+                || sqlType.equalsIgnoreCase("date") || sqlType.equalsIgnoreCase("time")
+                || sqlType.equalsIgnoreCase("year")){
             result.add("Date");
             result.add("java.util.Date;");
         }else{
