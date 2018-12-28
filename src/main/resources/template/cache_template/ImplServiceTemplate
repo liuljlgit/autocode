@@ -344,13 +344,13 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         List<${entityName}> resList;
         if(useCache){
-            resList = ${entityObj}Redis.get${entityName}ListByIds(list);
-            Map<${entityIdType}, ${entityName}> ${entityObj}Map = resList.stream().collect(Collectors.toMap(e -> e.${getEntityId}(), e -> e));
-            List<${entityIdType}> nullList = list.stream().filter(e -> !${entityObj}Map.containsKey(e)).collect(Collectors.toList());
-            if(CollectionUtils.isEmpty(nullList)){
+            resList = ${entityObj}Redis.get${entityName}ListByIds(list).stream().filter(e -> Objects.nonNull(e)).collect(Collectors.toList());
+            List<${entityIdType}> notNullIds = resList.stream().map(e->e.${getEntityId}()).collect(Collectors.toList());
+            List<${entityIdType}> nullIds = new ArrayList<>(CollectionUtil.aSubtractB(list,notNullIds));
+            if(CollectionUtils.isEmpty(nullIds)){
                 return resList;
             }else{
-                List<${entityName}> nullObjList = ${entityObj}Dao.find${entityName}ListByIds(nullList);
+                List<${entityName}> nullObjList = ${entityObj}Dao.find${entityName}ListByIds(nullIds);
                 for(${entityName} e : nullObjList){
                     ${entityObj}Redis.set${entityName}(e,IConst.MINUTE_15_EXPIRE);
                 }
