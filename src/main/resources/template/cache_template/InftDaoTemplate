@@ -25,13 +25,13 @@ public interface I${entityName}Dao {
      * @param ${entityObj}
      * @return
      */
-    Integer insert${entityName}(${entityName} ${entityObj});
+    Integer add${entityName}(${entityName} ${entityObj});
 
     /**
      * 批量新增对象
      * @param list
      */
-    void insert${entityName}List(List<${entityName}> list);
+    void add${entityName}List(List<${entityName}> list);
 
     /**
      * 更新对象
@@ -64,13 +64,13 @@ public interface I${entityName}Dao {
      * @param ${entityId}
      * @return
      */
-    Integer delete${entityName}ByKey(${entityIdType} ${entityId});
+    Integer delete${entityName}(${entityIdType} ${entityId});
 
     /**
      * 批量删除对象
-     * @param list
+     * @param ids
      */
-    void delete${entityName}List(List<${entityName}> list);
+    void delete${entityName}List(List<${entityIdType}> ids);
 
     /**
      * 查询记录总数

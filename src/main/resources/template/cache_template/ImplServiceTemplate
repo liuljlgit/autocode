@@ -85,14 +85,14 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer insert${entityName}(${entityName} ${entityObj}) throws Exception {
+    public Integer add${entityName}(${entityName} ${entityObj}) throws Exception {
         if(Objects.isNull(${entityObj})){
             return 0;
         }
         if(Objects.isNull(${entityObj}.${getEntityId}())){
             ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
         }
-        Integer result =  ${entityObj}Dao.insert${entityName}(${entityObj});
+        Integer result =  ${entityObj}Dao.add${entityName}(${entityObj});
         ${entityObj}Redis.deleteAllHashSetByPage();
         return result;
     }
@@ -104,7 +104,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
+    public void add${entityName}List(List<${entityName}> ${entityObj}List) throws Exception {
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
@@ -113,7 +113,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
                 ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
             }
         }
-        ${entityObj}Dao.insert${entityName}List(${entityObj}List);
+        ${entityObj}Dao.add${entityName}List(${entityObj}List);
         ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
@@ -178,11 +178,11 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception {
+    public Integer delete${entityName}(${entityIdType} ${entityId}) throws Exception {
         if(Objects.isNull(${entityId})){
             throw new BusiException("请输入要删除的数据的ID");
         }
-        Integer result = ${entityObj}Dao.delete${entityName}ByKey(${entityId});
+        Integer result = ${entityObj}Dao.delete${entityName}(${entityId});
         ${entityObj}Redis.deleteAllHashSetByPage();
         ${entityObj}Redis.delete${entityName}(${entityId});
         return result;
@@ -190,22 +190,19 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
 
     /**
      * 批量删除对象
-     * @param list
+     * @param ids
      * @throws Exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete${entityName}List(List<${entityName}> list) throws Exception {
-        if(CollectionUtils.isEmpty(list)){
+    public void delete${entityName}List(List<${entityIdType}> ids) throws Exception {
+        if(CollectionUtils.isEmpty(ids)){
             return ;
         }
-        for (${entityName} ${entityObj} : list) {
-            if(Objects.isNull(${entityObj}.${getEntityId}())){
-                throw new BusiException("删除主键不能为空");
-            }
-            ${entityObj}Redis.delete${entityName}(${entityObj}.${getEntityId}());
+        for (${entityIdType} id : ids) {
+            ${entityObj}Redis.delete${entityName}(id);
         }
-        ${entityObj}Dao.delete${entityName}List(list);
+        ${entityObj}Dao.delete${entityName}List(ids);
         ${entityObj}Redis.deleteAllHashSetByPage();
     }
 
@@ -425,7 +422,7 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         }
         if(Objects.isNull(${entityObj}.${getEntityId}())){
             ${entityObj}.${setEntityId}(${entityObj}Redis.get${entityName}Id());
-            insert${entityName}(${entityObj});
+            add${entityName}(${entityObj});
         }else{
             update${entityName}(${entityObj},false);
         }
@@ -442,14 +439,14 @@ public class ${entityName}ServiceImpl implements ${inftServiceName}{
         if(CollectionUtils.isEmpty(${entityObj}List)){
             return ;
         }
-        List<${entityName}> insertList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
+        List<${entityName}> addList = ${entityObj}List.stream().filter(e -> Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
         List<${entityName}> updateList = ${entityObj}List.stream().filter(e -> !Objects.isNull(e.${getEntityId}())).collect(Collectors.toList());
-        if(!CollectionUtils.isEmpty(insertList)){
-            insertList = insertList.stream().map(e->{
+        if(!CollectionUtils.isEmpty(addList)){
+            addList = addList.stream().map(e->{
                 e.${setEntityId}(${entityObj}Redis.get${entityName}Id());
                 return e;
             }).collect(Collectors.toList());
-            insert${entityName}List(insertList);
+            add${entityName}List(addList);
         }
         if(!CollectionUtils.isEmpty(updateList)){
             update${entityName}List(updateList,false);

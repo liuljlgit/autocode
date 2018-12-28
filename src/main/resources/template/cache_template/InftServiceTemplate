@@ -34,14 +34,14 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Integer insert${entityName}(${entityName} ${entityObj}) throws Exception;
+    Integer add${entityName}(${entityName} ${entityObj}) throws Exception;
 
     /**
      * 批量新增对象
      * @param ${entityObj}List
      * @throws Exception
      */
-    void insert${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+    void add${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
 
     /**
      * 更新对象
@@ -66,14 +66,14 @@ public interface I${entityName}Service {
      * @return
      * @throws Exception
      */
-    Integer delete${entityName}ByKey(${entityIdType} ${entityId}) throws Exception;
+    Integer delete${entityName}(${entityIdType} ${entityId}) throws Exception;
 
     /**
      * 批量删除对象
-     * @param ${entityObj}List
+     * @param ids
      * @throws Exception
      */
-    void delete${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;
+    void delete${entityName}List(List<${entityIdType}> ids) throws Exception;
 
     /**
      * 查询记录总数
@@ -122,7 +122,6 @@ public interface I${entityName}Service {
     /**
      * 保存记录
      * @param ${entityObj}
-     * @param isFullUpdate
      * @throws Exception
      */
      void save${entityName}(${entityName} ${entityObj}) throws Exception;
@@ -130,7 +129,6 @@ public interface I${entityName}Service {
     /**
      * 批量保存记录
      * @param ${entityObj}List
-     * @param isFullUpdate
      * @throws Exception
      */
      void save${entityName}List(List<${entityName}> ${entityObj}List) throws Exception;

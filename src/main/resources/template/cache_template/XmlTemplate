@@ -81,13 +81,13 @@ ${whereSqlList}
     </select>
 
     <!--插入对象-->
-    <insert id="insert${entityName}">
+    <insert id="add${entityName}">
         insert into ${tablename}(<include refid="Base_Column_List" />)
         values(<include refid="Base_Object_List" />)
     </insert>
 
     <!--批量插入对象-->
-    <insert id="insert${entityName}List">
+    <insert id="add${entityName}List">
         insert into ${tablename}(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" index="index" item="item" separator=",">
@@ -188,7 +188,7 @@ ${fullBatchSetList}
     </select>
 
     <!--根据主键删除对象-->
-    <delete id="delete${entityName}ByKey">
+    <delete id="delete${entityName}">
         delete from ${tablename}
         <where>
             AND ${tableId} = #{${entityId}}
@@ -200,8 +200,8 @@ ${fullBatchSetList}
         delete from ${tablename}
         <where>
             ${tableId} in
-            <foreach collection="list" open="(" close=")" separator="," item="item">
-                #{item.${entityId}}
+            <foreach collection="ids" open="(" close=")" separator="," item="item">
+                #{item}
             </foreach>
         </where>
     </delete>

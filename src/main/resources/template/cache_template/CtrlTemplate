@@ -116,11 +116,11 @@ public class ${entityName}Ctrl extends BaseController {
     * @throws Exception
     */
     @DeleteMapping(value = "/${entityObj}/{${entityId}}")
-    public String delete${entityName}ByKey(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
+    public String delete${entityName}(@PathVariable(value="${entityId}") ${entityIdType} ${entityId}) throws  Exception{
         if(Objects.isNull(${entityId})){
            throw new BusiException("入参请求异常") ;
         }
-        ${implServiceName}.delete${entityName}ByKey(${entityId});
+        ${implServiceName}.delete${entityName}(${entityId});
         return formatResponseParams(EXEC_OK,null);
     }
 
