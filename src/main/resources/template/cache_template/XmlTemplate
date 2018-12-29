@@ -157,7 +157,7 @@ ${fullBatchSetList}
         <where>
             <include refid="where_sql" />
         </where>
-        <if test="page!=null and pageSize!=null and page!=-1" >
+        <if test="page!=null and pageSize!=null and page>0" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderByClause!=null and orderByClause!=''">
@@ -179,7 +179,7 @@ ${fullBatchSetList}
         <where>
             <include refid="Example_Where_Clause" />
         </where>
-        <if test="page!=null and pageSize!=null and page!=-1" >
+        <if test="page!=null and pageSize!=null and page>0" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderByClause!=null and orderByClause!=''">
