@@ -56,8 +56,16 @@ ${whereSqlList}
    </sql>
 
     <sql id="Base_Column_List">
-        ${tableColumList}
-     </sql>
+        ${baseColumnList}
+    </sql>
+
+    <sql id="Base_Object_List">
+        ${BaseObjectList}
+    </sql>
+
+    <sql id="Base_Item_List">
+        ${BaseItemList}
+    </sql>
 
     <!--根据主键获取对象-->
     <select id="load${entityName}ByKey" resultMap="BaseResultMap">
@@ -68,23 +76,26 @@ ${whereSqlList}
     </select>
 
     <!--插入对象-->
-    <insert id="insert${entityName}">
-        insert into ${tablename}(${tableColumList})
-        values(${entityPropList})
+    <insert id="add${entityName}">
+        insert into ${tablename}(<include refid="Base_Column_List" />)
+        values(<include refid="Base_Object_List" />)
     </insert>
 
     <!--批量插入对象-->
-    <insert id="insert${entityName}List">
-        insert into ${tablename}(${tableColumList})
+    <insert id="add${entityName}List">
+        insert into ${tablename}(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" index="index" item="item" separator=",">
-            (${batchEntityPropList})
+            (<include refid="Base_Item_List" />)
         </foreach>
     </insert>
 
     <!--更新对象-->
     <update id="update${entityName}">
-        update ${tablename} ${setList}
+        update ${tablename}
+        <set>
+${setList}
+        </set>
         <where>
             AND ${tableId}=#{${entityId}}
         </where>
@@ -93,7 +104,34 @@ ${whereSqlList}
     <!--批量更新对象-->
     <update id="update${entityName}List">
         <foreach collection="list" separator=";" item="item">
-            update ${tablename} ${batchSetList}
+            update ${tablename}
+            <set>
+${batchSetList}
+            </set>
+            <where>
+                AND ${tableId}=#{item.${entityId}}
+            </where>
+        </foreach>
+    </update>
+
+    <!--更新对象:全更新-->
+    <update id="fullUpdate${entityName}">
+        update ${tablename}
+        <set>
+${fullSetList}
+        </set>
+        <where>
+            AND ${tableId}=#{${entityId}}
+        </where>
+    </update>
+
+    <!--批量更新对象:全更新-->
+    <update id="fullUpdate${entityName}List">
+        <foreach collection="list" separator=";" item="item">
+            update ${tablename}
+            <set>
+${fullBatchSetList}
+            </set>
             <where>
                 AND ${tableId}=#{item.${entityId}}
             </where>
@@ -114,7 +152,7 @@ ${whereSqlList}
         <where>
             <include refid="where_sql" />
         </where>
-        <if test="page!=null and pageSize!=null and page!=-1" >
+        <if test="page!=null and pageSize!=null and page>0" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderByClause!=null and orderByClause!=''">
@@ -123,7 +161,7 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询获取总数-->
-    <select id="get${entityName}CountByExample" resultType="java.lang.Long">
+    <select id="get${entityName}CountExample" resultType="java.lang.Long">
         select count(*) from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
@@ -131,12 +169,12 @@ ${whereSqlList}
     </select>
 
     <!--复杂查询查询列表-->
-    <select id="get${entityName}ListByExample" resultMap="BaseResultMap">
+    <select id="get${entityName}ListExample" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from ${tablename}
         <where>
             <include refid="Example_Where_Clause" />
         </where>
-        <if test="page!=null and pageSize!=null and page!=-1" >
+        <if test="page!=null and pageSize!=null and page>0" >
             limit #{index},#{pageSize}
         </if>
         <if test="orderByClause!=null and orderByClause!=''">
@@ -145,21 +183,49 @@ ${whereSqlList}
     </select>
 
     <!--根据主键删除对象-->
-    <delete id="delete${entityName}ByKey">
+    <delete id="delete${entityName}ById">
         delete from ${tablename}
         <where>
-            AND ${tableId}=#{${entityId}}
+            AND ${tableId} = #{${entityId}}
         </where>
     </delete>
 
     <!-- 批量删除对象 -->
-    <delete id="delete${entityName}List">
+    <delete id="delete${entityName}ByIds">
         delete from ${tablename}
         <where>
             ${tableId} in
-            <foreach collection="list" open="(" close=")" separator="," item="item">
-                #{item.${entityId}}
+            <foreach collection="ids" open="(" close=")" separator="," item="item">
+                #{item}
             </foreach>
         </where>
     </delete>
+
+    <!-- 根据普通查询批量删除 -->
+    <delete id="delete${entityName}">
+        delete from ${tablename}
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </delete>
+
+    <!-- 根据复杂查询批量删除 -->
+    <delete id="delete${entityName}Example">
+        delete from ${tablename}
+        <where>
+            <include refid="Example_Where_Clause" />
+        </where>
+    </delete>
+
+    <!--根据ID列表获取记录列表-->
+    <select id="find${entityName}ListByIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ${tablename}
+        <where>
+            ${tableId} in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
 </mapper>

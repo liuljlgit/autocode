@@ -1,7 +1,10 @@
 package ${respPackageOutPath};
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.cloud.common.utils.CommonUtil;
+import com.cloud.common.utils.DateUtil;
+import java.util.Date;
 import ${entityFullPath};
 
 @JSONType(includes = {
@@ -13,10 +16,6 @@ public class ${entityName}Resp extends ${entityName}{
 		CommonUtil.copyPropertiesIgnoreNull(${entityObj},this);
 	}
 
-    /*@Override
-    @JSONField(format = DateUtil.DEFAUL_FORMAT)
-    public Date getDateTime() {
-        return super.getDateTime();
-    }*/
+${dateDetaultFormat}
 
 }

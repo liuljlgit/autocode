@@ -14,37 +14,14 @@ ${importList}
  */
 public class ${entityName} extends PageEntity implements Serializable {
 ${entityColumList}
+	/**
+	 * field comment: 初始化inSql和notInSql
+	 */
+	{
+		inSql = new ArrayList<>();
+		notInSql = new ArrayList<>();
+	}
 
 ${entityColumPropName}
 ${entityGetSetList}
-
-    /* 增加in列表 */
-    public void addInSql(String name,Object list) {
-        if(CollectionUtils.isEmpty(inSql)){
-            inSql = new ArrayList<>();
-        }
-        IntervalEntity intervalEntity = new IntervalEntity();
-        intervalEntity.setName(name);
-        /*此处进行排序,方便生成redisKey的值*/
-        List collect = (List)((List) list).stream().sorted().collect(Collectors.toList());
-        Collections.sort(collect);
-        intervalEntity.setList(collect);
-        inSql.add(intervalEntity);
-        inSql = inSql.stream().sorted(Comparator.comparing(IntervalEntity::getName)).collect(Collectors.toList());
-    }
-    /* 增加not in列表 */
-    public void addNotInSql(String name,Object list) {
-        if(CollectionUtils.isEmpty(notInSql)){
-            notInSql = new ArrayList<>();
-        }
-        IntervalEntity intervalEntity = new IntervalEntity();
-        /*此处进行排序,方便生成redisKey的值*/
-        List collect = (List)((List) list).stream().sorted().collect(Collectors.toList());
-        Collections.sort(collect);
-        intervalEntity.setList(collect);
-        intervalEntity.setName(name);
-        notInSql.add(intervalEntity);
-        notInSql = notInSql.stream().sorted(Comparator.comparing(IntervalEntity::getName)).collect(Collectors.toList());
-    }
-
 }
