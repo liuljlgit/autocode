@@ -32,9 +32,7 @@ public class ${entityName}Ctrl{
          throw new BusiException("请输入要获取的数据的ID") ;
       }
       ${entityName} ${entityObj} = ${implServiceName}.load${entityName}ByKey(${entityId});
-      JSONObject resp = new JSONObject();
-      resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
-      return RespEntity.ok(resp);
+      return RespEntity.ok(new ${entityName}Resp(${entityObj}));
    }
 
    /**
@@ -49,9 +47,7 @@ public class ${entityName}Ctrl{
        if(Objects.isNull(${entityObj})){
            throw new BusiException("没有符合条件的记录");
        }
-       JSONObject resp = new JSONObject();
-       resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
-       return RespEntity.ok(resp);
+       return RespEntity.ok(new ${entityName}Resp(${entityObj}));
    }
 
    /**
@@ -67,9 +63,7 @@ public class ${entityName}Ctrl{
        if(Objects.isNull(${entityObj})){
            throw new BusiException("没有符合条件的记录");
        }
-       JSONObject resp = new JSONObject();
-       resp.put("${entityObj}",new ${entityName}Resp(${entityObj}));
-       return RespEntity.ok(resp);
+       return RespEntity.ok(new ${entityName}Resp(${entityObj}));
    }
 
   /**
