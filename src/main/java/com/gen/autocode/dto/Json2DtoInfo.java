@@ -3,6 +3,7 @@ package com.gen.autocode.dto;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cloud.common.utils.HumpUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -23,7 +24,7 @@ public class Json2DtoInfo {
         if(entries.size()>0){
             Map<String,String> info = new HashMap<>();
             for (Map.Entry<String, Object> entry : entries) {
-                String key = entry.getKey();
+                String key = HumpUtil.convertToJava(entry.getKey());
                 Object value = entry.getValue();
                 if(value instanceof Integer){
                     info.put(key,"Integer");
@@ -34,11 +35,11 @@ public class Json2DtoInfo {
                 }else{
                     String s = value.toString();
                     if(s.startsWith("{")){
-                        info.put(key,"Object");
-                        parse(s,baseInfo,key);
+                        info.put(HumpUtil.toUpperCaseFirstOne(key),"Object");
+                        parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key));
                     }else if(s.startsWith("[{")){
                         info.put(key,"List");
-                        parse(s,baseInfo,key);
+                        parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key));
                     }else if(s.startsWith("[")){
                         JSONArray sArray = JSONArray.parseArray(s);
                         Object sObj = sArray.get(0);
@@ -63,9 +64,13 @@ public class Json2DtoInfo {
                 "        \"pageSize\":10\n" +
                 "    }\n" +
                 "}";
-        Json2DtoInfo aa = new Json2DtoInfo();
+        Json2DtoInfo json2DtoInfo = new Json2DtoInfo();
         Map<String,Map<String,String>> baseInfo = new HashMap<>();
-        aa.parse(json,baseInfo,"root");
-        System.out.println("aa");
+        json2DtoInfo.parse(json,baseInfo,"Root");
+        //遍历生成java文件
+        for (Map.Entry<String, Map<String, String>> entry : baseInfo.entrySet()) {
+            String clsName = entry.getKey();
+            Map<String, String> propertyList = entry.getValue();
+        }
     }
 }
