@@ -32,13 +32,17 @@ public class Json2DtoInfo {
                     info.put(key,"BigDecimal");
                 }else if(value instanceof String){
                     info.put(key,"String");
+                }else if(value instanceof Boolean){
+                    info.put(key,"Boolean");
+                }else if(value instanceof Date){
+                    info.put(key,"Date");
                 }else{
                     String s = value.toString();
                     if(s.startsWith("{")){
                         info.put(HumpUtil.toUpperCaseFirstOne(key),"Object");
                         parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key));
                     }else if(s.startsWith("[{")){
-                        info.put(key,"List");
+                        info.put(HumpUtil.toUpperCaseFirstOne(key),"List");
                         parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key));
                     }else if(s.startsWith("[")){
                         JSONArray sArray = JSONArray.parseArray(s);
@@ -47,8 +51,12 @@ public class Json2DtoInfo {
                             info.put(key,"List<Integer>");
                         }else if(sObj instanceof BigDecimal){
                             info.put(key,"List<BigDecimal>");
-                        }else {
+                        }else if(sObj instanceof String){
                             info.put(key,"List<String>");
+                        }else if(sObj instanceof Boolean){
+                            info.put(key,"List<Boolean>");
+                        }else if(sObj instanceof Date){
+                            info.put(key,"List<Date>");
                         }
                     }
                 }
@@ -59,10 +67,13 @@ public class Json2DtoInfo {
 
     public static void main(String[] args) throws Exception {
         String json ="{\n" +
-                "    \"reqBody\":{\n" +
-                "        \"page\":[1,2,3],\n" +
-                "        \"pageSize\":10\n" +
-                "    }\n" +
+                "\t\"animals\":{\n" +
+                "\t\"dog\":[\n" +
+                "\t\t{\"name\":\"Rufus\",\"breed\":\"labrador\",\"count\":1,\"twoFeet\":false},\n" +
+                "\t\t{\"name\":\"Marty\",\"breed\":\"whippet\",\"count\":1,\"twoFeet\":false}\n" +
+                "\t],\n" +
+                "\t\"cat\":{\"name\":\"2018-01-20\"}\n" +
+                "}\n" +
                 "}";
         Json2DtoInfo json2DtoInfo = new Json2DtoInfo();
         Map<String,Map<String,String>> baseInfo = new HashMap<>();
