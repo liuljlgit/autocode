@@ -1,0 +1,11 @@
+package ${entityPackageOutPath};
+import java.util.*;
+${importList}
+
+/**
+ * ${entityName} 实体类
+ */
+public class ${entityName} implements Serializable {
+    ${entityColumList}
+    ${entityGetSetList}
+}
