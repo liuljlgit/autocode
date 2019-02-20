@@ -66,7 +66,7 @@ public class Json2DtoInfo {
                         info.put(HumpUtil.toUpperCaseFirstOne(key),"Object");
                         parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key),times);
                     }else if(s.startsWith("[{")){
-                        info.put(HumpUtil.toUpperCaseFirstOne(key),"List");
+                        info.put(HumpUtil.toUpperCaseFirstOne(key),"List<"+HumpUtil.toUpperCaseFirstOne(key)+">");
                         parse(s,baseInfo,HumpUtil.toUpperCaseFirstOne(key),times);
                     }else if(s.startsWith("[")){
                         JSONArray sArray = JSONArray.parseArray(s);
@@ -148,9 +148,20 @@ public class Json2DtoInfo {
         StringBuffer columSb = new StringBuffer();
         StringBuffer getSetSb = new StringBuffer();
         for (Map.Entry<String, String> entry : propertyList.entrySet()) {
-            String property = entry.getKey();
-            String type = entry.getValue();
+            String typeName = entry.getKey();
+            String type = entry.getValue().equals("Object") ? typeName : entry.getValue();
+            String colName = type.startsWith("List") ? HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName)+"s") : HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName));
+            columSb.append("private "+type+" "+colName+";\n\t");
+            getSetSb.append("public "+type+" get"+HumpUtil.toUpperCaseFirstOne(colName)+"() {\n" +
+                    "        return "+colName+";\n" +
+                    "    }\n" +
+                    "\n" +
+                    "    public void set"+HumpUtil.toUpperCaseFirstOne(colName)+"("+type+" "+colName+") {\n" +
+                    "        this."+colName+" = "+colName+";\n" +
+                    "    }\n\t");
         }
+        replaceMap.put("${dtoColumList}",columSb.toString());
+        replaceMap.put("${dtoGetSetList}",getSetSb.toString());
         return replaceMap;
     }
 

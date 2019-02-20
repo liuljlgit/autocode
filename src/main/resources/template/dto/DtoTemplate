@@ -1,10 +1,13 @@
 package ${dtoPackageOutPath};
 import java.io.Serializable;
+import java.util.*;
 
 /**
  * ${dtoName} 实体类
  */
 public class ${dtoName} implements Serializable {
+
     ${dtoColumList}
     ${dtoGetSetList}
+
 }
