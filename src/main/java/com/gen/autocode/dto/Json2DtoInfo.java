@@ -134,7 +134,24 @@ public class Json2DtoInfo {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
 
+    /**
+     * 创建替换模板
+     * @return
+     */
+    public Map<String,String> createReplaceMap(String clsName,Map<String, String> propertyList){
+        Map<String,String> replaceMap = new HashMap<>();
+        replaceMap.put("${dtoName}",clsName);
+        replaceMap.put("${dtoPackageOutPath}","com.gen.autocode.test");
+        //创建属性列表和get、set函数
+        StringBuffer columSb = new StringBuffer();
+        StringBuffer getSetSb = new StringBuffer();
+        for (Map.Entry<String, String> entry : propertyList.entrySet()) {
+            String property = entry.getKey();
+            String type = entry.getValue();
+        }
+        return replaceMap;
     }
 
     public static void main(String[] args) throws Exception {
@@ -154,8 +171,7 @@ public class Json2DtoInfo {
         for (Map.Entry<String, Map<String, String>> entry : baseInfo.entrySet()) {
             String clsName = entry.getKey();
             Map<String, String> propertyList = entry.getValue();
-
-            //创建文件
+            json2DtoInfo.createFile(clsName,"com.gen.autocode.test",json2DtoInfo.replaceTemplateContent(json2DtoInfo.createReplaceMap(clsName,propertyList)));
         }
     }
 }

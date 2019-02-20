@@ -1,11 +1,10 @@
-package ${entityPackageOutPath};
-import java.util.*;
-${importList}
+package ${dtoPackageOutPath};
+import java.io.Serializable;
 
 /**
- * ${entityName} 实体类
+ * ${dtoName} 实体类
  */
-public class ${entityName} implements Serializable {
-    ${entityColumList}
-    ${entityGetSetList}
+public class ${dtoName} implements Serializable {
+    ${dtoColumList}
+    ${dtoGetSetList}
 }
