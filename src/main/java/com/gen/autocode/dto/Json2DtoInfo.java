@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 根据json字符串转换成dto文件
+ */
 public class Json2DtoInfo {
 
     public void parse(String json, Map<String,Map<String,String>> baseInfo,String clsName,int times) throws Exception {
