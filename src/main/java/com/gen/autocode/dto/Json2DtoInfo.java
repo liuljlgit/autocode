@@ -172,10 +172,10 @@ public class Json2DtoInfo {
 
     public static void main(String[] args) throws Exception {
         String json = args[0];
-        String packageOutPath = args[1];
+        String packageOutPath = args[2];
         Json2DtoInfo json2DtoInfo = new Json2DtoInfo();
         Map<String,Map<String,String>> baseInfo = new HashMap<>();
-        json2DtoInfo.parse(json,baseInfo,"Root",1);
+        json2DtoInfo.parse(json,baseInfo,args[1],1);
         //遍历生成java文件
         for (Map.Entry<String, Map<String, String>> entry : baseInfo.entrySet()) {
             String clsName = entry.getKey();
