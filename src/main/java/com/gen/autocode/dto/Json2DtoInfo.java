@@ -140,10 +140,10 @@ public class Json2DtoInfo {
      * 创建替换模板
      * @return
      */
-    public Map<String,String> createReplaceMap(String clsName,Map<String, String> propertyList){
+    public Map<String,String> createReplaceMap(String clsName,Map<String, String> propertyList,String packageOutPath){
         Map<String,String> replaceMap = new HashMap<>();
         replaceMap.put("${dtoName}",clsName);
-        replaceMap.put("${dtoPackageOutPath}","com.gen.autocode.test");
+        replaceMap.put("${dtoPackageOutPath}",packageOutPath);
         //创建属性列表和get、set函数
         StringBuffer columSb = new StringBuffer();
         StringBuffer getSetSb = new StringBuffer();
@@ -152,6 +152,8 @@ public class Json2DtoInfo {
             String type = entry.getValue().equals("Object") ? typeName : entry.getValue();
             String colName = type.startsWith("List") ? HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName)+"s") : HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName));
             columSb.append("private "+type+" "+colName+";\n\t");
+            /*columSb.append("@ApiModelProperty(value=\"\")\n" +
+                    "\tprivate "+type+" "+colName+";\n\t");*/
             getSetSb.append("public "+type+" get"+HumpUtil.toUpperCaseFirstOne(colName)+"() {\n" +
                     "        return "+colName+";\n" +
                     "    }\n" +
@@ -166,15 +168,8 @@ public class Json2DtoInfo {
     }
 
     public static void main(String[] args) throws Exception {
-        String json ="{\n" +
-                "\t\"animals\":{\n" +
-                "\t\"dog\":[\n" +
-                "\t\t{\"name\":\"Rufus\",\"breed\":\"labrador\",\"count\":1,\"twoFeet\":false},\n" +
-                "\t\t{\"name\":\"Marty\",\"breed\":\"whippet\",\"count\":1,\"twoFeet\":false}\n" +
-                "\t],\n" +
-                "\t\"cat\":{\"name\":\"2018-01-20\"}\n" +
-                "}\n" +
-                "}";
+        String json = args[0];
+        String packageOutPath = args[1];
         Json2DtoInfo json2DtoInfo = new Json2DtoInfo();
         Map<String,Map<String,String>> baseInfo = new HashMap<>();
         json2DtoInfo.parse(json,baseInfo,"Root",1);
@@ -182,7 +177,7 @@ public class Json2DtoInfo {
         for (Map.Entry<String, Map<String, String>> entry : baseInfo.entrySet()) {
             String clsName = entry.getKey();
             Map<String, String> propertyList = entry.getValue();
-            json2DtoInfo.createFile(clsName,"com.gen.autocode.test",json2DtoInfo.replaceTemplateContent(json2DtoInfo.createReplaceMap(clsName,propertyList)));
+            json2DtoInfo.createFile(clsName,packageOutPath,json2DtoInfo.replaceTemplateContent(json2DtoInfo.createReplaceMap(clsName,propertyList,packageOutPath)));
         }
     }
 }
