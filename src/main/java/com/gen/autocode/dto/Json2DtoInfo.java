@@ -9,10 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 根据json字符串转换成dto文件
@@ -119,12 +116,16 @@ public class Json2DtoInfo {
     /**
      * 创建文件
      */
-    public void createFile(String fileName,String packageOutPath,String sb){
+    public void createFile(String fileName,String packageOutPath,String sb,String realPath){
         File directory = new File("");
         File dirFile;
         String outputPath;
         try{
-            dirFile = new File(directory.getAbsolutePath()+ "/src/main/java/"+packageOutPath.replace(".", "/")+"/");
+            if(Objects.isNull(realPath)){
+                dirFile = new File(directory.getAbsolutePath()+ "/src/main/java/"+packageOutPath.replace(".", "/")+"/");
+            }else{
+                dirFile = new File(realPath);
+            }
             if(!dirFile.exists()){
                 dirFile.mkdirs();
             }
@@ -181,7 +182,7 @@ public class Json2DtoInfo {
         for (Map.Entry<String, Map<String, String>> entry : baseInfo.entrySet()) {
             String clsName = entry.getKey();
             Map<String, String> propertyList = entry.getValue();
-            json2DtoInfo.createFile(clsName,packageOutPath,json2DtoInfo.replaceTemplateContent(json2DtoInfo.createReplaceMap(clsName,propertyList,packageOutPath)));
+            json2DtoInfo.createFile(clsName,packageOutPath,json2DtoInfo.replaceTemplateContent(json2DtoInfo.createReplaceMap(clsName,propertyList,packageOutPath)),args[3]);
         }
     }
 }
