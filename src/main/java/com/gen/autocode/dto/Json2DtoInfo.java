@@ -153,10 +153,11 @@ public class Json2DtoInfo {
         for (Map.Entry<String, String> entry : propertyList.entrySet()) {
             String typeName = entry.getKey();
             String type = entry.getValue().equals("Object") ? typeName : entry.getValue();
-            String colName = type.startsWith("List") ? HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName)+"s") : HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName));
-            columSb.append("private "+type+" "+colName+";\n\t");
-            /*columSb.append("@ApiModelProperty(value=\"\")\n" +
-                    "\tprivate "+type+" "+colName+";\n\t");*/
+            //String colName = type.startsWith("List") ? HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName)+"s") : HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName));
+            String colName = HumpUtil.toLowerCaseFirstOne(HumpUtil.convertToJava(typeName));
+            //columSb.append("private "+type+" "+colName+";\n\t");
+            columSb.append("@ApiModelProperty(value=\"\")\n" +
+                    "\tprivate "+type+" "+colName+";\n\n\t");
             getSetSb.append("public "+type+" get"+HumpUtil.toUpperCaseFirstOne(colName)+"() {\n" +
                     "        return "+colName+";\n" +
                     "    }\n" +

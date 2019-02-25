@@ -5,6 +5,7 @@ import java.util.*;
 /**
  * ${dtoName} 实体类
  */
+@ApiModel(value ="")
 public class ${dtoName} implements Serializable {
 
     ${dtoColumList}
